@@ -55,7 +55,7 @@ const PromptForm = ({ fields, values, onUpdate, onAddSuggestion }) => {
               />
               {field.suggestions && (
                 <datalist id={`list-${field.id}`}>
-                  {(displaySuggestions[field.id] || field.suggestions).map((sug) => (
+                  {field.suggestions.map((sug) => (
                     <option key={sug} value={sug} />
                   ))}
                 </datalist>
