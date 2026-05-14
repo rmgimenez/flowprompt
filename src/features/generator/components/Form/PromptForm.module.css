@@ -4,6 +4,67 @@
   gap: 1.5rem;
 }
 
+.formHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  padding-bottom: 1rem;
+}
+
+.formTitle {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 0;
+  opacity: 0.8;
+}
+
+.formActions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.clearBtn, .randomBtn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 0.9rem;
+  border-radius: 100px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.clearBtn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.clearBtn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #ff5252;
+  border-color: rgba(255, 82, 82, 0.3);
+}
+
+.randomBtn {
+  background: linear-gradient(135deg, rgba(61, 90, 254, 0.1), rgba(0, 229, 255, 0.1));
+  border: 1px solid rgba(61, 90, 254, 0.2);
+  color: #00e5ff;
+}
+
+.randomBtn:hover {
+  background: linear-gradient(135deg, rgba(61, 90, 254, 0.2), rgba(0, 229, 255, 0.2));
+  border-color: #00e5ff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(0, 229, 255, 0.2);
+}
+
 .fieldGroup {
   display: flex;
   flex-direction: column;

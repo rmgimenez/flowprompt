@@ -18,8 +18,18 @@ function App() {
     formValues,
     updateField,
     addSuggestion,
-    generatedPrompt
+    generatedPrompt,
+    // New persistence features
+    history,
+    favorites,
+    addToHistory,
+    toggleFavorite,
+    loadSavedItem,
+    randomize,
+    clearFields
   } = useGenerator();
+
+  const isFavorite = favorites.some(f => f.prompt === generatedPrompt);
 
   const renderContent = () => {
     return (
@@ -65,6 +75,8 @@ function App() {
                       values={formValues}
                       onUpdate={updateField}
                       onAddSuggestion={addSuggestion}
+                      onRandomize={randomize}
+                      onClear={clearFields}
                     />
                   </GlassCard>
                 )}
@@ -74,7 +86,16 @@ function App() {
 
           {!currentMode.isAbout && (
             <div className="preview-column">
-              <PromptPreview prompt={generatedPrompt} />
+              <PromptPreview 
+                prompt={generatedPrompt} 
+                onCopy={addToHistory}
+                isFavorite={isFavorite}
+                onToggleFavorite={() => toggleFavorite({
+                  modeId: currentModeId,
+                  values: formValues,
+                  prompt: generatedPrompt
+                })}
+              />
             </div>
           )}
         </div>
@@ -85,7 +106,16 @@ function App() {
   return (
     <>
       <MainLayout 
-        sidebar={<Sidebar currentModeId={currentModeId} onModeChange={setCurrentModeId} />}
+        sidebar={
+          <Sidebar 
+            currentModeId={currentModeId} 
+            onModeChange={setCurrentModeId} 
+            history={history}
+            favorites={favorites}
+            onLoadItem={loadSavedItem}
+            onToggleFavorite={toggleFavorite}
+          />
+        }
         content={renderContent()}
       />
       <Analytics />

@@ -1,8 +1,9 @@
 import React, { useMemo } from 'react';
 import styles from './PromptForm.module.css';
+import { Wand2, Eraser } from 'lucide-react';
 import { clsx } from 'clsx';
 
-const PromptForm = ({ fields, values, onUpdate, onAddSuggestion }) => {
+const PromptForm = ({ fields, values, onUpdate, onAddSuggestion, onRandomize, onClear }) => {
   // Memoize random suggestions so they don't change while typing
   const displaySuggestions = useMemo(() => {
     const map = {};
@@ -24,6 +25,30 @@ const PromptForm = ({ fields, values, onUpdate, onAddSuggestion }) => {
 
   return (
     <form className={styles.form} onSubmit={(e) => e.preventDefault()}>
+      <div className={styles.formHeader}>
+        <h4 className={styles.formTitle}>Parâmetros do Modelo</h4>
+        <div className={styles.formActions}>
+          <button 
+            type="button" 
+            className={styles.clearBtn}
+            onClick={onClear}
+            title="Limpar todos os campos"
+          >
+            <Eraser size={14} />
+            <span>Limpar</span>
+          </button>
+          <button 
+            type="button" 
+            className={styles.randomBtn}
+            onClick={onRandomize}
+            title="Preencher campos aleatoriamente"
+          >
+            <Wand2 size={14} />
+            <span>Surpreenda-me</span>
+          </button>
+        </div>
+      </div>
+      
       {fields.map((field) => (
         <div key={field.id} className={styles.fieldGroup}>
           <div className={styles.labelRow}>
