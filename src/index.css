@@ -109,3 +109,43 @@ body {
     font-size: 1.75rem;
   }
 }
+
+.help-box {
+  background: rgba(100, 150, 255, 0.08);
+  border: 1px solid rgba(100, 150, 255, 0.15);
+  border-left: 4px solid #6496ff;
+  padding: 1rem 1.25rem;
+  border-radius: 12px;
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  backdrop-filter: blur(10px);
+}
+
+.help-box-icon {
+  color: #6496ff;
+  flex-shrink: 0;
+  margin-top: 0.1rem;
+}
+
+.help-box-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.help-box-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #6496ff;
+}
+
+.help-box-text {
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.85);
+  line-height: 1.5;
+}
+

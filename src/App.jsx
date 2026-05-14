@@ -6,6 +6,7 @@ import PromptPreview from './features/generator/components/Preview/PromptPreview
 import About from './features/generator/components/About/About';
 import { useGenerator } from './features/generator/hooks/useGenerator';
 import { GlassCard } from './components/ui/GlassCard';
+import { HelpBox } from './components/ui/HelpBox';
 import { motion, AnimatePresence } from 'framer-motion';
 
 function App() {
@@ -51,6 +52,7 @@ function App() {
                 exit={{ opacity: 0, x: 20 }}
                 transition={{ duration: 0.3 }}
               >
+                <HelpBox text={currentMode.helpText} />
                 {currentMode.isAbout ? (
                   <GlassCard className="p-8">
                     <About />

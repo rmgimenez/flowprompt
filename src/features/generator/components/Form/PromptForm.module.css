@@ -10,12 +10,26 @@
   gap: 0.5rem;
 }
 
+.labelRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
 .label {
-  color: rgba(255, 255, 255, 0.5);
-  font-weight: 500;
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: 600;
   font-size: 0.85rem;
   letter-spacing: 0.02em;
 }
+
+.hint {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.3);
+  font-weight: 400;
+}
+
 
 .input, .textarea {
   background: rgba(255, 255, 255, 0.05);

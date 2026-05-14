@@ -7,9 +7,12 @@ const PromptForm = ({ fields, values, onUpdate, onAddSuggestion }) => {
     <form className={styles.form} onSubmit={(e) => e.preventDefault()}>
       {fields.map((field) => (
         <div key={field.id} className={styles.fieldGroup}>
-          <label htmlFor={field.id} className={styles.label}>
-            {field.label}
-          </label>
+          <div className={styles.labelRow}>
+            <label htmlFor={field.id} className={styles.label}>
+              {field.label}
+            </label>
+            {field.hint && <span className={styles.hint}>{field.hint}</span>}
+          </div>
           
           {field.type === 'textarea' ? (
             <textarea
@@ -21,14 +24,24 @@ const PromptForm = ({ fields, values, onUpdate, onAddSuggestion }) => {
               rows={3}
             />
           ) : (
-            <input
-              id={field.id}
-              type="text"
-              className={styles.input}
-              placeholder={field.placeholder}
-              value={values[field.id] || ''}
-              onChange={(e) => onUpdate(field.id, e.target.value)}
-            />
+            <>
+              <input
+                id={field.id}
+                type="text"
+                className={styles.input}
+                placeholder={field.placeholder}
+                value={values[field.id] || ''}
+                onChange={(e) => onUpdate(field.id, e.target.value)}
+                list={`list-${field.id}`}
+              />
+              {field.suggestions && (
+                <datalist id={`list-${field.id}`}>
+                  {field.suggestions.map((sug) => (
+                    <option key={sug} value={sug} />
+                  ))}
+                </datalist>
+              )}
+            </>
           )}
 
           {field.suggestions && (

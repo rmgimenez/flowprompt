@@ -44,7 +44,7 @@ const PromptPreview = ({ prompt }) => {
       <div className={styles.footer}>
         <Info size={14} className={styles.infoIcon} />
         <p className={styles.tip}>
-          Dica: Use termos cinematográficos para melhores resultados.
+          Dica: Copie o prompt acima e utilize-o no Google AI Studio ou Vertex AI para melhores resultados.
         </p>
       </div>
     </GlassCard>
