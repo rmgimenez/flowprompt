@@ -7,6 +7,44 @@ import { clsx } from 'clsx';
 import styles from './Sidebar.module.css';
 import { MODES } from '../../constants/modes';
 
+const SavedItem = ({ item, onToggleFavorite, onLoadItem }) => {
+  const mode = MODES[item.modeId] || { title: 'Desconhecido' };
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = (e) => {
+    e.stopPropagation();
+    navigator.clipboard.writeText(item.prompt);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  return (
+    <div className={styles.savedItem}>
+      <div className={styles.savedHeader}>
+        <span className={styles.savedMode}>{mode.title}</span>
+        <div className={styles.savedActions}>
+          <button 
+            onClick={(e) => { e.stopPropagation(); onToggleFavorite(item); }} 
+            className={clsx(styles.actionBtn, item.isFavorite && styles.isFavorite)}
+          >
+            <Star size={14} fill={item.isFavorite ? "currentColor" : "none"} />
+          </button>
+          <button onClick={handleCopy} className={styles.actionBtn}>
+            {copied ? <Check size={14} className={styles.successIcon} /> : <Copy size={14} />}
+          </button>
+          <button onClick={() => onLoadItem(item)} className={styles.actionBtn} title="Restaurar Campos">
+            <RotateCcw size={14} />
+          </button>
+        </div>
+      </div>
+      <p className={styles.savedPrompt}>{item.prompt}</p>
+      <span className={styles.savedTime}>
+        {new Date(item.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+      </span>
+    </div>
+  );
+};
+
 const Sidebar = ({ 
   currentModeId, 
   onModeChange, 
@@ -25,44 +63,6 @@ const Sidebar = ({
     { id: 'divider', isDivider: true },
     { id: 'about', label: 'Sobre a Ferramenta', icon: Info },
   ];
-
-  const renderSavedItem = (item) => {
-    const mode = MODES[item.modeId] || { title: 'Desconhecido' };
-    const [copied, setCopied] = useState(false);
-
-    const handleCopy = (e) => {
-      e.stopPropagation();
-      navigator.clipboard.writeText(item.prompt);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    };
-
-    return (
-      <div key={item.id} className={styles.savedItem}>
-        <div className={styles.savedHeader}>
-          <span className={styles.savedMode}>{mode.title}</span>
-          <div className={styles.savedActions}>
-            <button 
-              onClick={(e) => { e.stopPropagation(); onToggleFavorite(item); }} 
-              className={clsx(styles.actionBtn, item.isFavorite && styles.isFavorite)}
-            >
-              <Star size={14} fill={item.isFavorite ? "currentColor" : "none"} />
-            </button>
-            <button onClick={handleCopy} className={styles.actionBtn}>
-              {copied ? <Check size={14} className={styles.successIcon} /> : <Copy size={14} />}
-            </button>
-            <button onClick={() => onLoadItem(item)} className={styles.actionBtn} title="Restaurar Campos">
-              <RotateCcw size={14} />
-            </button>
-          </div>
-        </div>
-        <p className={styles.savedPrompt}>{item.prompt}</p>
-        <span className={styles.savedTime}>
-          {new Date(item.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-        </span>
-      </div>
-    );
-  };
 
   return (
     <aside className={styles.sidebar}>
@@ -126,7 +126,14 @@ const Sidebar = ({
             {history.length === 0 ? (
               <p className={styles.emptyState}>Nenhum prompt gerado ainda.</p>
             ) : (
-              history.map(renderSavedItem)
+              history.map(item => (
+                <SavedItem 
+                  key={item.id} 
+                  item={item} 
+                  onToggleFavorite={onToggleFavorite} 
+                  onLoadItem={onLoadItem} 
+                />
+              ))
             )}
           </div>
         )}
@@ -137,7 +144,14 @@ const Sidebar = ({
             {favorites.length === 0 ? (
               <p className={styles.emptyState}>Você ainda não favoritou nenhum prompt.</p>
             ) : (
-              favorites.map(renderSavedItem)
+              favorites.map(item => (
+                <SavedItem 
+                  key={item.id} 
+                  item={item} 
+                  onToggleFavorite={onToggleFavorite} 
+                  onLoadItem={onLoadItem} 
+                />
+              ))
             )}
           </div>
         )}
