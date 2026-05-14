@@ -97,4 +97,6 @@ Abra [http://localhost:5173](http://localhost:5173) no seu navegador para ver o 
 
 ---
 
+**Autor:** Ricardo Moura Gimenez ([rmgimenez@gmail.com](mailto:rmgimenez@gmail.com))
+
 Desenvolvido para facilitar a criação de arte generativa com precisão.

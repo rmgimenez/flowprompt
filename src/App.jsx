@@ -8,6 +8,7 @@ import { useGenerator } from './features/generator/hooks/useGenerator';
 import { GlassCard } from './components/ui/GlassCard';
 import { HelpBox } from './components/ui/HelpBox';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Analytics } from '@vercel/analytics/react';
 
 function App() {
   const {
@@ -82,10 +83,13 @@ function App() {
   };
 
   return (
-    <MainLayout 
-      sidebar={<Sidebar currentModeId={currentModeId} onModeChange={setCurrentModeId} />}
-      content={renderContent()}
-    />
+    <>
+      <MainLayout 
+        sidebar={<Sidebar currentModeId={currentModeId} onModeChange={setCurrentModeId} />}
+        content={renderContent()}
+      />
+      <Analytics />
+    </>
   );
 }
 

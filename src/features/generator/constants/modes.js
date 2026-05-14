@@ -132,7 +132,7 @@ export const MODES = {
     id: 'about',
     title: 'Sobre a Ferramenta',
     desc: 'Entenda como esta ferramenta ajuda você a criar prompts melhores.',
-    helpText: 'Esta ferramenta utiliza fórmulas estruturadas para os modelos Veo e Nano Banana, garantindo que seus prompts sejam profissionais e alcancem o máximo de qualidade técnica.',
+    helpText: 'Esta ferramenta utiliza fórmulas estruturadas para os modelos Veo e Nano Banana, garantindo que seus prompts sejam profissionais e alcancem o máximo de qualidade técnica. Criado por Ricardo Moura Gimenez (rmgimenez@gmail.com).',
     isAbout: true
   }
 };
