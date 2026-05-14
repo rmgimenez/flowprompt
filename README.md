@@ -2,6 +2,8 @@
 
 FlowPrompt é uma ferramenta interativa e visual para criar prompts estruturados e profissionais para os modelos de IA do Google: **Nano Banana** (imagens) e **Veo** (vídeos). A ferramenta utiliza fórmulas oficiais para garantir a melhor qualidade técnica e estética nas gerações.
 
+**🌐 Acesse agora: [flowprompt-blue.vercel.app](https://flowprompt-blue.vercel.app)**
+
 ## 🚀 Funcionalidades
 
 - **Vídeo Novo (Veo)**: Crie vídeos cinematográficos a partir de descrições textuais detalhadas.
