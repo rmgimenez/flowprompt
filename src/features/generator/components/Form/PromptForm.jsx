@@ -56,7 +56,9 @@ const PromptForm = ({ fields, values, onUpdate, onAddSuggestion }) => {
               {field.suggestions && (
                 <datalist id={`list-${field.id}`}>
                   {field.suggestions.map((sug) => (
-                    <option key={sug} value={sug} />
+                    <option key={sug.value} value={sug.value}>
+                      {sug.label}
+                    </option>
                   ))}
                 </datalist>
               )}
@@ -67,12 +69,13 @@ const PromptForm = ({ fields, values, onUpdate, onAddSuggestion }) => {
             <div className={styles.suggestions}>
               {(displaySuggestions[field.id] || field.suggestions).map((sug) => (
                 <button
-                  key={sug}
+                  key={sug.value}
                   type="button"
                   className={styles.chip}
-                  onClick={() => onAddSuggestion(field.id, sug)}
+                  onClick={() => onAddSuggestion(field.id, sug.value)}
+                  title={sug.value}
                 >
-                  {sug}
+                  {sug.label}
                 </button>
               ))}
             </div>
