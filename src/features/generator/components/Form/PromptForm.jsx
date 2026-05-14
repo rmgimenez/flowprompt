@@ -10,10 +10,10 @@ const PromptForm = ({ fields, values, onUpdate, onAddSuggestion, onRandomize, on
     fields.forEach(field => {
       if (field.suggestions) {
         if (field.type !== 'textarea') {
-          // Pick 3 random suggestions for datalist fields
+          // Pick 5 random suggestions for datalist fields
           map[field.id] = [...field.suggestions]
             .sort(() => 0.5 - Math.random())
-            .slice(0, 3);
+            .slice(0, 5);
         } else {
           // Show all for textareas (or we could limit them too, but instruction specifies datalist fields)
           map[field.id] = field.suggestions;
@@ -28,8 +28,8 @@ const PromptForm = ({ fields, values, onUpdate, onAddSuggestion, onRandomize, on
       <div className={styles.formHeader}>
         <h4 className={styles.formTitle}>Parâmetros do Modelo</h4>
         <div className={styles.formActions}>
-          <button 
-            type="button" 
+          <button
+            type="button"
             className={styles.clearBtn}
             onClick={onClear}
             title="Limpar todos os campos"
@@ -37,8 +37,8 @@ const PromptForm = ({ fields, values, onUpdate, onAddSuggestion, onRandomize, on
             <Eraser size={14} />
             <span>Limpar</span>
           </button>
-          <button 
-            type="button" 
+          <button
+            type="button"
             className={styles.randomBtn}
             onClick={onRandomize}
             title="Preencher campos aleatoriamente"
@@ -48,7 +48,7 @@ const PromptForm = ({ fields, values, onUpdate, onAddSuggestion, onRandomize, on
           </button>
         </div>
       </div>
-      
+
       {fields.map((field) => (
         <div key={field.id} className={styles.fieldGroup}>
           <div className={styles.labelRow}>
@@ -57,7 +57,7 @@ const PromptForm = ({ fields, values, onUpdate, onAddSuggestion, onRandomize, on
             </label>
             {field.hint && <span className={styles.hint}>{field.hint}</span>}
           </div>
-          
+
           {field.type === 'textarea' ? (
             <textarea
               id={field.id}
