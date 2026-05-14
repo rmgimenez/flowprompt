@@ -62,6 +62,7 @@ const Sidebar = ({
     { id: 'photo-new', label: 'Foto Nova', icon: Camera },
     { id: 'photo-transform', label: 'Transformar Foto', icon: Sparkles },
     { id: 'image-stacker', label: 'Empilhador Pinterest', icon: Layers },
+    { id: 'photo-montage', label: 'Montagem de Fotos', icon: LayoutGrid },
     { id: 'divider', isDivider: true },
     { id: 'about', label: 'Sobre a Ferramenta', icon: Info },
   ];

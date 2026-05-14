@@ -141,6 +141,13 @@ export const MODES = {
     desc: 'Entenda como esta ferramenta ajuda você a criar prompts melhores.',
     helpText: 'Esta ferramenta utiliza fórmulas estruturadas para os modelos Veo e Nano Banana, garantindo que seus prompts sejam profissionais e alcancem o máximo de qualidade técnica. Criado por Ricardo Moura Gimenez (rmgimenez@gmail.com).',
     isAbout: true
+  },
+  'photo-montage': {
+    id: 'photo-montage',
+    title: 'Montagem de Fotos',
+    desc: 'Combine várias fotos em um grid personalizado com bordas.',
+    helpText: 'Escolha o layout do grid, ajuste a espessura e cor das bordas e baixe sua montagem final.',
+    isCustom: true
   }
 };
 
