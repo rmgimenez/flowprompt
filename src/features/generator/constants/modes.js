@@ -35,7 +35,7 @@ export const MODES = {
       { id: 'action', label: 'Ação', hint: 'O que está acontecendo', placeholder: 'Ex: posando', type: 'text', suggestions: ['staring at camera', 'dissolving into smoke'] },
       { id: 'context', label: 'Local', hint: 'Cenário da fotografia', placeholder: 'Ex: estúdio', type: 'text', suggestions: ['Abstract Space', 'Abandoned Cathedral'] },
       { id: 'composition', label: 'Composição', hint: 'Organização visual (ex: Macro)', placeholder: 'Ex: Close-up', type: 'text', suggestions: ['Macro Shot', 'Rule of Thirds', 'Symmetrical'] },
-      { id: 'style', label: 'Estilo', hint: 'Visual artístico ou técnico', placeholder: 'Ex: Fotografia de revista', type: 'textarea', suggestions: ['Oil Painting', '3D Render', 'Pencil Sketch'] }
+      { id: 'style', label: 'Estilo', hint: 'Visual artístico ou técnico', placeholder: 'Ex: Fotografia de revista', type: 'textarea', suggestions: ['The Simpsons cartoon style', 'Disney animation style', 'Rick and Morty style', 'Adventure Time style', 'Futurama art style', 'Game of Thrones aesthetic', 'Studio Ghibli style', 'Cyberpunk aesthetic', 'South Park style', 'Dragon Ball Z style', 'Marvel Comics style', 'GTA V style', 'Oil Painting', '3D Render', 'Pencil Sketch'] }
     ]
   },
   'photo-transform': {
@@ -52,6 +52,23 @@ export const MODES = {
         placeholder: 'Ex: transforme em anime',
         type: 'text',
         suggestions: [
+          'The Simpsons style',
+          'Disney animation style',
+          'Rick and Morty style',
+          'Adventure Time style',
+          'Futurama art style',
+          'Game of Thrones aesthetic',
+          'Studio Ghibli style',
+          'South Park style',
+          'Dragon Ball Z style',
+          'Naruto anime style',
+          'One Piece style',
+          'Marvel Comics style',
+          'DC Comics style',
+          'GTA V loading screen style',
+          'Borderlands cell-shaded style',
+          'Fortnite art style',
+          'Cyberpunk 2077 aesthetic',
           '90s Anime style',
           '3D Pixar style',
           'Cyberpunk aesthetic',
