@@ -4,6 +4,7 @@ import MainLayout from './layouts/MainLayout';
 import PromptForm from './features/generator/components/Form/PromptForm';
 import PromptPreview from './features/generator/components/Preview/PromptPreview';
 import About from './features/generator/components/About/About';
+import ImageStacker from './features/generator/components/ImageStacker/ImageStacker';
 import { useGenerator } from './features/generator/hooks/useGenerator';
 import { GlassCard } from './components/ui/GlassCard';
 import { HelpBox } from './components/ui/HelpBox';
@@ -68,6 +69,8 @@ function App() {
                   <GlassCard className="p-8">
                     <About />
                   </GlassCard>
+                ) : currentMode.isCustom ? (
+                  <ImageStacker />
                 ) : (
                   <GlassCard className="p-8">
                     <PromptForm 
@@ -84,7 +87,7 @@ function App() {
             </AnimatePresence>
           </div>
 
-          {!currentMode.isAbout && (
+          {!currentMode.isAbout && !currentMode.isCustom && (
             <div className="preview-column">
               <PromptPreview 
                 prompt={generatedPrompt} 

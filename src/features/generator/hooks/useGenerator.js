@@ -63,7 +63,7 @@ export const useGenerator = (initialMode = 'video-new') => {
   };
 
   const generatedPrompt = useMemo(() => {
-    if (currentMode.isAbout || !currentMode.formula) return '';
+    if (currentMode.isAbout || !currentMode.formula || !currentMode.fields) return '';
     
     const displayValues = {};
     currentMode.fields.forEach(field => {

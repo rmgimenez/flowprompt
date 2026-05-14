@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { 
   Play, Image, Camera, Sparkles, Info, Wand2, 
-  History, Star, LayoutGrid, Copy, RotateCcw, Check
+  History, Star, LayoutGrid, Copy, RotateCcw, Check,
+  Layers
 } from 'lucide-react';
 import { clsx } from 'clsx';
 import styles from './Sidebar.module.css';
@@ -60,6 +61,7 @@ const Sidebar = ({
     { id: 'video-from-img', label: 'Vídeo de Imagem', icon: Image },
     { id: 'photo-new', label: 'Foto Nova', icon: Camera },
     { id: 'photo-transform', label: 'Transformar Foto', icon: Sparkles },
+    { id: 'image-stacker', label: 'Empilhador Pinterest', icon: Layers },
     { id: 'divider', isDivider: true },
     { id: 'about', label: 'Sobre a Ferramenta', icon: Info },
   ];

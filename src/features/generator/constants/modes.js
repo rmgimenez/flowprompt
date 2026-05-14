@@ -128,6 +128,13 @@ export const MODES = {
       }
     ]
   },
+  'image-stacker': {
+    id: 'image-stacker',
+    title: 'Empilhador Pinterest',
+    desc: 'Crie pins verticais longos juntando várias fotos em uma só.',
+    helpText: 'Arraste as fotos para mudar a ordem. Recomendamos até 10 fotos para melhor qualidade no Pinterest.',
+    isCustom: true
+  },
   'about': {
     id: 'about',
     title: 'Sobre a Ferramenta',
