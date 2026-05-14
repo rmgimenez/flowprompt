@@ -1,8 +1,27 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import styles from './PromptForm.module.css';
 import { clsx } from 'clsx';
 
 const PromptForm = ({ fields, values, onUpdate, onAddSuggestion }) => {
+  // Memoize random suggestions so they don't change while typing
+  const displaySuggestions = useMemo(() => {
+    const map = {};
+    fields.forEach(field => {
+      if (field.suggestions) {
+        if (field.type !== 'textarea') {
+          // Pick 3 random suggestions for datalist fields
+          map[field.id] = [...field.suggestions]
+            .sort(() => 0.5 - Math.random())
+            .slice(0, 3);
+        } else {
+          // Show all for textareas (or we could limit them too, but instruction specifies datalist fields)
+          map[field.id] = field.suggestions;
+        }
+      }
+    });
+    return map;
+  }, [fields]);
+
   return (
     <form className={styles.form} onSubmit={(e) => e.preventDefault()}>
       {fields.map((field) => (
@@ -36,7 +55,7 @@ const PromptForm = ({ fields, values, onUpdate, onAddSuggestion }) => {
               />
               {field.suggestions && (
                 <datalist id={`list-${field.id}`}>
-                  {field.suggestions.map((sug) => (
+                  {(displaySuggestions[field.id] || field.suggestions).map((sug) => (
                     <option key={sug} value={sug} />
                   ))}
                 </datalist>
@@ -46,7 +65,7 @@ const PromptForm = ({ fields, values, onUpdate, onAddSuggestion }) => {
 
           {field.suggestions && (
             <div className={styles.suggestions}>
-              {field.suggestions.map((sug) => (
+              {(displaySuggestions[field.id] || field.suggestions).map((sug) => (
                 <button
                   key={sug}
                   type="button"
