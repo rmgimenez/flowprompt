@@ -1,0 +1,92 @@
+.previewCard {
+  padding: 1.5rem;
+  position: sticky;
+  top: 2rem;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #fff;
+  margin: 0;
+}
+
+.copyBtn, .copyBtnSuccess {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: 100px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: inherit;
+  border: none;
+}
+
+.copyBtn {
+  background: #3d5afe;
+  color: #fff;
+}
+
+.copyBtn:hover:not(:disabled) {
+  background: #2a40c7;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(61, 90, 254, 0.3);
+}
+
+.copyBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  filter: grayscale(1);
+}
+
+.copyBtnSuccess {
+  background: #00c853;
+  color: #fff;
+}
+
+.promptArea {
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(0, 229, 255, 0.1);
+  border-radius: 16px;
+  padding: 1.25rem;
+  min-height: 120px;
+  display: flex;
+  box-shadow: inset 0 0 20px rgba(0, 229, 255, 0.05);
+}
+
+.promptText {
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  font-size: 0.9rem;
+  color: #00e5ff;
+  line-height: 1.5;
+  word-break: break-word;
+  width: 100%;
+}
+
+.footer {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.infoIcon {
+  color: rgba(255, 255, 255, 0.3);
+  margin-top: 2px;
+}
+
+.tip {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.4);
+  margin: 0;
+}
