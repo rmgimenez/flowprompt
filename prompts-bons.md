@@ -23,3 +23,25 @@ A high-resolution, professional-grade photograph of Samurai [ANIMAL] who is merg
 ## Animal assustado na cozinha
 
 A funny and expressive [ANIMAL] wearing a tall professional white chef's hat and a tiny white apron, standing behind a counter in a high-end restaurant kitchen. This subject has a shocked and panicked facial expression with wide eyes as a giant cloud of white flour explodes in the air, covering its face. Setting: A professional gourmet kitchen with stainless steel counters, miniature kitchen utensils, and fresh scattered vegetables. Cinematography: Action freeze-frame, macro shot focusing on the flour particles and the character's detailed skin or fur textures. Lighting: Bright, warm professional kitchen lighting with steam reflections and a slight lens flare. Technical Fidelity: Masterpiece, hyper-realistic, 8k resolution, cinematic composition, vertical 9:16 aspect ratio.
+
+## Animais Nacionais Estilo Pixar (Coleção Viral)
+
+### Exemplo: Onça-Pintada (Brasil)
+A cute baby Jaguar (Onça-Pintada) with large expressive eyes and heart-shaped spots, wearing a tiny Brazil flag bandana, playing with a miniature soccer ball. **The image features bold 3D typography at the bottom displaying the country name "BRASIL" in a friendly Pixar-style font.** Setting: A lush, sun-drenched Amazon rainforest clearing with tropical flowers. Cinematography: Macro 3D animation style, Pixar aesthetic, shallow depth of field. Lighting: Warm dappled sunlight filtering through leaves. Technical Fidelity: Masterpiece, 8k, hyper-detailed fur textures, vibrant colors, vertical 9:16.
+
+**Por que este prompt é bom?**
+1. **Conexão Emocional Imediata:** O estilo "Baby Animal" com olhos grandes (estilo Pixar/Disney) gera alta retenção e compartilhamento (fator "fofura").
+2. **Identidade Cultural e Texto Local:** O uso de acessórios e o nome do país escrito em **Português (BRASIL)** cria identificação direta e orgulho nacional, incentivando comentários.
+3. **Fórmula Técnica Rígida:** Segue a estrutura [Subject] + [Action] + [Setting] + [Typography] + [Cinematography] + [Lighting] + [Quality].
+4. **Otimização para TikTok:** Formato vertical 9:16 e iluminação cinematográfica que se destaca no scroll infinito.
+
+### Música
+
+Use uma trilha sonora que comece calma e "mágica" (estilo introdução da Disney) e mude para algo mais rítmico conforme os animais aparecem.
+
+### Descrição do vídeo para o Tik Tok
+
+Duvido você escolher apenas um! 😱
+Os animais nacionais de cada país se fossem bebês da Pixar. O final é o melhor! 🐯🇦🇺🇧🇷
+Marca alguém que precisa ver essa fofura hoje! 💖
+#aiart #curiosidades #paises #fofura #animais #shibainu #brasil #midjourney #aigenerated
