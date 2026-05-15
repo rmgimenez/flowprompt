@@ -133,6 +133,12 @@ O projeto está configurado para deploy contínuo na **Vercel**.
 4. Envie para o GitHub (`git push origin feature/nova-funcionalidade`).
 5. Abra um **Pull Request**.
 
+## Links importantes e diversos
+
+- [OpenRouter Multimedia Explorer](https://multimedia-explorer.openrouter.ai/): gerador de imagens e vídeos via api do openrouter. 
+- [Promptu AI](https://promptu.ai/): site para gerar prompts para IA
+- [OpenRouter](https://openrouter.ai/): agregador de APIs de IA
+
 ---
 
 **Autor:** Ricardo Moura Gimenez  
