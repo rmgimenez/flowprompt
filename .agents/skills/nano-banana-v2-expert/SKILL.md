@@ -24,11 +24,12 @@ Before generating any prompt, evaluate if the user's input is sufficient. If any
 ### 3. Collection Generation
 If the user wants a **Collection**, generate a set of prompts (3-10) that share a **Consistent Visual Language (CVL)**.
 - Maintain the same *artistic style*, *lighting*, and *character features* across all prompts.
+- **Typography & Text Elements:** If images contain text (e.g., city names, states), explicitly define the **exact font style, weight, color, and positioning** in every prompt to ensure they are identical across the collection.
 - Vary the *angles*, *actions*, and *backgrounds* to create a narrative or a cohesive set.
 
 ## Prompting Formula (V2)
 For Nano Banana 2, use this expanded technical structure:
-`[Subject Description] + [Action/Pose] + [Setting/Environment Details] + [Cinematography & Camera Lens] + [Lighting & Atmosphere] + [Technical Fidelity & Style Tokens]`
+`[Subject Description] + [Action/Pose] + [Setting/Environment Details] + [Typography/Text Details (if any)] + [Cinematography & Camera Lens] + [Lighting & Atmosphere] + [Technical Fidelity & Style Tokens]`
 
 ## Usage Workflow
 1. **Request:** Receive user intent (e.g., "Quero fotos de um gato futurista").
