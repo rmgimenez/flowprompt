@@ -49,3 +49,26 @@ Marca alguém que precisa ver essa fofura hoje! 💖
 ## Pôster de filmes no estilo do filme Parasita (Parasite)
 
 A movie poster for [nome_do_filme], inspired by the aesthetic of Bong Joon-ho's 'Parasite'. The composition features a group of characters standing in a modern, minimalist architectural setting with large glass windows and a lush green garden in the background. Key feature: Each character has a solid, thin rectangular bar covering their eyes (white bars for some, black for others). The lighting is natural but eerie, with sharp shadows. High-end cinematic photography, surreal atmosphere, professional color grading. Minimalist typography at the bottom.
+
+## Estilo Wes Anderson (Coleção Viral - Cinema)
+
+
+Este estilo é focado em simetria perfeita e cores pastéis, criando uma estética "satisfatória" e altamente compartilhável.
+
+### Fórmula Base (Prompt Técnico)
+`Wes Anderson style, [Subject] + [Action/Pose], symmetrical composition, centered subject, pastel color palette (Pink, Mustard Yellow, Pale Blue, Mint Green), vintage aesthetic, quirky atmosphere, 8k, cinematic photography, flat lighting, highly detailed, vertical 9:16 aspect ratio.`
+
+### Exemplo: Heróis e Vilões
+**Subject:** Batman / Joker / Thanos
+**Action:** Sitting on a velvet chair / Holding a pink umbrella / Watering a tiny flower
+**Setting:** Symmetrical library / French garden / Greenhouse with pastel glass
+
+### Por que funciona?
+1. **Satisfação Visual:** A simetria gera uma sensação de ordem e prazer visual (oddly satisfying).
+2. **Contraste Criativo:** Colocar personagens "sérios" ou "sombrios" em cenários fofos e coloridos gera humor e curiosidade.
+3. **Identidade Estética Forte:** É um estilo instantaneamente reconhecível por quem gosta de cinema.
+
+### Dicas de Edição para TikTok
+- **Trilha:** Músicas instrumentais rítmicas ou folk francês (ex: Alexandre Desplat - "Obituary").
+- **Cortes:** Cortes secos e rápidos no ritmo da batida, mantendo o objeto sempre centralizado.
+
