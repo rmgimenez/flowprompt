@@ -45,3 +45,7 @@ Duvido você escolher apenas um! 😱
 Os animais nacionais de cada país se fossem bebês da Pixar. O final é o melhor! 🐯🇦🇺🇧🇷
 Marca alguém que precisa ver essa fofura hoje! 💖
 #aiart #curiosidades #paises #fofura #animais #shibainu #brasil #midjourney #aigenerated
+
+## Pôster de filmes no estilo do filme Parasita (Parasite)
+
+A movie poster for [nome_do_filme], inspired by the aesthetic of Bong Joon-ho's 'Parasite'. The composition features a group of characters standing in a modern, minimalist architectural setting with large glass windows and a lush green garden in the background. Key feature: Each character has a solid, thin rectangular bar covering their eyes (white bars for some, black for others). The lighting is natural but eerie, with sharp shadows. High-end cinematic photography, surreal atmosphere, professional color grading. Minimalist typography at the bottom.
