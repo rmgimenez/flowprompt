@@ -72,3 +72,25 @@ Este estilo é focado em simetria perfeita e cores pastéis, criando uma estéti
 - **Trilha:** Músicas instrumentais rítmicas ou folk francês (ex: Alexandre Desplat - "Obituary").
 - **Cortes:** Cortes secos e rápidos no ritmo da batida, mantendo o objeto sempre centralizado.
 
+## Profissões Brasileiras: Dark Souls Edition (Autoridade & Viral)
+
+Este estilo foca no contraste extremo entre o cotidiano simples do trabalhador brasileiro e a estética épica e sombria de jogos como Dark Souls/Elden Ring. É ideal para construir autoridade técnica.
+
+### Por que funciona?
+1. **Contraste Criativo:** Transforma o comum em algo lendário, gerando o fator "Uau".
+2. **Identidade Cultural:** Toca no orgulho e na rotina do brasileiro, incentivando comentários e marcações.
+3. **Typography Integrada:** O uso de nomes diretamente na imagem facilita a compreensão rápida no scroll do TikTok.
+
+### Fórmula Base (Prompt Técnico)
+`[Subject] boss inspired by [Brazilian Profession], [Epic Action/Pose], [Legendary Gear/Armor], [Atmospheric Setting], [Cinematography], [Lighting], **The image features bold ancient gothic typography at the bottom displaying "[NAME]" in a [Material] texture.**, 8k resolution, FromSoftware aesthetic, vertical 9:16.`
+
+### Exemplo Mestre: O Motoboy
+**Prompt:**
+`A legendary dark fantasy knight inspired by a Brazilian motorcycle courier, riding a monstrous mechanical iron horse bike, wearing tattered black leather armor with neon green reflective strips, carrying a giant rectangular metal pizza box on his back like a coffin shield, rain-soaked asphalt setting at night with flickering city lights. **The image features bold ancient gothic typography at the bottom displaying "O MOTOBOY" in a weathered metallic texture.** Cinematic wide shot, low angle, hyper-detailed textures, glowing blue visor, smoke and exhaust fumes, FromSoftware aesthetic, unreal engine 5 render, 8k resolution, 9:16.`
+
+### Dicas de Viralização (TikTok/Reels)
+- **Trilha:** Use temas épicos de chefões de jogos ou versões "Dark" de músicas brasileiras conhecidas.
+- **Hook:** Comece com um close-up extremo em um detalhe (como o visor do capacete ou o fogo do churrasco) antes de revelar o personagem inteiro.
+- **Legenda de Autoridade:** Explique que você usou conceitos de *Chiaroscuro* e *Dark Fantasy* para elevar ícones da cultura nacional.
+
+
