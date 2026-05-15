@@ -17,11 +17,89 @@ export const MODES = {
     id: 'video-from-img',
     title: 'Vídeo de Imagem (Veo)',
     desc: 'Dê vida a uma imagem estática com movimento e som.',
-    helpText: 'Dê vida às suas fotos! Descreva o que deve se mover na cena e qual o tipo de movimento de câmera desejado. Dica: descrever sons (SFX) ajuda o modelo a criar uma atmosfera mais rica.',
-    formula: (vals) => `Using the provided high-quality base image as a foundation, initiate a cinematic animation sequence where the camera performs a ${vals.motion_sound}. The central action within the frame focuses on ${vals.action}, ensuring smooth temporal consistency and rich audio-visual synchronization.`,
+    helpText: 'Dê vida às suas fotos! Descreva o que deve se mover na cena, o movimento de câmera e os efeitos sonoros. Dica: você pode escolher "Sem Som" se desejar apenas a animação visual.',
+    formula: (vals) => `Using the provided high-quality base image as a foundation, initiate a cinematic animation sequence where the camera performs a ${vals.camera_motion || 'subtle movement'}. The central action within the frame focuses on ${vals.action || 'natural movement'}${vals.sound_effects && vals.sound_effects.toLowerCase() !== 'no audio' ? `. The scene is enriched with ${vals.sound_effects}` : '. This is a silent video sequence with no audio'}, ensuring smooth temporal consistency and rich audio-visual synchronization.`,
     fields: [
-      { id: 'motion_sound', label: 'Movimento & Som', hint: 'Câmera e efeitos sonoros', placeholder: 'Ex: movimento de câmera', type: 'text', suggestions: [{ label: 'Panorâmica Lenta Direita', value: 'Slow Pan Right' }, { label: 'Dolly Zoom', value: 'Dolly Zoom' }, { label: 'Som de Trovão', value: 'SFX: Thunder cracks' }, { label: 'Zoom Suave', value: 'Smooth Zoom In' }, { label: 'Inclinação para Cima', value: 'Tilt Up' }, { label: 'Som de Chuva', value: 'SFX: Rain falling' }, { label: 'Vento Uivante', value: 'SFX: Wind howling' }, { label: 'Trilha Épica', value: 'SFX: Epic cinematic music' }, { label: 'Órbita Circular', value: 'Circular Orbit around subject' }, { label: 'Zoom Rápido', value: 'Fast Zoom Out' }, { label: 'Ruído Mecânico', value: 'SFX: Mechanical whirring' }, { label: 'Gritos de Multidão', value: 'SFX: Distant crowd cheering' }, { label: 'Bipe Digital', value: 'SFX: Electronic beeps' }, { label: 'Batida de Coração', value: 'SFX: Heartbeat thumping' }, { label: 'Som Espacial', value: 'SFX: Deep space ambience' }, { label: 'Vidro Quebrando', value: 'SFX: Shifting glass sounds' }] },
-      { id: 'action', label: 'Ação Adicional', hint: 'O que deve se mover na imagem', placeholder: 'Ex: nuvens se movem', type: 'textarea', suggestions: [{ label: 'cabelo ao vento', value: 'hair blowing in the wind' }, { label: 'mudança de luz', value: 'cinematic lighting shift' }, { label: 'água escorrendo', value: 'water flowing' }, { label: 'nuvens passando', value: 'clouds passing' }, { label: 'olhos piscando', value: 'eyes blinking' }, { label: 'fumaça subindo', value: 'smoke rising' }, { label: 'neve caindo', value: 'snow falling' }, { label: 'fogo queimando', value: 'fire burning' }, { label: 'brilho de energia', value: 'glowing with energy' }, { label: 'dissolvendo em pixels', value: 'dissolving into digital pixels' }, { label: 'sombras se movendo', value: 'shadows stretching and moving' }, { label: 'flores desabrochando', value: 'flowers blooming quickly' }, { label: 'roupas balançando', value: 'clothing flowing in the breeze' }, { label: 'olhos mudando de cor', value: 'eyes shifting colors' }, { label: 'objetos flutuando', value: 'objects starting to levitate' }, { label: 'textura mudando', value: 'surface texture transforming' }] }
+      { 
+        id: 'camera_motion', 
+        label: 'Movimento de Câmera', 
+        hint: 'Direção e tipo de movimento', 
+        placeholder: 'Ex: Zoom suave', 
+        type: 'text', 
+        suggestions: [
+          { label: 'Panorâmica Direita', value: 'Slow Pan Right' }, 
+          { label: 'Panorâmica Esquerda', value: 'Slow Pan Left' }, 
+          { label: 'Dolly Zoom', value: 'Dolly Zoom' }, 
+          { label: 'Zoom Suave In', value: 'Smooth Zoom In' }, 
+          { label: 'Zoom Suave Out', value: 'Smooth Zoom Out' }, 
+          { label: 'Inclinação para Cima', value: 'Tilt Up' }, 
+          { label: 'Inclinação para Baixo', value: 'Tilt Down' }, 
+          { label: 'Órbita Circular', value: 'Circular Orbit around subject' }, 
+          { label: 'Câmera Estática', value: 'Static camera' }, 
+          { label: 'Zoom Rápido', value: 'Fast Zoom' },
+          { label: 'Giro em Espiral', value: 'Spiral rotation' },
+          { label: 'Shake Dramático', value: 'Dramatic camera shake' },
+          { label: 'Aproximação Macro', value: 'Macro approach' },
+          { label: 'Crane Shot', value: 'Craning up/down' },
+          { label: 'Câmera na Mão', value: 'Handheld jitter' },
+          { label: 'Foco Alternado', value: 'Rack focus shift' },
+          { label: 'Avanço Rápido', value: 'Fast forward push-in' },
+          { label: 'Voo Rasante', value: 'Low flying drone shot' }
+        ] 
+      },
+      { 
+        id: 'sound_effects', 
+        label: 'Efeitos Sonoros (SFX)', 
+        hint: 'Sons e ambiente', 
+        placeholder: 'Ex: Som de vento', 
+        type: 'text', 
+        suggestions: [
+          { label: 'Sem Som', value: 'no audio' }, 
+          { label: 'Som de Trovão', value: 'SFX: Thunder cracks' }, 
+          { label: 'Som de Chuva', value: 'SFX: Rain falling' }, 
+          { label: 'Vento Uivante', value: 'SFX: Wind howling' }, 
+          { label: 'Trilha Épica', value: 'SFX: Epic cinematic music' }, 
+          { label: 'Impacto Cinematográfico', value: 'SFX: Cinematic impact hit' },
+          { label: 'Ruído Mecânico', value: 'SFX: Mechanical whirring' }, 
+          { label: 'Gritos de Multidão', value: 'SFX: Distant crowd cheering' }, 
+          { label: 'Bipe Digital', value: 'SFX: Electronic beeps' }, 
+          { label: 'Batida de Coração', value: 'SFX: Heartbeat thumping' }, 
+          { label: 'Som Espacial', value: 'SFX: Deep space ambience' }, 
+          { label: 'Vidro Quebrando', value: 'SFX: Shifting glass sounds' },
+          { label: 'Fogo Crepitante', value: 'SFX: Fire crackling' },
+          { label: 'Água Corrente', value: 'SFX: Running water' },
+          { label: 'Sussurros', value: 'SFX: Ethereal whispers' },
+          { label: 'Natureza (Pássaros)', value: 'SFX: Birds and forest ambiance' },
+          { label: 'Explosão Abafada', value: 'SFX: Muffled explosion' },
+          { label: 'Sintetizador Retro', value: 'SFX: Retro synth pad' },
+          { label: 'Som de Passos', value: 'SFX: Heavy footsteps' }
+        ] 
+      },
+      { 
+        id: 'action', 
+        label: 'Ação Adicional', 
+        hint: 'O que deve se mover na imagem', 
+        placeholder: 'Ex: nuvens se movem', 
+        type: 'textarea', 
+        suggestions: [
+          { label: 'cabelo ao vento', value: 'hair blowing in the wind' }, 
+          { label: 'mudança de luz', value: 'cinematic lighting shift' }, 
+          { label: 'água escorrendo', value: 'water flowing' }, 
+          { label: 'nuvens passando', value: 'clouds passing' }, 
+          { label: 'olhos piscando', value: 'eyes blinking' }, 
+          { label: 'fumaça subindo', value: 'smoke rising' }, 
+          { label: 'neve caindo', value: 'snow falling' }, 
+          { label: 'fogo queimando', value: 'fire burning' }, 
+          { label: 'brilho de energia', value: 'glowing with energy' }, 
+          { label: 'dissolvendo em pixels', value: 'dissolving into digital pixels' }, 
+          { label: 'sombras se movendo', value: 'shadows stretching and moving' }, 
+          { label: 'flores desabrochando', value: 'flowers blooming quickly' }, 
+          { label: 'roupas balançando', value: 'clothing flowing in the breeze' }, 
+          { label: 'olhos mudando de cor', value: 'eyes shifting colors' }, 
+          { label: 'objetos flutuando', value: 'objects starting to levitate' }, 
+          { label: 'textura mudando', value: 'surface texture transforming' }
+        ] 
+      }
     ]
   },
   'photo-new': {
