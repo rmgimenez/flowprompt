@@ -303,29 +303,35 @@ export const MODES = {
   },
   'video-from-frames': {
     id: 'video-from-frames',
-    title: 'Interpolação de Imagens (Veo)',
-    desc: 'Crie uma transição fluida entre duas imagens (Start e End Frame).',
-    helpText: 'O segredo da fluidez é descrever o que acontece NO MEIO dos dois frames. Use o campo "Interação com Objetos" para objetos que mudam de lugar e "Ação dos Personagens" para o movimento do corpo.',
+    title: 'Interpolação Viral (TikTok/Reels)',
+    desc: 'Transforme dois frames em um vídeo de alta retenção com física e dublagem.',
+    helpText: 'Foque nos primeiros 2 segundos (O Gancho) e na trajetória dos objetos para evitar glitches e maximizar o engajamento.',
     formula: (vals) => {
-      let prompt = `Using the start frame and end frame as structural guides, animate a seamless and fluid transition.`;
+      let prompt = `Using the start frame and end frame as structural guides, animate a high-fidelity, seamless transition optimized for vertical social media.`;
       
-      if (vals.object_interaction && vals.object_interaction.trim() !== '') {
-        prompt += ` Key transition event: ${vals.object_interaction}.`;
+      if (vals.visual_quality && vals.visual_quality.trim() !== '') {
+        prompt += ` Technical quality: ${vals.visual_quality}.`;
+      } else {
+        prompt += ` Technical quality: hyper-realistic, 8k resolution, cinematic lighting, masterfully executed.`;
       }
 
-      if (vals.character_movement && vals.character_movement.trim() !== '') {
-        prompt += ` Character actions during transition: ${vals.character_movement}.`;
+      if (vals.object_interaction && vals.object_interaction.trim() !== '') {
+        prompt += ` Key transition event and magic interaction: ${vals.object_interaction}.`;
+      }
+
+      if (vals.initial_hook && vals.initial_hook.trim() !== '') {
+        prompt += ` Main action and retention hook: ${vals.initial_hook}.`;
       } else {
         prompt += ` The characters perform a natural and fluid motion to connect the two poses.`;
       }
 
-      prompt += ` The environment and background remain perfectly consistent with the provided frames.`;
+      prompt += ` The environment remains perfectly consistent with the provided frames.`;
 
       if (vals.general_notes && vals.general_notes.trim() !== '') {
-        prompt += ` Tone and style: ${vals.general_notes}.`;
+        prompt += ` Tone and atmosphere: ${vals.general_notes}.`;
       }
 
-      prompt += ` Camera movement: ${vals.camera_motion || 'Smooth cinematic movement'}.`;
+      prompt += ` Dynamic camera: ${vals.camera_motion || 'Smooth cinematic movement'}.`;
 
       if (vals.characters_definition && vals.characters_definition.trim() !== '') {
         prompt += ` Visual identity details: ${vals.characters_definition}.`;
@@ -339,97 +345,105 @@ export const MODES = {
         prompt += ` Dubbing: The characters speak the following dialogue with perfect lip-sync in Brazilian Portuguese (pt-BR): "${vals.dialogue}". Use the format [character]: [speech].`;
       }
       
-      prompt += ` Ensure temporal consistency and avoid sudden cuts or teleports.`;
+      prompt += ` Ensure extreme temporal consistency, fluid physics, and no sudden cuts.`;
       
       return prompt;
     },
     fields: [
       { 
         id: 'characters_definition', 
-        label: 'Definição dos Personagens', 
-        hint: 'Formato: [nome][descrição][tom de voz]', 
-        placeholder: 'Ex: [morango][personagem morango][feminino]', 
+        label: 'Definição dos Personagens (Consistência)', 
+        hint: 'Mantenha igual em toda a sua série de vídeos', 
+        placeholder: 'Ex: [morango][personagem morango][voz doce]', 
         type: 'textarea', 
         suggestions: [
           { label: 'Exemplo Frutas', value: '[morango][personagem vermelho com cara de morango][voz doce, aguda e amigável]\n[abacaxi][personagem amarelo com cara de abacaxi][voz calma, levemente encorpada e relaxada]\n[uva][personagem roxo com cara de uva][voz muito aguda, agitada e estridente]' }
         ] 
       },
       { 
-        id: 'object_interaction', 
-        label: 'Interação com Objetos (Importante)', 
-        hint: 'Descreva objetos que mudam de lugar (evita "pulos")', 
-        placeholder: 'Ex: a estrela do mar pula da areia para o rosto da morango', 
-        type: 'textarea', 
+        id: 'visual_quality', 
+        label: 'Qualidade Visual (Tokens de Ouro)', 
+        hint: 'Palavras que "chamam" a qualidade do Nano Banana 2', 
+        placeholder: 'Ex: Unreal Engine 5 render, 8k, photorealistic', 
+        type: 'text', 
         suggestions: [
-          { label: 'Objeto Saltando', value: 'the object on the ground suddenly jumps and attaches to the character' },
-          { label: 'Objeto Sendo Pego', value: 'the character reaches down and picks up the object' },
-          { label: 'Objeto Atirado', value: 'an object flies from off-screen into the character\'s hands' }
+          { label: 'Cinema 4D', value: 'hyper-realistic, 8k, cinematic lighting, unreal engine 5 style' },
+          { label: 'Aesthetic/Vibe', value: 'soft lighting, film grain, aesthetic pastel palette' },
+          { label: 'Estilo Pixar', value: 'highly detailed 3D animation, vibrant colors, disney style' }
         ] 
       },
       { 
-        id: 'character_movement', 
-        label: 'Ação dos Personagens', 
-        hint: 'O que eles fazem (ex: rindo, correndo)', 
-        placeholder: 'Ex: os personagens começam a rir muito da situação', 
+        id: 'object_interaction', 
+        label: 'Momento Mágico (Objeto)', 
+        hint: 'Descreva a trajetória de objetos que mudam de lugar', 
+        placeholder: 'Ex: a estrela do mar salta da areia para o rosto da morango', 
         type: 'textarea', 
         suggestions: [
-          { label: 'Rindo e Apontando', value: 'bursting into laughter and pointing at each other' },
-          { label: 'Caminhando', value: 'walking smoothly while maintaining eye contact' },
-          { label: 'Surpreso/Assustado', value: 'reacting with shock and wide eyes' }
+          { label: 'Salto/Voo', value: 'the object suddenly jumps up and attaches to the character' },
+          { label: 'Transformação', value: 'the object organically morphs into something else' },
+          { label: 'Interação Física', value: 'the character picks up and interacts with the object' }
+        ] 
+      },
+      { 
+        id: 'initial_hook', 
+        label: 'Gancho e Ação Inicial', 
+        hint: 'O que acontece nos primeiros 2 segundos para prender a atenção', 
+        placeholder: 'Ex: os personagens começam a rir e apontar para a câmera', 
+        type: 'textarea', 
+        suggestions: [
+          { label: 'Surpresa', value: 'reacting with shock and wide eyes directly at the camera' },
+          { label: 'Movimento Rápido', value: 'bursting into energetic movement and laughter' },
+          { label: 'Encanto', value: 'waving happily with high-energy expression' }
         ] 
       },
       { 
         id: 'general_notes', 
-        label: 'Tom / Observações Gerais', 
-        hint: 'Estilo ou clima do vídeo', 
-        placeholder: 'Ex: vídeo de humor, estilo épico', 
+        label: 'Tom e Atmosfera', 
+        hint: 'Humor, suspense, épico...', 
+        placeholder: 'Ex: vídeo de humor para TikTok', 
         type: 'text', 
         suggestions: [
-          { label: 'Humor', value: 'funny comedic skit' },
-          { label: 'Cinematográfico', value: 'cinematic and dramatic' },
-          { label: 'Ação Rápida', value: 'fast-paced and energetic' }
+          { label: 'Humor TikTok', value: 'funny comedic skit for social media' },
+          { label: 'Vibe Viral', value: 'trendy, colorful, and high-energy' },
+          { label: 'Estilo Série', value: 'consistent episode style, engaging and friendly' }
         ] 
       },
       { 
         id: 'camera_motion', 
-        label: 'Movimento de Câmera', 
-        hint: 'Direção do movimento', 
-        placeholder: 'Ex: Zoom suave', 
+        label: 'Câmera Dinâmica (Retenção)', 
+        hint: 'Movimentos que "prendem" o olhar no feed', 
+        placeholder: 'Ex: Dolly Zoom', 
         type: 'text', 
         suggestions: [
-          { label: 'Dolly Zoom', value: 'Dolly Zoom' }, 
-          { label: 'Zoom Suave In', value: 'Smooth Zoom In' }, 
-          { label: 'Zoom Suave Out', value: 'Smooth Zoom Out' }, 
-          { label: 'Órbita 360°', value: '360-degree circular orbit' }
+          { label: 'Dolly Zoom', value: 'Dolly Zoom (Vertigo effect)' }, 
+          { label: 'Órbita 360°', value: '360-degree circular orbit around the subjects' },
+          { label: 'Zoom de Impacto', value: 'Fast and sudden Zoom In to the face' }, 
+          { label: 'Mão Livre (Viral)', value: 'Dynamic handheld camera movement' }
         ] 
       },
       { 
         id: 'sound_effects', 
-        label: 'Efeitos Sonoros (SFX)', 
-        placeholder: 'Ex: Som de vento', 
+        label: 'Sons e ASMR', 
+        placeholder: 'Ex: Som de risadas e ambiente', 
         type: 'text', 
         suggestions: [
-          { label: 'Sem Som', value: 'no audio' }, 
-          { label: 'Som de Praia', value: 'SFX: Soft waves and beach ambiance' },
-          { label: 'Risadas', value: 'SFX: Group of people laughing loudly' },
-          { label: 'Impacto Épico', value: 'SFX: Cinematic impact hit' }
+          { label: 'Risadas em Grupo', value: 'SFX: Group of people laughing loudly' },
+          { label: 'Ambiente Praia', value: 'SFX: Soft waves and beach ambiance' },
+          { label: 'Efeito "Boing"', value: 'SFX: Cartoon jumping sound effect' }
         ] 
       },
       { 
         id: 'dialogue', 
-        label: 'Falas dos Personagens (Dublagem)', 
-        hint: 'Use o formato [personagem]: [fala]', 
-        placeholder: 'Ex: [morango]: [oi, eu sou a morango]', 
-        type: 'textarea', 
-        suggestions: [
-          { label: 'Exemplo Morango', value: '[morango]: [oi, eu sou a morango]' }
-        ] 
+        label: 'Falas (Dublagem pt-BR)', 
+        hint: 'Use [personagem]: [fala]', 
+        placeholder: 'Ex: [uva]: [olha só isso!]', 
+        type: 'textarea'
       },
       {
         id: 'help_info',
-        label: 'Dicas de Uso',
+        label: '🚀 Dicas Estratégicas para Viralizar',
         type: 'info',
-        content: '💡 Como usar a Interpolação:\n\n1. Descreva o trajeto dos objetos: Se algo muda de posição (como a estrela do mar), explique como ela se moveu no campo "Interação com Objetos".\n\n2. Foque na ação: Use o campo "Ação dos Personagens" para descrever reações emocionais e movimentos do corpo que conectam os dois frames.\n\n3. Consistência: O sistema já está configurado para manter o cenário original das suas fotos, focando 100% na fluidez do movimento.'
+        content: '🔥 REGRA DOS 2 SEGUNDOS: O "Gancho Inicial" deve ter movimento. Comece com uma risada, um pulo ou a câmera se aproximando rápido.\n\n✨ MOMENTOS MÁGICOS: Vídeos onde objetos se movem sozinhos (como sua estrela do mar) geram muita curiosidade. Descreva o trajeto completo no campo "Momento Mágico".\n\n💎 QUALIDADE NANO BANANA: Sempre use os tokens de "Qualidade Visual". Isso faz a IA usar mais processamento para detalhes de pele, texturas e luz.\n\n📱 FORMATO VERTICAL: Toda a lógica do sistema agora está configurada para preencher a tela do celular com máxima nitidez.'
       }
     ]
   }
