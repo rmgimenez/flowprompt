@@ -367,21 +367,27 @@ export const MODES = {
         placeholder: 'Ex: Unreal Engine 5 render, 8k, photorealistic', 
         type: 'text', 
         suggestions: [
-          { label: 'Cinema 4D', value: 'hyper-realistic, 8k, cinematic lighting, unreal engine 5 style' },
-          { label: 'Aesthetic/Vibe', value: 'soft lighting, film grain, aesthetic pastel palette' },
-          { label: 'Estilo Pixar', value: 'highly detailed 3D animation, vibrant colors, disney style' }
+          { label: 'Unreal Engine 5', value: 'hyper-realistic, 8k, cinematic lighting, unreal engine 5 style, masterfully executed' },
+          { label: 'Studio Ghibli Vibe', value: 'Studio Ghibli art style, lush hand-painted textures, soft natural lighting' },
+          { label: 'Estilo Pixar/Disney', value: 'highly detailed 3D animation, vibrant colors, sub-surface scattering, disney style' },
+          { label: 'Cyberpunk Noir', value: 'neon lighting, rainy atmosphere, high contrast, cinematic noir aesthetic' },
+          { label: 'Hiper-Realismo Têxtil', value: 'extreme focus on fabric textures, skin pores, and micro-details, photorealistic' },
+          { label: 'Anime Moderno', value: 'high-quality modern anime style, dynamic shadows, sharp lines, cinematic composition' }
         ] 
       },
       { 
         id: 'object_interaction', 
         label: 'Momento Mágico (Objeto)', 
         hint: 'Descreva a trajetória de objetos que mudam de lugar', 
-        placeholder: 'Ex: a estrela do mar salta da areia para o rosto da morango', 
+        placeholder: 'Ex: a estrela do mar pula da areia para o rosto da morango', 
         type: 'textarea', 
         suggestions: [
-          { label: 'Salto/Voo', value: 'the object suddenly jumps up and attaches to the character' },
-          { label: 'Transformação', value: 'the object organically morphs into something else' },
-          { label: 'Interação Física', value: 'the character picks up and interacts with the object' }
+          { label: 'Salto/Voo Repentino', value: 'the object on the ground suddenly jumps up and attaches to the character\'s face' },
+          { label: 'Levitação Mística', value: 'the object begins to glow and slowly levitates into the character\'s hands' },
+          { label: 'Teletransporte', value: 'the object disappears in a puff of smoke and reappears in a new position' },
+          { label: 'Fusão Orgânica', value: 'two objects merge together to form a new single item' },
+          { label: 'Ataque de Cócegas', value: 'the object starts moving on its own and tickles the character' },
+          { label: 'Interação de Troca', value: 'the character quickly swaps the object they are holding for something else' }
         ] 
       },
       { 
@@ -391,9 +397,12 @@ export const MODES = {
         placeholder: 'Ex: os personagens começam a rir e apontar para a câmera', 
         type: 'textarea', 
         suggestions: [
-          { label: 'Surpresa', value: 'reacting with shock and wide eyes directly at the camera' },
-          { label: 'Movimento Rápido', value: 'bursting into energetic movement and laughter' },
-          { label: 'Encanto', value: 'waving happily with high-energy expression' }
+          { label: 'Susto/Choque', value: 'reacting with extreme shock, jumping back with wide eyes directly at the camera' },
+          { label: 'Risada Explosiva', value: 'bursting into a fit of uncontrollable laughter and pointing at each other' },
+          { label: 'Quebra da 4ª Parede', value: 'the character looks directly at the camera, winks, and gives a thumbs up' },
+          { label: 'Dança Viral', value: 'performing a quick and trendy dance move with high energy' },
+          { label: 'Mistério/Sussurro', value: 'leaning into the camera and whispering something secret with an intrigued look' },
+          { label: 'Ação de Atirar', value: 'the character throws something directly towards the camera lens' }
         ] 
       },
       { 
@@ -403,9 +412,12 @@ export const MODES = {
         placeholder: 'Ex: vídeo de humor para TikTok', 
         type: 'text', 
         suggestions: [
-          { label: 'Humor TikTok', value: 'funny comedic skit for social media' },
-          { label: 'Vibe Viral', value: 'trendy, colorful, and high-energy' },
-          { label: 'Estilo Série', value: 'consistent episode style, engaging and friendly' }
+          { label: 'Comédia Social', value: 'funny comedic skit for TikTok, lighthearted and energetic' },
+          { label: 'Épico/Grandioso', value: 'epic cinematic atmosphere, dramatic scale, orchestral feel' },
+          { label: 'Suspense/Mistério', value: 'dark, mysterious, and intriguing atmosphere with sharp shadows' },
+          { label: 'Fofo/Aesthetic', value: 'cute, soft, and aesthetic atmosphere, pastel colors, cozy vibes' },
+          { label: 'Futurista/Cyber', value: 'high-tech, futuristic, and high-energy atmosphere with neon accents' },
+          { label: 'Nostálgico/Retrô', value: 'vintage film aesthetic, nostalgic 90s vibe, warm colors' }
         ] 
       },
       { 
@@ -415,10 +427,12 @@ export const MODES = {
         placeholder: 'Ex: Dolly Zoom', 
         type: 'text', 
         suggestions: [
-          { label: 'Dolly Zoom', value: 'Dolly Zoom (Vertigo effect)' }, 
-          { label: 'Órbita 360°', value: '360-degree circular orbit around the subjects' },
-          { label: 'Zoom de Impacto', value: 'Fast and sudden Zoom In to the face' }, 
-          { label: 'Mão Livre (Viral)', value: 'Dynamic handheld camera movement' }
+          { label: 'Dolly Zoom (Vértigo)', value: 'Dolly Zoom effect creating a sense of dramatic realization' }, 
+          { label: 'Órbita Rápida 360°', value: 'Fast 360-degree circular orbit around the characters' },
+          { label: 'Zoom de Impacto', value: 'Fast and sudden "Snap Zoom" into the character\'s expressive face' }, 
+          { label: 'Câmera na Mão (POV)', value: 'Dynamic handheld shaky camera for a realistic documentary feel' },
+          { label: 'Movimento de Drone', value: 'Sweeping cinematic drone-like movement from high to low' },
+          { label: 'Foco Alternado', value: 'Rack focus transition from the background object to the foreground character' }
         ] 
       },
       { 
@@ -427,9 +441,12 @@ export const MODES = {
         placeholder: 'Ex: Som de risadas e ambiente', 
         type: 'text', 
         suggestions: [
-          { label: 'Risadas em Grupo', value: 'SFX: Group of people laughing loudly' },
-          { label: 'Ambiente Praia', value: 'SFX: Soft waves and beach ambiance' },
-          { label: 'Efeito "Boing"', value: 'SFX: Cartoon jumping sound effect' }
+          { label: 'Risadas em Grupo', value: 'SFX: Group of people laughing loudly and hysterically' },
+          { label: 'Som de Magia/Brilho', value: 'SFX: Magical ethereal chiming and sparkling sound' },
+          { label: 'Impacto Cinematográfico', value: 'SFX: Heavy cinematic "THUD" or impact sound' },
+          { label: 'Natureza Imersiva', value: 'SFX: Birds chirping, wind blowing through leaves, very clear audio' },
+          { label: 'Pop/Cartoon', value: 'SFX: Classic cartoon "POP" sound effect' },
+          { label: 'Caminhada (ASMR)', value: 'SFX: Clear footsteps on sand and rustling of fabric' }
         ] 
       },
       { 
@@ -441,9 +458,18 @@ export const MODES = {
       },
       {
         id: 'help_info',
-        label: '🚀 Dicas Estratégicas para Viralizar',
+        label: '🚀 Estratégias e Guia dos Campos',
         type: 'info',
-        content: '🔥 REGRA DOS 2 SEGUNDOS: O "Gancho Inicial" deve ter movimento. Comece com uma risada, um pulo ou a câmera se aproximando rápido.\n\n✨ MOMENTOS MÁGICOS: Vídeos onde objetos se movem sozinhos (como sua estrela do mar) geram muita curiosidade. Descreva o trajeto completo no campo "Momento Mágico".\n\n💎 QUALIDADE NANO BANANA: Sempre use os tokens de "Qualidade Visual". Isso faz a IA usar mais processamento para detalhes de pele, texturas e luz.\n\n📱 FORMATO VERTICAL: Toda a lógica do sistema agora está configurada para preencher a tela do celular com máxima nitidez.'
+        content: `🔥 ESTRATÉGIAS VIRAIS:
+• REGRA DOS 2 SEGUNDOS: O "Gancho Inicial" deve ter movimento. Comece com uma risada, um pulo ou a câmera se aproximando rápido.
+• MOMENTOS MÁGICOS: Vídeos onde objetos se movem sozinhos geram muita curiosidade. Descreva o trajeto completo no campo "Momento Mágico".
+• QUALIDADE NANO BANANA: Sempre use os tokens de "Qualidade Visual". Isso faz a IA usar mais processamento para detalhes.
+
+📝 GUIA RÁPIDO DOS CAMPOS:
+• Personagens: Mantenha este campo idêntico em todos os vídeos para que seu público reconheça sua "marca".
+• Qualidade Visual: Você pode combinar várias sugestões. Ex: "8k, Unreal Engine 5, Pixar Style".
+• Dublagem: O formato [personagem]: [fala] é obrigatório para que a IA saiba exatamente quem está falando e mova a boca correta.
+• Campos Vazios: Não se preocupe em preencher tudo. Se deixar vazio, o sistema usa "Default Inteligentes" para garantir que o vídeo não fique parado.`
       }
     ]
   }
