@@ -14,7 +14,7 @@ const PromptPreview = ({ prompt, onCopy, isFavorite, onToggleFavorite }) => {
     setTimeout(() => setCopied(false), 2000);
   };
 
-  const isPlaceholder = !prompt || prompt.includes('[');
+  const isPlaceholder = !prompt || prompt.includes('<<<');
 
   return (
     <GlassCard className={styles.previewCard}>

@@ -4,13 +4,46 @@ export const MODES = {
     title: 'Vídeo Novo (Veo)',
     desc: 'Gere vídeos cinematográficos a partir de descrições textuais.',
     helpText: 'Para obter os melhores resultados, seja específico sobre o movimento da câmera e a iluminação. Use termos como "cinematic", "slow motion" ou "handheld" para definir o ritmo e a emoção da cena.',
-    formula: (vals) => `A professional, cinematic video sequence shot with ${vals.cinematography}. The focus is on ${vals.subject} as they are ${vals.action}. The setting is a detailed ${vals.context}, carefully composed to highlight the depth of the scene. The visual aesthetic is ${vals.style_ambiance}, rendered in high resolution with realistic textures and fluid motion.`,
+    formula: (vals) => {
+      let prompt = `A professional, cinematic video sequence shot with ${vals.cinematography}. The focus is on ${vals.subject} as they are ${vals.action}. The setting is a detailed ${vals.context}, carefully composed to highlight the depth of the scene. The visual aesthetic is ${vals.style_ambiance}, rendered in high resolution with realistic textures and fluid motion.`;
+      
+      if (vals.characters_definition && vals.characters_definition.trim() !== '') {
+        prompt += ` Character details: ${vals.characters_definition}.`;
+      }
+
+      if (vals.dialogue && vals.dialogue.trim() !== '') {
+        prompt += ` During the sequence, the characters speak the following dialogue using the format [character]: [speech] with perfect lip-sync natively in Brazilian Portuguese (pt-BR): "${vals.dialogue}".`;
+      }
+      
+      return prompt;
+    },
     fields: [
+      { 
+        id: 'characters_definition', 
+        label: 'Definição dos Personagens', 
+        hint: 'Formato: [nome][descrição][tom de voz]', 
+        placeholder: 'Ex: [morango][personagem morango][feminino]', 
+        type: 'textarea', 
+        suggestions: [
+          { label: 'Exemplo Frutas', value: '[morango][personagem morango][feminino]\n[uva][personagem uva][voz grossa]' }
+        ] 
+      },
       { id: 'cinematography', label: 'Cinematografia', hint: 'Ângulo e movimento da câmera', placeholder: 'Ex: Medium shot', type: 'text', suggestions: [{ label: 'Plano Aberto', value: 'Wide Shot' }, { label: 'Close-up', value: 'Close-up' }, { label: 'Visão em 1ª Pessoa', value: 'POV Shot' }, { label: 'Vista Aérea', value: 'Aerial View' }, { label: 'Câmera em Movimento', value: 'Tracking Shot' }, { label: 'Câmera na Mão', value: 'Handheld Camera' }, { label: 'Contra-mergulho', value: 'Low Angle' }, { label: 'Mergulho', value: 'High Angle' }, { label: 'Zoom Lento', value: 'Slow Zoom' }, { label: 'Órbita 360°', value: '360-degree Orbit' }, { label: 'Time-lapse', value: 'Time-lapse' }, { label: 'Câmera Lenta', value: 'Slow Motion' }, { label: 'Macro Extremo', value: 'Extreme Macro' }, { label: 'Plano Sequência', value: 'One-shot Sequence' }, { label: 'Foco Alternado', value: 'Rack Focus' }, { label: 'Plano Holandês', value: 'Dutch Angle' }] },
       { id: 'subject', label: 'Sujeito/Personagem', hint: 'Quem ou o que aparece na cena', placeholder: 'Ex: Um astronauta', type: 'text', suggestions: [{ label: 'Um robô', value: 'A robot' }, { label: 'Uma mulher', value: 'A woman' }, { label: 'Um dragão', value: 'A dragon' }, { label: 'Um samurai', value: 'A samurai' }, { label: 'Um astronauta', value: 'An astronaut' }, { label: 'Um mago', value: 'A wizard' }, { label: 'Uma fênix', value: 'A phoenix' }, { label: 'Um gato cibernético', value: 'A cybernetic cat' }, { label: 'Um carro voador', value: 'A flying car' }, { label: 'Uma criatura mística', value: 'A mystical creature' }, { label: 'Um ferreiro', value: 'A blacksmith' }, { label: 'Uma bailarina', value: 'A ballerina' }, { label: 'Um alienígena', value: 'An alien being' }, { label: 'Um navio pirata', value: 'A pirate ship' }, { label: 'Uma inteligência artificial', value: 'A digital AI avatar' }, { label: 'Um explorador', value: 'A brave explorer' }] },
       { id: 'action', label: 'Ação', hint: 'O que o sujeito está fazendo', placeholder: 'Ex: caminhando', type: 'text', suggestions: [{ label: 'correndo', value: 'running' }, { label: 'dançando', value: 'dancing' }, { label: 'flutuando', value: 'floating' }, { label: 'lutando', value: 'fighting' }, { label: 'explorando ruínas', value: 'exploring ruins' }, { label: 'meditando', value: 'meditating' }, { label: 'desaparecendo', value: 'fading away' }, { label: 'transformando-se', value: 'transforming' }, { label: 'explodindo em luz', value: 'exploding into light' }, { label: 'cozinhando', value: 'cooking with fire' }, { label: 'consertando algo', value: 'repairing a machine' }, { label: 'saltando dimensões', value: 'jumping through dimensions' }, { label: 'tocando um instrumento', value: 'playing a glowing instrument' }, { label: 'manipulando energia', value: 'manipulating raw energy' }, { label: 'derretendo', value: 'melting like liquid metal' }, { label: 'atravessando portais', value: 'walking through a portal' }] },
       { id: 'context', label: 'Contexto/Cenário', hint: 'Onde a cena se passa', placeholder: 'Ex: em uma floresta', type: 'text', suggestions: [{ label: 'em Marte', value: 'on Mars' }, { label: 'cidade cyberpunk', value: 'in a cyberpunk city' }, { label: 'embaixo d\'água', value: 'underwater' }, { label: 'floresta mágica', value: 'in a magical forest' }, { label: 'estação espacial', value: 'in a space station' }, { label: 'castelo medieval', value: 'in a medieval castle' }, { label: 'metrópole flutuante', value: 'in a floating metropolis' }, { label: 'laboratório secreto', value: 'in a secret lab' }, { label: 'dentro de um vulcão', value: 'inside a volcanic landscape' }, { label: 'biblioteca infinita', value: 'in an infinite library' }, { label: 'deserto de cristal', value: 'in a crystal desert' }, { label: 'ruas de Tóquio', value: 'on the streets of neon Tokyo' }, { label: 'jardim flutuante', value: 'in a hanging garden in the sky' }, { label: 'reino de engrenagens', value: 'inside a clockwork kingdom' }, { label: 'caverna de gelo', value: 'in a glowing ice cave' }, { label: 'templo antigo', value: 'in a forgotten ancient temple' }] },
-      { id: 'style_ambiance', label: 'Estilo & Ambiance', hint: 'Iluminação, cores e clima', placeholder: 'Ex: Iluminação cinematográfica', type: 'textarea', suggestions: [{ label: 'Cinematográfico', value: 'Cinematic' }, { label: 'Atmosférico', value: 'Moody' }, { label: 'Neon Noir', value: 'Neon Noir' }, { label: 'Hora Dourada', value: 'Golden Hour' }, { label: 'Fantasia Sombria', value: 'Dark Fantasy' }, { label: 'Minimalista', value: 'Minimalist' }, { label: 'Retrô Anos 80', value: 'Retro 80s aesthetic' }, { label: 'Surrealista', value: 'Surrealist' }, { label: 'Épico e Grandioso', value: 'Epic and grand' }, { label: 'Cyberpunk Vibrante', value: 'Vibrant Cyberpunk' }, { label: 'Eterno e Etéreo', value: 'Ethereal and timeless' }, { label: 'Hiper-realista', value: 'Hyper-realistic' }, { label: 'Estilo Noir', value: 'Film Noir aesthetic' }, { label: 'Sonhador/Onírico', value: 'Dreamy and soft focus' }, { label: 'Industrial Sombrio', value: 'Gritty industrial' }, { label: 'Psicodélico', value: 'Psychedelic and colorful' }] }
+      { id: 'style_ambiance', label: 'Estilo & Ambiance', hint: 'Iluminação, cores e clima', placeholder: 'Ex: Iluminação cinematográfica', type: 'textarea', suggestions: [{ label: 'Cinematográfico', value: 'Cinematic' }, { label: 'Atmosférico', value: 'Moody' }, { label: 'Neon Noir', value: 'Neon Noir' }, { label: 'Hora Dourada', value: 'Golden Hour' }, { label: 'Fantasia Sombria', value: 'Dark Fantasy' }, { label: 'Minimalista', value: 'Minimalist' }, { label: 'Retrô Anos 80', value: 'Retro 80s aesthetic' }, { label: 'Surrealista', value: 'Surrealist' }, { label: 'Épico e Grandioso', value: 'Epic and grand' }, { label: 'Cyberpunk Vibrante', value: 'Vibrant Cyberpunk' }, { label: 'Eterno e Etéreo', value: 'Ethereal and timeless' }, { label: 'Hiper-realista', value: 'Hyper-realistic' }, { label: 'Estilo Noir', value: 'Film Noir aesthetic' }, { label: 'Sonhador/Onírico', value: 'Dreamy and soft focus' }, { label: 'Industrial Sombrio', value: 'Gritty industrial' }, { label: 'Psicodélico', value: 'Psychedelic and colorful' }] },
+      { 
+        id: 'dialogue', 
+        label: 'Falas dos Personagens (Dublagem)', 
+        hint: 'Use o formato [personagem]: [fala]', 
+        placeholder: 'Ex: [morango]: [oi, eu sou a morango]', 
+        type: 'textarea', 
+        suggestions: [
+          { label: 'Exemplo Morango', value: '[morango]: [oi, eu sou a morango]' },
+          { label: 'Sem Fala', value: '' }
+        ] 
+      }
     ]
   },
   'video-from-img': {
@@ -18,8 +51,38 @@ export const MODES = {
     title: 'Vídeo de Imagem (Veo)',
     desc: 'Dê vida a uma imagem estática com movimento e som.',
     helpText: 'Dê vida às suas fotos! Descreva o que deve se mover na cena, o movimento de câmera e os efeitos sonoros. Dica: você pode escolher "Sem Som" se desejar apenas a animação visual.',
-    formula: (vals) => `Using the provided high-quality base image as a foundation, initiate a cinematic animation sequence where the camera performs a ${vals.camera_motion || 'subtle movement'}. The central action within the frame focuses on ${vals.action || 'natural movement'}${vals.sound_effects && vals.sound_effects.toLowerCase() !== 'no audio' ? `. The scene is enriched with ${vals.sound_effects}` : '. This is a silent video sequence with no audio'}, ensuring smooth temporal consistency and rich audio-visual synchronization.`,
+    formula: (vals) => {
+      let prompt = `Using the provided high-quality base image as a foundation, initiate a cinematic animation sequence where the camera performs a ${vals.camera_motion || 'subtle movement'}. The central action within the frame focuses on ${vals.action || 'natural movement'}.`;
+      
+      if (vals.characters_definition && vals.characters_definition.trim() !== '') {
+        prompt += ` Character details: ${vals.characters_definition}.`;
+      }
+
+      if (vals.sound_effects && vals.sound_effects.toLowerCase() !== 'no audio') {
+        prompt += ` The scene is enriched with ${vals.sound_effects}.`;
+      } else {
+        prompt += ` This is a silent video sequence with no audio.`;
+      }
+      
+      if (vals.dialogue && vals.dialogue.trim() !== '') {
+        prompt += ` During the sequence, the characters speak the following dialogue using the format [character]: [speech] with perfect lip-sync natively in Brazilian Portuguese (pt-BR): "${vals.dialogue}".`;
+      }
+
+      prompt += ` Ensuring smooth temporal consistency and rich audio-visual synchronization.`;
+      
+      return prompt;
+    },
     fields: [
+      { 
+        id: 'characters_definition', 
+        label: 'Definição dos Personagens', 
+        hint: 'Formato: [nome][descrição][tom de voz]', 
+        placeholder: 'Ex: [morango][personagem morango][feminino]', 
+        type: 'textarea', 
+        suggestions: [
+          { label: 'Exemplo Frutas', value: '[morango][personagem morango][feminino]\n[uva][personagem uva][voz grossa]' }
+        ] 
+      },
       { 
         id: 'camera_motion', 
         label: 'Movimento de Câmera', 
@@ -64,7 +127,7 @@ export const MODES = {
           { label: 'Gritos de Multidão', value: 'SFX: Distant crowd cheering' }, 
           { label: 'Bipe Digital', value: 'SFX: Electronic beeps' }, 
           { label: 'Batida de Coração', value: 'SFX: Heartbeat thumping' }, 
-          { label: 'Som Espacial', value: 'SFX: Deep space ambience' }, 
+          { label: 'Som Espacial', value: 'SFX: Deep space ambiance' }, 
           { label: 'Vidro Quebrando', value: 'SFX: Shifting glass sounds' },
           { label: 'Fogo Crepitante', value: 'SFX: Fire crackling' },
           { label: 'Água Corrente', value: 'SFX: Running water' },
@@ -98,6 +161,17 @@ export const MODES = {
           { label: 'olhos mudando de cor', value: 'eyes shifting colors' }, 
           { label: 'objetos flutuando', value: 'objects starting to levitate' }, 
           { label: 'textura mudando', value: 'surface texture transforming' }
+        ] 
+      },
+      { 
+        id: 'dialogue', 
+        label: 'Falas dos Personagens (Dublagem)', 
+        hint: 'Use o formato [personagem]: [fala]', 
+        placeholder: 'Ex: [morango]: [oi, eu sou a morango]', 
+        type: 'textarea', 
+        suggestions: [
+          { label: 'Exemplo Morango', value: '[morango]: [oi, eu sou a morango]' },
+          { label: 'Sem Fala', value: '' }
         ] 
       }
     ]
@@ -226,7 +300,131 @@ export const MODES = {
     desc: 'Combine várias fotos em um grid personalizado com bordas.',
     helpText: 'Escolha o layout do grid, ajuste a espessura e cor das bordas e baixe sua montagem final.',
     isCustom: true
+  },
+  'video-from-frames': {
+    id: 'video-from-frames',
+    title: 'Interpolação de Imagens (Veo)',
+    desc: 'Crie uma transição fluida entre duas imagens (Start e End Frame).',
+    helpText: 'No Google Flow (Veo), insira a imagem inicial e final. Esta ferramenta gera o prompt para garantir que o movimento entre elas seja fluido e natural. Preencha apenas o que desejar; a IA cuidará do resto!',
+    formula: (vals) => {
+      let prompt = `Smoothly transition from the start frame to the end frame. The characters maintain their visual identity as they perform a ${vals.movement_action || 'fluid and natural motion'} to move between the poses.`;
+      
+      if (vals.context && vals.context.trim() !== '') {
+        prompt += ` The scene takes place in ${vals.context}.`;
+      } else {
+        prompt += ` The environment remains consistent with the frames.`;
+      }
+
+      if (vals.general_notes && vals.general_notes.trim() !== '') {
+        prompt += ` Video tone and context: ${vals.general_notes}.`;
+      }
+
+      prompt += ` The camera performs a ${vals.camera_motion || 'subtle movement'}.`;
+
+      if (vals.characters_definition && vals.characters_definition.trim() !== '') {
+        prompt += ` Character details: ${vals.characters_definition}.`;
+      }
+
+      if (vals.sound_effects && vals.sound_effects.toLowerCase() !== 'no audio' && vals.sound_effects.toLowerCase() !== 'sem som') {
+        prompt += ` The scene is enriched with ${vals.sound_effects}.`;
+      }
+      
+      if (vals.dialogue && vals.dialogue.trim() !== '') {
+        prompt += ` During the sequence, the characters speak the following dialogue using the format [character]: [speech] with perfect lip-sync natively in Brazilian Portuguese (pt-BR): "${vals.dialogue}".`;
+      }
+      
+      return prompt;
+    },
+    fields: [
+      { 
+        id: 'characters_definition', 
+        label: 'Definição dos Personagens', 
+        hint: 'Formato: [nome][descrição][tom de voz]', 
+        placeholder: 'Ex: [morango][personagem morango][feminino]', 
+        type: 'textarea', 
+        suggestions: [
+          { label: 'Exemplo Frutas', value: '[morango][personagem morango][feminino]\n[uva][personagem uva][voz grossa]' }
+        ] 
+      },
+      { 
+        id: 'context', 
+        label: 'Cenário/Ambiente', 
+        hint: 'Onde a cena se passa (Opcional)', 
+        placeholder: 'Ex: em uma praia ensolarada', 
+        type: 'text', 
+        suggestions: [
+          { label: 'Na Praia', value: 'on a sunny tropical beach' },
+          { label: 'Na Floresta', value: 'inside a lush magical forest' },
+          { label: 'Cidade Neon', value: 'in a neon cyberpunk city' },
+          { label: 'Interior/Casa', value: 'inside a cozy modern living room' }
+        ] 
+      },
+      { 
+        id: 'movement_action', 
+        label: 'Ação de Movimento', 
+        hint: 'Descreva a trajetória de objetos e personagens (Crucial para evitar "pulos")', 
+        placeholder: 'Ex: a estrela do mar pula da areia para o rosto da morango', 
+        type: 'textarea', 
+        suggestions: [
+          { label: 'Objeto Saltando', value: 'the object on the ground suddenly jumps and attaches to the character' },
+          { label: 'Caminhando', value: 'walking smoothly while maintaining eye contact' },
+          { label: 'Transformação Fluida', value: 'morphing organically from the first pose to the second' },
+          { label: 'Interação de Personagem', value: 'the character picks up the object and moves it' },
+          { label: 'Rindo e Apontando', value: 'bursting into laughter and pointing at each other' }
+        ] 
+      },
+      { 
+        id: 'general_notes', 
+        label: 'Tom / Observações Gerais', 
+        hint: 'Estilo ou clima do vídeo (Opcional)', 
+        placeholder: 'Ex: vídeo de humor, estilo épico, suspense', 
+        type: 'text', 
+        suggestions: [
+          { label: 'Humor', value: 'funny comedic skit' },
+          { label: 'Cinematográfico', value: 'cinematic and dramatic' },
+          { label: 'Terror/Suspense', value: 'dark and suspenseful' },
+          { label: 'Infantil/Alegre', value: 'cheerful and vibrant' }
+        ] 
+      },
+      { 
+        id: 'camera_motion', 
+        label: 'Movimento de Câmera', 
+        hint: 'Direção e tipo de movimento', 
+        placeholder: 'Ex: Zoom suave', 
+        type: 'text', 
+        suggestions: [
+          { label: 'Dolly Zoom', value: 'Dolly Zoom' }, 
+          { label: 'Zoom Suave In', value: 'Smooth Zoom In' }, 
+          { label: 'Zoom Suave Out', value: 'Smooth Zoom Out' }, 
+          { label: 'Câmera Estática', value: 'Static camera' }, 
+          { label: 'Panorâmica Lenta', value: 'Slow Pan' },
+          { label: 'Órbita 360°', value: '360-degree circular orbit' }
+        ] 
+      },
+      { 
+        id: 'sound_effects', 
+        label: 'Efeitos Sonoros (SFX)', 
+        hint: 'Sons e ambiente', 
+        placeholder: 'Ex: Som de vento', 
+        type: 'text', 
+        suggestions: [
+          { label: 'Sem Som', value: 'no audio' }, 
+          { label: 'Som de Praia', value: 'SFX: Soft waves and beach ambiance' },
+          { label: 'Som de Magia', value: 'SFX: Magical ethereal chiming' }, 
+          { label: 'Impacto Épico', value: 'SFX: Cinematic impact hit' },
+          { label: 'Batida de Coração', value: 'SFX: Thumping heartbeat' }
+        ] 
+      },
+      { 
+        id: 'dialogue', 
+        label: 'Falas dos Personagens (Dublagem)', 
+        hint: 'Use o formato [personagem]: [fala]', 
+        placeholder: 'Ex: [morango]: [oi, eu sou a morango]', 
+        type: 'textarea', 
+        suggestions: [
+          { label: 'Exemplo Morango', value: '[morango]: [oi, eu sou a morango]' }
+        ] 
+      }
+    ]
   }
 };
-
-

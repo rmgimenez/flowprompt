@@ -67,7 +67,7 @@ export const useGenerator = (initialMode = 'video-new') => {
     
     const displayValues = {};
     currentMode.fields.forEach(field => {
-      displayValues[field.id] = formValues[field.id]?.trim() || `[${field.label}]`;
+      displayValues[field.id] = formValues[field.id]?.trim() || `<<< ${field.label} >>>`;
     });
     
     return currentMode.formula(displayValues);
@@ -75,7 +75,7 @@ export const useGenerator = (initialMode = 'video-new') => {
 
   // Persistence Actions
   const addToHistory = useCallback(() => {
-    if (!generatedPrompt || generatedPrompt.includes('[')) return;
+    if (!generatedPrompt || generatedPrompt.includes('<<<')) return;
     
     const newItem = {
       id: Date.now(),

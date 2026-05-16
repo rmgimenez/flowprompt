@@ -94,3 +94,23 @@ Este estilo foca no contraste extremo entre o cotidiano simples do trabalhador b
 - **Legenda de Autoridade:** Explique que você usou conceitos de *Chiaroscuro* e *Dark Fantasy* para elevar ícones da cultura nacional.
 
 
+## Fusão Mística de Animais (Vídeo Viral - Google Veo)
+
+Este prompt foi desenvolvido especificamente para o modelo de vídeo **Google Veo**, utilizando uma técnica de *morphing* místico para transformar dois animais em uma criatura híbrida lendária. É ideal para criar o fator "Uau" no TikTok.
+
+### Prompt Mestre (Copy & Paste)
+`Cinematic 9:16 vertical video. Starts from a still shot of [ANIMAL 1] and [ANIMAL 2] sitting together. Suddenly, mystical glowing particles of teal and gold energy erupt, swirling violently around both animals. [Action]: The animals begin a magical morphing process, their bodies dissolving into fluid light and fusing together. [Result]: Out of the light emerges a massive hybrid beast with the characteristics of both [ANIMAL 1] and [ANIMAL 2]. The hybrid animal lets out a thunderous roar, looking directly into the lens. [Environment]: Deep lush forest with volumetric sunbeams, hyper-realistic textures, 8k resolution, Unreal Engine 5 render style, slow-motion climax, vibrant magical lighting.`
+
+### Por que este prompt é bom?
+1. **Gancho de Retenção:** O vídeo começa parecendo uma foto estática, enganando o cérebro do usuário. O início súbito da magia no primeiro segundo quebra o padrão de scroll.
+2. **Qualidade Cinematográfica:** O uso de termos como *volumetric sunbeams* e *Unreal Engine 5 render style* garante que a iluminação e as texturas (pelos, luz, partículas) fiquem em nível de cinema.
+3. **Pacing de TikTok:** A transformação ocorre rapidamente, entregando o "payoff" (a criatura final) antes que o usuário perca o interesse.
+
+### Como usar para viralizar:
+- **Trilha Sonora:** Escolha um som que tenha um "drop" ou uma explosão sonora exatamente no momento da fusão (segundo 3.0).
+- **Legenda Interativa:** "A natureza em sua forma mais mística... Qual fusão você quer ver agora? 🐯🐒✨"
+- **Dica Técnica:** No Veo, use a imagem original como referência de entrada (Input Image) para garantir que o vídeo comece exatamente com a mesma aparência da foto.
+
+## Transforma um filme em um poster estilo Dragon Ball Z
+
+Arte oficial vertical no estilo de pôster/anime de Dragon Ball para uma adaptação do filme o senhor dos anéis 3. A composição deve ser uma colagem épica com múltiplos painéis dinâmicos inspirados nas artes promocionais clássicas de Dragon Ball Z e Dragon Ball Super. O protagonista principal deve aparecer no centro em uma pose poderosa e heroica, com aura de energia intensa, expressão determinada e músculos destacados no estilo anime shounen. O antagonista principal deve aparecer com presença ameaçadora, emanando energia sombria e olhar intimidador. Inclua cenas de batalha explosivas, personagens secundários importantes do filme reinterpretados como guerreiros de Dragon Ball, ataques de energia gigantes, efeitos de velocidade, destruição cinematográfica e cenários icônicos do filme recriados no universo de Dragon Ball. Adicione elementos visuais típicos do anime como ki brilhando, explosões coloridas, rachaduras no chão, partículas de energia, raios de luz e poses dramáticas. No centro da arte, exiba o título do filme em um logotipo inspirado nas aberturas e pôsteres clássicos de Dragon Ball, com tipografia grande, energética e estilizada. O visual deve transmitir ação extrema, aventura e sensação de batalha lendária. Estilo visual: arte promocional oficial de anime, estética Dragon Ball Z/Dragon Ball Super, cores vibrantes e saturadas, iluminação intensa, traços limpos, cel shading detalhado, efeitos de energia brilhantes, composição cinematográfica, alto nível de detalhes, qualidade premium 8K, formato vertical 9:16. Todo texto presente no pôster deve estar em português do Brasil.

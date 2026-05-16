@@ -57,6 +57,7 @@ const Sidebar = ({
   const [activeTab, setActiveTab] = useState('modes'); // 'modes', 'history', 'favorites'
 
   const menuItems = [
+    { id: 'video-from-frames', label: 'Interpolação (2 Frames)', icon: Wand2 },
     { id: 'video-new', label: 'Vídeo Novo', icon: Play },
     { id: 'video-from-img', label: 'Vídeo de Imagem', icon: Image },
     { id: 'photo-new', label: 'Foto Nova', icon: Camera },
