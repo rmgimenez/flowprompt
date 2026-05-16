@@ -58,7 +58,11 @@ const PromptForm = ({ fields, values, onUpdate, onAddSuggestion, onRandomize, on
             {field.hint && <span className={styles.hint}>{field.hint}</span>}
           </div>
 
-          {field.type === 'textarea' ? (
+          {field.type === 'info' ? (
+            <div className={styles.infoField}>
+              <p>{field.content}</p>
+            </div>
+          ) : field.type === 'textarea' ? (
             <textarea
               id={field.id}
               className={styles.textarea}

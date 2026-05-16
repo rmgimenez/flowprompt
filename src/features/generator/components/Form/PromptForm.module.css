@@ -140,3 +140,19 @@
   color: #fff;
   transform: translateY(-1px);
 }
+
+.infoField {
+  background: rgba(61, 90, 254, 0.05);
+  border-left: 3px solid #3d5afe;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-top: 0.5rem;
+}
+
+.infoField p {
+  margin: 0;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.6);
+  line-height: 1.5;
+  white-space: pre-wrap;
+}

@@ -25,7 +25,7 @@ export const MODES = {
         placeholder: 'Ex: [morango][personagem morango][feminino]', 
         type: 'textarea', 
         suggestions: [
-          { label: 'Exemplo Frutas', value: '[morango][personagem morango][feminino]\n[uva][personagem uva][voz grossa]' }
+          { label: 'Exemplo Frutas', value: '[morango][personagem vermelho com cara de morango][voz doce, aguda e amigável]\n[abacaxi][personagem amarelo com cara de abacaxi][voz calma, levemente encorpada e relaxada]\n[uva][personagem roxo com cara de uva][voz muito aguda, agitada e estridente]' }
         ] 
       },
       { id: 'cinematography', label: 'Cinematografia', hint: 'Ângulo e movimento da câmera', placeholder: 'Ex: Medium shot', type: 'text', suggestions: [{ label: 'Plano Aberto', value: 'Wide Shot' }, { label: 'Close-up', value: 'Close-up' }, { label: 'Visão em 1ª Pessoa', value: 'POV Shot' }, { label: 'Vista Aérea', value: 'Aerial View' }, { label: 'Câmera em Movimento', value: 'Tracking Shot' }, { label: 'Câmera na Mão', value: 'Handheld Camera' }, { label: 'Contra-mergulho', value: 'Low Angle' }, { label: 'Mergulho', value: 'High Angle' }, { label: 'Zoom Lento', value: 'Slow Zoom' }, { label: 'Órbita 360°', value: '360-degree Orbit' }, { label: 'Time-lapse', value: 'Time-lapse' }, { label: 'Câmera Lenta', value: 'Slow Motion' }, { label: 'Macro Extremo', value: 'Extreme Macro' }, { label: 'Plano Sequência', value: 'One-shot Sequence' }, { label: 'Foco Alternado', value: 'Rack Focus' }, { label: 'Plano Holandês', value: 'Dutch Angle' }] },
@@ -80,7 +80,7 @@ export const MODES = {
         placeholder: 'Ex: [morango][personagem morango][feminino]', 
         type: 'textarea', 
         suggestions: [
-          { label: 'Exemplo Frutas', value: '[morango][personagem morango][feminino]\n[uva][personagem uva][voz grossa]' }
+          { label: 'Exemplo Frutas', value: '[morango][personagem vermelho com cara de morango][voz doce, aguda e amigável]\n[abacaxi][personagem amarelo com cara de abacaxi][voz calma, levemente encorpada e relaxada]\n[uva][personagem roxo com cara de uva][voz muito aguda, agitada e estridente]' }
         ] 
       },
       { 
@@ -305,33 +305,41 @@ export const MODES = {
     id: 'video-from-frames',
     title: 'Interpolação de Imagens (Veo)',
     desc: 'Crie uma transição fluida entre duas imagens (Start e End Frame).',
-    helpText: 'No Google Flow (Veo), insira a imagem inicial e final. Esta ferramenta gera o prompt para garantir que o movimento entre elas seja fluido e natural. Preencha apenas o que desejar; a IA cuidará do resto!',
+    helpText: 'O segredo da fluidez é descrever o que acontece NO MEIO dos dois frames. Use o campo "Interação com Objetos" para objetos que mudam de lugar e "Ação dos Personagens" para o movimento do corpo.',
     formula: (vals) => {
-      let prompt = `Smoothly transition from the start frame to the end frame. The characters maintain their visual identity as they perform a ${vals.movement_action || 'fluid and natural motion'} to move between the poses.`;
+      let prompt = `Using the start frame and end frame as structural guides, animate a seamless and fluid transition.`;
       
-      if (vals.context && vals.context.trim() !== '') {
-        prompt += ` The scene takes place in ${vals.context}.`;
-      } else {
-        prompt += ` The environment remains consistent with the frames.`;
+      if (vals.object_interaction && vals.object_interaction.trim() !== '') {
+        prompt += ` Key transition event: ${vals.object_interaction}.`;
       }
+
+      if (vals.character_movement && vals.character_movement.trim() !== '') {
+        prompt += ` Character actions during transition: ${vals.character_movement}.`;
+      } else {
+        prompt += ` The characters perform a natural and fluid motion to connect the two poses.`;
+      }
+
+      prompt += ` The environment and background remain perfectly consistent with the provided frames.`;
 
       if (vals.general_notes && vals.general_notes.trim() !== '') {
-        prompt += ` Video tone and context: ${vals.general_notes}.`;
+        prompt += ` Tone and style: ${vals.general_notes}.`;
       }
 
-      prompt += ` The camera performs a ${vals.camera_motion || 'subtle movement'}.`;
+      prompt += ` Camera movement: ${vals.camera_motion || 'Smooth cinematic movement'}.`;
 
       if (vals.characters_definition && vals.characters_definition.trim() !== '') {
-        prompt += ` Character details: ${vals.characters_definition}.`;
+        prompt += ` Visual identity details: ${vals.characters_definition}.`;
       }
 
       if (vals.sound_effects && vals.sound_effects.toLowerCase() !== 'no audio' && vals.sound_effects.toLowerCase() !== 'sem som') {
-        prompt += ` The scene is enriched with ${vals.sound_effects}.`;
+        prompt += ` SFX: ${vals.sound_effects}.`;
       }
       
       if (vals.dialogue && vals.dialogue.trim() !== '') {
-        prompt += ` During the sequence, the characters speak the following dialogue using the format [character]: [speech] with perfect lip-sync natively in Brazilian Portuguese (pt-BR): "${vals.dialogue}".`;
+        prompt += ` Dubbing: The characters speak the following dialogue with perfect lip-sync in Brazilian Portuguese (pt-BR): "${vals.dialogue}". Use the format [character]: [speech].`;
       }
+      
+      prompt += ` Ensure temporal consistency and avoid sudden cuts or teleports.`;
       
       return prompt;
     },
@@ -343,76 +351,68 @@ export const MODES = {
         placeholder: 'Ex: [morango][personagem morango][feminino]', 
         type: 'textarea', 
         suggestions: [
-          { label: 'Exemplo Frutas', value: '[morango][personagem morango][feminino]\n[uva][personagem uva][voz grossa]' }
+          { label: 'Exemplo Frutas', value: '[morango][personagem vermelho com cara de morango][voz doce, aguda e amigável]\n[abacaxi][personagem amarelo com cara de abacaxi][voz calma, levemente encorpada e relaxada]\n[uva][personagem roxo com cara de uva][voz muito aguda, agitada e estridente]' }
         ] 
       },
       { 
-        id: 'context', 
-        label: 'Cenário/Ambiente', 
-        hint: 'Onde a cena se passa (Opcional)', 
-        placeholder: 'Ex: em uma praia ensolarada', 
-        type: 'text', 
-        suggestions: [
-          { label: 'Na Praia', value: 'on a sunny tropical beach' },
-          { label: 'Na Floresta', value: 'inside a lush magical forest' },
-          { label: 'Cidade Neon', value: 'in a neon cyberpunk city' },
-          { label: 'Interior/Casa', value: 'inside a cozy modern living room' }
-        ] 
-      },
-      { 
-        id: 'movement_action', 
-        label: 'Ação de Movimento', 
-        hint: 'Descreva a trajetória de objetos e personagens (Crucial para evitar "pulos")', 
+        id: 'object_interaction', 
+        label: 'Interação com Objetos (Importante)', 
+        hint: 'Descreva objetos que mudam de lugar (evita "pulos")', 
         placeholder: 'Ex: a estrela do mar pula da areia para o rosto da morango', 
         type: 'textarea', 
         suggestions: [
           { label: 'Objeto Saltando', value: 'the object on the ground suddenly jumps and attaches to the character' },
+          { label: 'Objeto Sendo Pego', value: 'the character reaches down and picks up the object' },
+          { label: 'Objeto Atirado', value: 'an object flies from off-screen into the character\'s hands' }
+        ] 
+      },
+      { 
+        id: 'character_movement', 
+        label: 'Ação dos Personagens', 
+        hint: 'O que eles fazem (ex: rindo, correndo)', 
+        placeholder: 'Ex: os personagens começam a rir muito da situação', 
+        type: 'textarea', 
+        suggestions: [
+          { label: 'Rindo e Apontando', value: 'bursting into laughter and pointing at each other' },
           { label: 'Caminhando', value: 'walking smoothly while maintaining eye contact' },
-          { label: 'Transformação Fluida', value: 'morphing organically from the first pose to the second' },
-          { label: 'Interação de Personagem', value: 'the character picks up the object and moves it' },
-          { label: 'Rindo e Apontando', value: 'bursting into laughter and pointing at each other' }
+          { label: 'Surpreso/Assustado', value: 'reacting with shock and wide eyes' }
         ] 
       },
       { 
         id: 'general_notes', 
         label: 'Tom / Observações Gerais', 
-        hint: 'Estilo ou clima do vídeo (Opcional)', 
-        placeholder: 'Ex: vídeo de humor, estilo épico, suspense', 
+        hint: 'Estilo ou clima do vídeo', 
+        placeholder: 'Ex: vídeo de humor, estilo épico', 
         type: 'text', 
         suggestions: [
           { label: 'Humor', value: 'funny comedic skit' },
           { label: 'Cinematográfico', value: 'cinematic and dramatic' },
-          { label: 'Terror/Suspense', value: 'dark and suspenseful' },
-          { label: 'Infantil/Alegre', value: 'cheerful and vibrant' }
+          { label: 'Ação Rápida', value: 'fast-paced and energetic' }
         ] 
       },
       { 
         id: 'camera_motion', 
         label: 'Movimento de Câmera', 
-        hint: 'Direção e tipo de movimento', 
+        hint: 'Direção do movimento', 
         placeholder: 'Ex: Zoom suave', 
         type: 'text', 
         suggestions: [
           { label: 'Dolly Zoom', value: 'Dolly Zoom' }, 
           { label: 'Zoom Suave In', value: 'Smooth Zoom In' }, 
           { label: 'Zoom Suave Out', value: 'Smooth Zoom Out' }, 
-          { label: 'Câmera Estática', value: 'Static camera' }, 
-          { label: 'Panorâmica Lenta', value: 'Slow Pan' },
           { label: 'Órbita 360°', value: '360-degree circular orbit' }
         ] 
       },
       { 
         id: 'sound_effects', 
         label: 'Efeitos Sonoros (SFX)', 
-        hint: 'Sons e ambiente', 
         placeholder: 'Ex: Som de vento', 
         type: 'text', 
         suggestions: [
           { label: 'Sem Som', value: 'no audio' }, 
           { label: 'Som de Praia', value: 'SFX: Soft waves and beach ambiance' },
-          { label: 'Som de Magia', value: 'SFX: Magical ethereal chiming' }, 
-          { label: 'Impacto Épico', value: 'SFX: Cinematic impact hit' },
-          { label: 'Batida de Coração', value: 'SFX: Thumping heartbeat' }
+          { label: 'Risadas', value: 'SFX: Group of people laughing loudly' },
+          { label: 'Impacto Épico', value: 'SFX: Cinematic impact hit' }
         ] 
       },
       { 
@@ -424,6 +424,12 @@ export const MODES = {
         suggestions: [
           { label: 'Exemplo Morango', value: '[morango]: [oi, eu sou a morango]' }
         ] 
+      },
+      {
+        id: 'help_info',
+        label: 'Dicas de Uso',
+        type: 'info',
+        content: '💡 Como usar a Interpolação:\n\n1. Descreva o trajeto dos objetos: Se algo muda de posição (como a estrela do mar), explique como ela se moveu no campo "Interação com Objetos".\n\n2. Foque na ação: Use o campo "Ação dos Personagens" para descrever reações emocionais e movimentos do corpo que conectam os dois frames.\n\n3. Consistência: O sistema já está configurado para manter o cenário original das suas fotos, focando 100% na fluidez do movimento.'
       }
     ]
   }
