@@ -1,3 +1,220 @@
+// Smart parsing helpers for Veo 3.1 JSON Prompt Engineering
+
+const VIDEO_NEGATIVE_PROMPTS = [
+  "glitch", "deformed details", "sudden cuts", "abrupt transition", 
+  "cartoonish physics", "unstable frames", "flickering lighting", 
+  "blurry low-resolution"
+];
+
+const parseCamera = (text) => {
+  if (!text || text.includes('<<<')) {
+    return {
+      camera_type: 'tripod',
+      movement: { type: 'static', speed: 'medium', easing: 'ease_in_out' },
+      framing: 'wide'
+    };
+  }
+
+  const lowerText = text.toLowerCase();
+  
+  // Camera Type
+  let camera_type = 'tripod';
+  if (lowerText.includes('drone') || lowerText.includes('aerial') || lowerText.includes('aérea') || lowerText.includes('voo')) {
+    camera_type = 'drone';
+  } else if (lowerText.includes('handheld') || lowerText.includes('mão') || lowerText.includes('jitter') || lowerText.includes('shaky')) {
+    camera_type = 'handheld';
+  } else if (lowerText.includes('gimbal')) {
+    camera_type = 'gimbal';
+  } else if (lowerText.includes('crane') || lowerText.includes('elevador') || lowerText.includes('grua')) {
+    camera_type = 'crane';
+  } else if (lowerText.includes('dolly') || lowerText.includes('tracking') || lowerText.includes('sequência') || lowerText.includes('truck')) {
+    camera_type = 'dolly';
+  } else if (lowerText.includes('tripod') || lowerText.includes('estática') || lowerText.includes('static')) {
+    camera_type = 'tripod';
+  }
+
+  // Movement Type
+  let type = 'static';
+  if (lowerText.includes('orbit_cw') || lowerText.includes('órbita 360') || lowerText.includes('orbit')) {
+    type = 'orbit_cw';
+  } else if (lowerText.includes('orbit_ccw')) {
+    type = 'orbit_ccw';
+  } else if (lowerText.includes('dolly_in') || lowerText.includes('dolly in') || lowerText.includes('push_in') || lowerText.includes('push in') || lowerText.includes('aproximação') || lowerText.includes('zoom suave in')) {
+    type = 'push_in';
+  } else if (lowerText.includes('dolly_out') || lowerText.includes('dolly out') || lowerText.includes('pull_out') || lowerText.includes('pull out') || lowerText.includes('zoom suave out')) {
+    type = 'pull_out';
+  } else if (lowerText.includes('pan_left') || lowerText.includes('pan left') || lowerText.includes('panorâmica esquerda')) {
+    type = 'pan_left';
+  } else if (lowerText.includes('pan_right') || lowerText.includes('pan right') || lowerText.includes('panorâmica direita')) {
+    type = 'pan_right';
+  } else if (lowerText.includes('tilt_up') || lowerText.includes('tilt up') || lowerText.includes('inclinação para cima')) {
+    type = 'tilt_up';
+  } else if (lowerText.includes('tilt_down') || lowerText.includes('tilt down') || lowerText.includes('inclinação para baixo')) {
+    type = 'tilt_down';
+  } else if (lowerText.includes('truck_left') || lowerText.includes('truck left')) {
+    type = 'truck_left';
+  } else if (lowerText.includes('truck_right') || lowerText.includes('truck right')) {
+    type = 'truck_right';
+  } else if (lowerText.includes('descend') || lowerText.includes('descendo') || lowerText.includes('descer')) {
+    type = 'descend';
+  } else if (lowerText.includes('ascend') || lowerText.includes('subindo') || lowerText.includes('subir')) {
+    type = 'ascend';
+  } else if (lowerText.includes('zoom lento') || lowerText.includes('slow zoom')) {
+    type = 'push_in';
+  } else if (lowerText.includes('static') || lowerText.includes('estática')) {
+    type = 'static';
+  }
+
+  // Speed
+  let speed = 'medium';
+  if (lowerText.includes('very slow') || lowerText.includes('muito lento') || lowerText.includes('very_slow')) {
+    speed = 'very_slow';
+  } else if (lowerText.includes('slow') || lowerText.includes('lento') || lowerText.includes('suave')) {
+    speed = 'slow';
+  } else if (lowerText.includes('very fast') || lowerText.includes('muito rápido') || lowerText.includes('very_fast')) {
+    speed = 'very_fast';
+  } else if (lowerText.includes('fast') || lowerText.includes('rápido') || lowerText.includes('dinâmica')) {
+    speed = 'fast';
+  }
+
+  // Lens (Focal Length / Aperture)
+  let lens = { focal_length: '24mm', aperture: 'f/2.8' };
+  if (lowerText.includes('macro')) {
+    lens = { focal_length: '90mm', aperture: 'f/2.8' };
+  } else if (lowerText.includes('wide') || lowerText.includes('aberto') || lowerText.includes('drone')) {
+    lens = { focal_length: '18mm', aperture: 'f/4.0' };
+  } else if (lowerText.includes('close-up') || lowerText.includes('close up') || lowerText.includes('closeup') || lowerText.includes('retrato')) {
+    lens = { focal_length: '50mm', aperture: 'f/1.8' };
+  }
+
+  // Framing
+  let framing = 'medium';
+  if (lowerText.includes('wide') || lowerText.includes('aberto') || lowerText.includes('estabelecer')) {
+    framing = 'wide_establishing';
+  } else if (lowerText.includes('extreme close-up') || lowerText.includes('macro')) {
+    framing = 'extreme_close_up';
+  } else if (lowerText.includes('close-up') || lowerText.includes('close up') || lowerText.includes('closeup')) {
+    framing = 'close_up';
+  } else if (lowerText.includes('medium') || lowerText.includes('médio')) {
+    framing = 'medium';
+  } else if (lowerText.includes('pov')) {
+    framing = 'pov';
+  }
+
+  return {
+    camera_type,
+    movement: { type, speed, easing: 'ease_in_out' },
+    lens,
+    framing
+  };
+};
+
+const parseCharacters = (charStr) => {
+  if (!charStr || charStr.includes('<<<') || charStr.trim() === '') return [];
+  const lines = charStr.split('\n').filter(l => l.trim() !== '');
+  const chars = [];
+  lines.forEach(line => {
+    const matches = [...line.matchAll(/\[([^\]]+)\]/g)].map(m => m[1]);
+    if (matches.length >= 2) {
+      chars.push({
+        name: matches[0],
+        description: matches[1],
+        voice_attributes: matches[2] || ''
+      });
+    }
+  });
+  return chars;
+};
+
+const parseDialogue = (dialStr) => {
+  if (!dialStr || dialStr.includes('<<<') || dialStr.trim() === '') return [];
+  const lines = dialStr.split('\n').filter(l => l.trim() !== '');
+  const dialogue = [];
+  lines.forEach(line => {
+    const parts = line.split(':');
+    if (parts.length >= 2) {
+      const charPart = parts[0].replace(/[\[\]]/g, '').trim();
+      const speechPart = parts[1].replace(/[\[\]]/g, '').trim();
+      dialogue.push({
+        character: charPart,
+        speech: speechPart
+      });
+    }
+  });
+  return dialogue;
+};
+
+const parseAmbiance = (context, styleAmbiance) => {
+  let time_of_day = 'day';
+  let weather = 'clear';
+  let mood = 'neutral';
+  let key_light = 'natural';
+  let fill_light = 'diffused';
+  let rim_light = 'none';
+
+  const textToCheck = `${context || ''} ${styleAmbiance || ''}`.toLowerCase();
+
+  // Time of Day
+  if (textToCheck.includes('night') || textToCheck.includes('noite') || textToCheck.includes('escuro') || textToCheck.includes('dark')) {
+    time_of_day = 'night';
+  } else if (textToCheck.includes('sunset') || textToCheck.includes('golden hour') || textToCheck.includes('pôr do sol') || textToCheck.includes('golden_hour')) {
+    time_of_day = 'sunset';
+  } else if (textToCheck.includes('sunrise') || textToCheck.includes('dawn') || textToCheck.includes('amanhecer')) {
+    time_of_day = 'sunrise';
+  } else if (textToCheck.includes('twilight') || textToCheck.includes('crepúsculo')) {
+    time_of_day = 'twilight';
+  }
+
+  // Weather
+  if (textToCheck.includes('rain') || textToCheck.includes('chuva') || textToCheck.includes('chovendo')) {
+    weather = 'light_rain';
+  } else if (textToCheck.includes('heavy rain') || textToCheck.includes('tempestade') || textToCheck.includes('storm')) {
+    weather = 'stormy';
+  } else if (textToCheck.includes('snow') || textToCheck.includes('neve') || textToCheck.includes('nevando')) {
+    weather = 'snowy';
+  } else if (textToCheck.includes('fog') || textToCheck.includes('neblina') || textToCheck.includes('mist')) {
+    weather = 'foggy';
+  }
+
+  // Mood
+  if (textToCheck.includes('epic') || textToCheck.includes('épico') || textToCheck.includes('grandioso')) {
+    mood = 'epic_grand';
+  } else if (textToCheck.includes('melancholy') || textToCheck.includes('melancolia') || textToCheck.includes('triste') || textToCheck.includes('sad')) {
+    mood = 'noir_melancholy';
+  } else if (textToCheck.includes('cyberpunk') || textToCheck.includes('neon')) {
+    mood = 'cyberpunk_high_tech';
+  } else if (textToCheck.includes('spooky') || textToCheck.includes('horror') || textToCheck.includes('gótico') || textToCheck.includes('creepy')) {
+    mood = 'gothic_horror';
+  } else if (textToCheck.includes('funny') || textToCheck.includes('engraçado') || textToCheck.includes('comedy') || textToCheck.includes('comédia')) {
+    mood = 'lighthearted_comedy';
+  }
+
+  // Lighting
+  if (textToCheck.includes('neon')) {
+    key_light = 'neon_colored_accent';
+    fill_light = 'neon_ambient_glow';
+    rim_light = 'neon_edge';
+  } else if (textToCheck.includes('sunset') || textToCheck.includes('golden')) {
+    key_light = 'warm_golden_hour_sun';
+    fill_light = 'soft_orange_ambient';
+    rim_light = 'golden_edge';
+  } else if (textToCheck.includes('night') || textToCheck.includes('noite')) {
+    key_light = 'cool_moonlight';
+    fill_light = 'dark_blue_ambient';
+    rim_light = 'subtle_edge';
+  } else if (textToCheck.includes('studio') || textToCheck.includes('estúdio')) {
+    key_light = 'three_point_key';
+    fill_light = 'softbox_fill';
+    rim_light = 'hair_light';
+  }
+
+  return {
+    time_of_day,
+    lighting: { key_light, fill_light, rim_light },
+    atmosphere: { weather, mood }
+  };
+};
+
 export const MODES = {
   'video-new': {
     id: 'video-new',
@@ -5,17 +222,44 @@ export const MODES = {
     desc: 'Gere vídeos cinematográficos a partir de descrições textuais.',
     helpText: 'Para obter os melhores resultados, seja específico sobre o movimento da câmera e a iluminação. Use termos como "cinematic", "slow motion" ou "handheld" para definir o ritmo e a emoção da cena.',
     formula: (vals) => {
-      let prompt = `A professional, cinematic video sequence shot with ${vals.cinematography}. The focus is on ${vals.subject} as they are ${vals.action}. The setting is a detailed ${vals.context}, carefully composed to highlight the depth of the scene. The visual aesthetic is ${vals.style_ambiance}, rendered in high resolution with realistic textures and fluid motion.`;
-      
-      if (vals.characters_definition && vals.characters_definition.trim() !== '') {
-        prompt += ` Character details: ${vals.characters_definition}.`;
-      }
+      const camera = parseCamera(vals.cinematography);
+      const characters = parseCharacters(vals.characters_definition);
+      const dialogue = parseDialogue(vals.dialogue);
+      const envAmbiance = parseAmbiance(vals.context, vals.style_ambiance);
 
-      if (vals.dialogue && vals.dialogue.trim() !== '') {
-        prompt += ` During the sequence, the characters speak the following dialogue using the format [character]: [speech] with perfect lip-sync natively in Brazilian Portuguese (pt-BR): "${vals.dialogue}".`;
-      }
-      
-      return prompt;
+      const jsonPrompt = {
+        cinematography: camera,
+        subject: {
+          primary: {
+            type: characters.length > 0 ? "character" : "environment",
+            description: vals.subject || "main focus",
+            action: vals.action || "natural flow",
+            attributes: vals.style_ambiance && !vals.style_ambiance.includes('<<<') 
+              ? vals.style_ambiance.split(',').map(s => s.trim()).filter(s => s !== '') 
+              : []
+          },
+          ...(characters.length > 0 ? { characters } : {})
+        },
+        environment: {
+          context: vals.context || "cinematic space",
+          ...envAmbiance
+        },
+        motion: {
+          temporal_logic: "continuous",
+          physics: "realistic",
+          speed_ramp: "constant"
+        },
+        ...(dialogue.length > 0 ? {
+          audio: {
+            dialogue,
+            language: "pt-BR",
+            lip_sync: "perfect"
+          }
+        } : {}),
+        negative_prompts: VIDEO_NEGATIVE_PROMPTS
+      };
+
+      return JSON.stringify(jsonPrompt, null, 2);
     },
     fields: [
       { 
@@ -52,25 +296,46 @@ export const MODES = {
     desc: 'Dê vida a uma imagem estática com movimento e som.',
     helpText: 'Dê vida às suas fotos! Descreva o que deve se mover na cena, o movimento de câmera e os efeitos sonoros. Dica: você pode escolher "Sem Som" se desejar apenas a animação visual.',
     formula: (vals) => {
-      let prompt = `Using the provided high-quality base image as a foundation, initiate a cinematic animation sequence where the camera performs a ${vals.camera_motion || 'subtle movement'}. The central action within the frame focuses on ${vals.action || 'natural movement'}.`;
-      
-      if (vals.characters_definition && vals.characters_definition.trim() !== '') {
-        prompt += ` Character details: ${vals.characters_definition}.`;
-      }
+      const camera = parseCamera(vals.camera_motion);
+      const characters = parseCharacters(vals.characters_definition);
+      const dialogue = parseDialogue(vals.dialogue);
 
-      if (vals.sound_effects && vals.sound_effects.toLowerCase() !== 'no audio') {
-        prompt += ` The scene is enriched with ${vals.sound_effects}.`;
-      } else {
-        prompt += ` This is a silent video sequence with no audio.`;
-      }
-      
-      if (vals.dialogue && vals.dialogue.trim() !== '') {
-        prompt += ` During the sequence, the characters speak the following dialogue using the format [character]: [speech] with perfect lip-sync natively in Brazilian Portuguese (pt-BR): "${vals.dialogue}".`;
-      }
+      const jsonPrompt = {
+        cinematography: {
+          ...camera,
+          framing: "maintain_from_image"
+        },
+        subject: {
+          primary: {
+            type: "based_on_image",
+            description: "high-quality base image foundation",
+            action: vals.action || "natural consistent animation"
+          },
+          ...(characters.length > 0 ? { characters } : {})
+        },
+        environment: {
+          lighting: "maintain_from_image",
+          atmosphere: {
+            weather: "maintain_from_image",
+            mood: "cinematic_continuity"
+          }
+        },
+        motion: {
+          temporal_logic: "continuous",
+          physics: "realistic_fluid"
+        },
+        audio: {
+          sound_effects: vals.sound_effects || "no audio",
+          ...(dialogue.length > 0 ? {
+            dialogue,
+            language: "pt-BR",
+            lip_sync: "perfect"
+          } : {})
+        },
+        negative_prompts: VIDEO_NEGATIVE_PROMPTS
+      };
 
-      prompt += ` Ensuring smooth temporal consistency and rich audio-visual synchronization.`;
-      
-      return prompt;
+      return JSON.stringify(jsonPrompt, null, 2);
     },
     fields: [
       { 
@@ -307,47 +572,49 @@ export const MODES = {
     desc: 'Transforme dois frames em um vídeo de alta retenção com física e dublagem.',
     helpText: 'Foque nos primeiros 2 segundos (O Gancho) e na trajetória dos objetos para evitar glitches e maximizar o engajamento.',
     formula: (vals) => {
-      let prompt = `Using the start frame and end frame as structural guides, animate a high-fidelity, seamless transition optimized for vertical social media.`;
-      
-      if (vals.visual_quality && vals.visual_quality.trim() !== '') {
-        prompt += ` Technical quality: ${vals.visual_quality}.`;
-      } else {
-        prompt += ` Technical quality: hyper-realistic, 8k resolution, cinematic lighting, masterfully executed.`;
-      }
+      const camera = parseCamera(vals.camera_motion);
+      const characters = parseCharacters(vals.characters_definition);
+      const dialogue = parseDialogue(vals.dialogue);
 
-      if (vals.object_interaction && vals.object_interaction.trim() !== '') {
-        prompt += ` Key transition event and magic interaction: ${vals.object_interaction}.`;
-      }
+      const jsonPrompt = {
+        cinematography: camera,
+        subject: {
+          primary: {
+            type: "guided_by_frames",
+            description: "seamless high-fidelity transition connecting the start and end frames",
+            action: vals.initial_hook || "natural fluid connection",
+            magic_interaction: vals.object_interaction || "smooth trajectory interpolation"
+          },
+          ...(characters.length > 0 ? { characters } : {})
+        },
+        environment: {
+          lighting: "maintain_from_frames",
+          atmosphere: {
+            weather: "maintain_from_frames",
+            mood: vals.general_notes || "funny comedic skit for TikTok"
+          },
+          style_quality: vals.visual_quality || "hyper-realistic, 8k, cinematic lighting"
+        },
+        motion: {
+          temporal_logic: "continuous",
+          physics: "fluid_pacing_and_retention",
+          transitions: {
+            from_start_frame: "match_cut",
+            to_end_frame: "smooth_interpolation"
+          }
+        },
+        audio: {
+          sound_effects: vals.sound_effects || "no audio",
+          ...(dialogue.length > 0 ? {
+            dialogue,
+            language: "pt-BR",
+            lip_sync: "perfect"
+          } : {})
+        },
+        negative_prompts: VIDEO_NEGATIVE_PROMPTS
+      };
 
-      if (vals.initial_hook && vals.initial_hook.trim() !== '') {
-        prompt += ` Main action and retention hook: ${vals.initial_hook}.`;
-      } else {
-        prompt += ` The characters perform a natural and fluid motion to connect the two poses.`;
-      }
-
-      prompt += ` The environment remains perfectly consistent with the provided frames.`;
-
-      if (vals.general_notes && vals.general_notes.trim() !== '') {
-        prompt += ` Tone and atmosphere: ${vals.general_notes}.`;
-      }
-
-      prompt += ` Dynamic camera: ${vals.camera_motion || 'Smooth cinematic movement'}.`;
-
-      if (vals.characters_definition && vals.characters_definition.trim() !== '') {
-        prompt += ` Visual identity details: ${vals.characters_definition}.`;
-      }
-
-      if (vals.sound_effects && vals.sound_effects.toLowerCase() !== 'no audio' && vals.sound_effects.toLowerCase() !== 'sem som') {
-        prompt += ` SFX: ${vals.sound_effects}.`;
-      }
-      
-      if (vals.dialogue && vals.dialogue.trim() !== '') {
-        prompt += ` Dubbing: The characters speak the following dialogue with perfect lip-sync in Brazilian Portuguese (pt-BR): "${vals.dialogue}". Use the format [character]: [speech].`;
-      }
-      
-      prompt += ` Ensure extreme temporal consistency, fluid physics, and no sudden cuts.`;
-      
-      return prompt;
+      return JSON.stringify(jsonPrompt, null, 2);
     },
     fields: [
       { 

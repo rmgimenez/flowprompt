@@ -5,14 +5,232 @@ import { clsx } from 'clsx';
 
 const VIRAL_PROMPTS = {
   'video-from-frames': {
-    speech: `Using the provided start frame and end frame as absolute structural guides, generate a highly engaging, viral 9:16 vertical video transition optimized for TikTok and Reels. The AI has absolute creative freedom to animate the transition in the most dynamic, visually stunning, and creative way possible to maximize audience retention. \nTechnical quality: hyper-realistic, 8k resolution, cinematic lighting, unreal engine 5 style, masterfully executed, smooth fluid physics, and flawless temporal consistency.\nHook & Camera: Start the sequence with a high-energy camera snap-zoom or orbit to capture immediate attention within the first 2 seconds, maintaining intense pacing.\nAudio & Dialogue: If there is any speaking or character dialogue in the video, the characters must speak natively in Brazilian Portuguese (pt-BR) with perfect lip-sync, using the [character]: [speech] dubbing format (e.g., [personagem]: [fala]). The dialogue should be witty, engaging, and highly relatable for social media.\nEnsure no sudden cuts, artifacting, or morphing glitches.`,
-    sfx: `Using the provided start frame and end frame as absolute structural guides, generate a highly engaging, viral 9:16 vertical video transition optimized for TikTok and Reels. The AI has absolute creative freedom to animate the transition in the most dynamic, visually stunning, and creative way possible to maximize audience retention. \nTechnical quality: hyper-realistic, 8k resolution, cinematic lighting, unreal engine 5 style, masterfully executed, smooth fluid physics, and flawless temporal consistency.\nHook & Camera: Start the sequence with a high-energy camera snap-zoom or orbit to capture immediate attention within the first 2 seconds, maintaining intense pacing.\nAudio & Dialogue: This video sequence must contain absolutely no spoken words, voiceover, or character dialogue. However, the scene must be enriched with immersive sound effects (SFX), realistic ambient audio cues, and an engaging cinematic background soundtrack to match the action perfectly, creating a rich auditory experience.\nEnsure no sudden cuts, artifacting, or morphing glitches.`,
-    silent: `Using the provided start frame and end frame as absolute structural guides, generate a highly engaging, viral 9:16 vertical video transition optimized for TikTok and Reels. The AI has absolute creative freedom to animate the transition in the most dynamic, visually stunning, and creative way possible to maximize audience retention. \nTechnical quality: hyper-realistic, 8k resolution, cinematic lighting, unreal engine 5 style, masterfully executed, smooth fluid physics, and flawless temporal consistency.\nHook & Camera: Start the sequence with a high-energy camera snap-zoom or orbit to capture immediate attention within the first 2 seconds, maintaining intense pacing.\nAudio & Dialogue: This must be a purely visual, silent video sequence with no dialogue or speech. Focus completely on rich visual storytelling, dynamic physical interactions, and sound effects/music cues if applicable, with absolutely no spoken words.\nEnsure no sudden cuts, artifacting, or morphing glitches.`
+    speech: `{
+  "cinematography": {
+    "camera_type": "handheld",
+    "movement": {
+      "type": "orbit_cw",
+      "speed": "fast",
+      "easing": "ease_in_out"
+    },
+    "framing": "medium"
+  },
+  "subject": {
+    "primary": {
+      "type": "guided_by_frames",
+      "description": "seamless high-fidelity transition optimized for vertical social media with high-energy retention hook",
+      "action": "reacting with high energy within the first 2 seconds, performing dynamic actions to maximize retention"
+    }
+  },
+  "environment": {
+    "lighting": "maintain_from_frames",
+    "style_quality": "hyper-realistic, 8k resolution, cinematic lighting, unreal engine 5 style, masterfully executed"
+  },
+  "motion": {
+    "temporal_logic": "continuous",
+    "physics": "fluid_and_consistent",
+    "transitions": {
+      "from_start_frame": "match_cut",
+      "to_end_frame": "smooth_interpolation"
+    }
+  },
+  "audio": {
+    "dialogue": [
+      {
+        "character": "personagem",
+        "speech": "fala inteligente, cativante e altamente identificável para redes sociais"
+      }
+    ],
+    "language": "pt-BR",
+    "lip_sync": "perfect"
+  },
+  "negative_prompts": [
+    "glitch", "deformed details", "sudden cuts", "abrupt transition", "unstable frames"
+  ]
+}`,
+    sfx: `{
+  "cinematography": {
+    "camera_type": "handheld",
+    "movement": {
+      "type": "orbit_cw",
+      "speed": "fast",
+      "easing": "ease_in_out"
+    },
+    "framing": "medium"
+  },
+  "subject": {
+    "primary": {
+      "type": "guided_by_frames",
+      "description": "seamless high-fidelity transition optimized for vertical social media with high-energy retention hook",
+      "action": "reacting with high energy within the first 2 seconds, performing dynamic actions to maximize retention"
+    }
+  },
+  "environment": {
+    "lighting": "maintain_from_frames",
+    "style_quality": "hyper-realistic, 8k resolution, cinematic lighting, unreal engine 5 style, masterfully executed"
+  },
+  "motion": {
+    "temporal_logic": "continuous",
+    "physics": "fluid_and_consistent",
+    "transitions": {
+      "from_start_frame": "match_cut",
+      "to_end_frame": "smooth_interpolation"
+    }
+  },
+  "audio": {
+    "sound_effects": "enriched with immersive sound effects, realistic ambient audio cues, and an engaging cinematic background soundtrack to match the action perfectly",
+    "voice_dialogue": "none"
+  },
+  "negative_prompts": [
+    "glitch", "deformed details", "sudden cuts", "abrupt transition", "unstable frames"
+  ]
+}`,
+    silent: `{
+  "cinematography": {
+    "camera_type": "handheld",
+    "movement": {
+      "type": "orbit_cw",
+      "speed": "fast",
+      "easing": "ease_in_out"
+    },
+    "framing": "medium"
+  },
+  "subject": {
+    "primary": {
+      "type": "guided_by_frames",
+      "description": "seamless high-fidelity transition optimized for vertical social media with high-energy retention hook",
+      "action": "reacting with high energy within the first 2 seconds, performing dynamic actions to maximize retention"
+    }
+  },
+  "environment": {
+    "lighting": "maintain_from_frames",
+    "style_quality": "hyper-realistic, 8k resolution, cinematic lighting, unreal engine 5 style, masterfully executed"
+  },
+  "motion": {
+    "temporal_logic": "continuous",
+    "physics": "fluid_and_consistent",
+    "transitions": {
+      "from_start_frame": "match_cut",
+      "to_end_frame": "smooth_interpolation"
+    }
+  },
+  "audio": {
+    "sound_effects": "none",
+    "voice_dialogue": "none",
+    "silent": true
+  },
+  "negative_prompts": [
+    "glitch", "deformed details", "sudden cuts", "abrupt transition", "unstable frames"
+  ]
+}`
   },
   'video-from-img': {
-    speech: `Using the provided high-quality base image as a foundation, initiate a highly engaging, viral 9:16 vertical video sequence optimized for TikTok and Reels. The AI has absolute creative freedom to animate the scene and decide the ending of the video in the most unexpected, dynamic, and visually stunning way to maximize audience retention.\nTechnical quality: hyper-realistic, 8k resolution, cinematic lighting, unreal engine 5 style, masterfully executed, smooth fluid physics, and flawless temporal consistency.\nHook & Camera: Begin with a strong visual hook in the first 2 seconds, utilizing a dynamic camera movement such as a dolly zoom or rapid pan to capture immediate attention.\nAudio & Dialogue: If there is any speaking or character dialogue in the video, the characters must speak natively in Brazilian Portuguese (pt-BR) with perfect lip-sync, using the [character]: [speech] dubbing format (e.g., [personagem]: [fala]). The dialogue should be witty, engaging, and highly relatable for social media.\nEnsure the animation flows naturally towards a surprising, high-retention climax and ending.`,
-    sfx: `Using the provided high-quality base image as a foundation, initiate a highly engaging, viral 9:16 vertical video sequence optimized for TikTok and Reels. The AI has absolute creative freedom to animate the scene and decide the ending of the video in the most unexpected, dynamic, and visually stunning way to maximize audience retention.\nTechnical quality: hyper-realistic, 8k resolution, cinematic lighting, unreal engine 5 style, masterfully executed, smooth fluid physics, and flawless temporal consistency.\nHook & Camera: Begin with a strong visual hook in the first 2 seconds, utilizing a dynamic camera movement such as a dolly zoom or rapid pan to capture immediate attention.\nAudio & Dialogue: This video sequence must contain absolutely no spoken words, voiceover, or character dialogue. However, the scene must be enriched with immersive sound effects (SFX), realistic ambient audio cues, and an engaging cinematic background soundtrack to match the action perfectly, creating a rich auditory experience.\nEnsure the animation flows naturally towards a surprising, high-retention climax and ending.`,
-    silent: `Using the provided high-quality base image as a foundation, initiate a highly engaging, viral 9:16 vertical video sequence optimized for TikTok and Reels. The AI has absolute creative freedom to animate the scene and decide the ending of the video in the most unexpected, dynamic, and visually stunning way to maximize audience retention.\nTechnical quality: hyper-realistic, 8k resolution, cinematic lighting, unreal engine 5 style, masterfully executed, smooth fluid physics, and flawless temporal consistency.\nHook & Camera: Begin with a strong visual hook in the first 2 seconds, utilizing a dynamic camera movement such as a dolly zoom or rapid pan to capture immediate attention.\nAudio & Dialogue: This must be a purely visual, silent video sequence with no dialogue or speech. Focus completely on rich visual storytelling, dynamic physical interactions, and sound effects/music cues if applicable, with absolutely no spoken words.\nEnsure the animation flows naturally towards a surprising, high-retention climax and ending.`
+    speech: `{
+  "cinematography": {
+    "camera_type": "gimbal",
+    "movement": {
+      "type": "push_in",
+      "speed": "fast",
+      "easing": "ease_in_out"
+    },
+    "framing": "maintain_from_image"
+  },
+  "subject": {
+    "primary": {
+      "type": "based_on_image",
+      "description": "highly engaging viral video sequence using the base image as foundation",
+      "action": "starting with a strong visual hook in the first 2 seconds, flowing towards a surprising high-retention climax"
+    }
+  },
+  "environment": {
+    "lighting": "maintain_from_image",
+    "style_quality": "hyper-realistic, 8k resolution, cinematic lighting, unreal engine 5 style, masterfully executed"
+  },
+  "motion": {
+    "temporal_logic": "continuous",
+    "physics": "realistic_fluid"
+  },
+  "audio": {
+    "dialogue": [
+      {
+        "character": "personagem",
+        "speech": "diálogo rápido, espirituoso e divertido"
+      }
+    ],
+    "language": "pt-BR",
+    "lip_sync": "perfect"
+  },
+  "negative_prompts": [
+    "glitch", "deformed details", "sudden cuts", "abrupt transition", "unstable frames"
+  ]
+}`,
+    sfx: `{
+  "cinematography": {
+    "camera_type": "gimbal",
+    "movement": {
+      "type": "push_in",
+      "speed": "fast",
+      "easing": "ease_in_out"
+    },
+    "framing": "maintain_from_image"
+  },
+  "subject": {
+    "primary": {
+      "type": "based_on_image",
+      "description": "highly engaging viral video sequence using the base image as foundation",
+      "action": "starting with a strong visual hook in the first 2 seconds, flowing towards a surprising high-retention climax"
+    }
+  },
+  "environment": {
+    "lighting": "maintain_from_image",
+    "style_quality": "hyper-realistic, 8k resolution, cinematic lighting, unreal engine 5 style, masterfully executed"
+  },
+  "motion": {
+    "temporal_logic": "continuous",
+    "physics": "realistic_fluid"
+  },
+  "audio": {
+    "sound_effects": "enriched with immersive sound effects, realistic ambient audio cues, and an engaging cinematic background soundtrack to match the action perfectly",
+    "voice_dialogue": "none"
+  },
+  "negative_prompts": [
+    "glitch", "deformed details", "sudden cuts", "abrupt transition", "unstable frames"
+  ]
+}`,
+    silent: `{
+  "cinematography": {
+    "camera_type": "gimbal",
+    "movement": {
+      "type": "push_in",
+      "speed": "fast",
+      "easing": "ease_in_out"
+    },
+    "framing": "maintain_from_image"
+  },
+  "subject": {
+    "primary": {
+      "type": "based_on_image",
+      "description": "highly engaging viral video sequence using the base image as foundation",
+      "action": "starting with a strong visual hook in the first 2 seconds, flowing towards a surprising high-retention climax"
+    }
+  },
+  "environment": {
+    "lighting": "maintain_from_image",
+    "style_quality": "hyper-realistic, 8k resolution, cinematic lighting, unreal engine 5 style, masterfully executed"
+  },
+  "motion": {
+    "temporal_logic": "continuous",
+    "physics": "realistic_fluid"
+  },
+  "audio": {
+    "sound_effects": "none",
+    "voice_dialogue": "none",
+    "silent": true
+  },
+  "negative_prompts": [
+    "glitch", "deformed details", "sudden cuts", "abrupt transition", "unstable frames"
+  ]
+}`
   }
 };
 

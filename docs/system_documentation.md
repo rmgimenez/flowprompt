@@ -146,67 +146,96 @@ O coração estético dos prompts profissionais gerados pelo FlowPrompt repousa 
 *   **Fórmula:**
     ```javascript
     (vals) => {
-      let prompt = `A professional, cinematic video sequence shot with ${vals.cinematography}. The focus is on ${vals.subject} as they are ${vals.action}. The setting is a detailed ${vals.context}, carefully composed to highlight the depth of the scene. The visual aesthetic is ${vals.style_ambiance}, rendered in high resolution with realistic textures and fluid motion.`;
-      
-      if (vals.characters_definition && vals.characters_definition.trim() !== '') {
-        prompt += ` Character details: ${vals.characters_definition}.`;
-      }
+      const camera = parseCamera(vals.cinematography);
+      const characters = parseCharacters(vals.characters_definition);
+      const dialogue = parseDialogue(vals.dialogue);
+      const envAmbiance = parseAmbiance(vals.context, vals.style_ambiance);
 
-      if (vals.dialogue && vals.dialogue.trim() !== '') {
-        prompt += ` During the sequence, the characters speak the following dialogue using the format [character]: [speech] with perfect lip-sync natively in Brazilian Portuguese (pt-BR): "${vals.dialogue}".`;
-      }
-      
-      return prompt;
+      const jsonPrompt = {
+        cinematography: camera,
+        subject: {
+          primary: {
+            type: characters.length > 0 ? "character" : "environment",
+            description: vals.subject || "main focus",
+            action: vals.action || "natural flow",
+            attributes: vals.style_ambiance && !vals.style_ambiance.includes('<<<') 
+              ? vals.style_ambiance.split(',').map(s => s.trim()).filter(s => s !== '') 
+              : []
+          },
+          ...(characters.length > 0 ? { characters } : {})
+        },
+        environment: {
+          context: vals.context || "cinematic space",
+          ...envAmbiance
+        },
+        motion: {
+          temporal_logic: "continuous",
+          physics: "realistic",
+          speed_ramp: "constant"
+        },
+        ...(dialogue.length > 0 ? {
+          audio: {
+            dialogue,
+            language: "pt-BR",
+            lip_sync: "perfect"
+          }
+        } : {}),
+        negative_prompts: VIDEO_NEGATIVE_PROMPTS
+      };
+
+      return JSON.stringify(jsonPrompt, null, 2);
     }
     ```
 
 ### 5.2. Modo: Interpolação Viral de 2 Frames (Veo)
-Este modo otimiza transições fluidas e dinâmicas de 2 imagens fornecidas para o TikTok/Reels, com foco em física consistente e retenção.
+Este modo otimiza transições fluidas e dinâmicas de 2 imagens fornecidas para o TikTok/Reels, com foco em física consistente e retenção usando o formato estruturado do Veo 3.1.
 *   **ID:** `video-from-frames`
 *   **Fórmula:**
     ```javascript
     (vals) => {
-      let prompt = `Using the start frame and end frame as structural guides, animate a high-fidelity, seamless transition optimized for vertical social media.`;
-      
-      if (vals.visual_quality && vals.visual_quality.trim() !== '') {
-        prompt += ` Technical quality: ${vals.visual_quality}.`;
-      } else {
-        prompt += ` Technical quality: hyper-realistic, 8k resolution, cinematic lighting, masterfully executed.`;
-      }
+      const camera = parseCamera(vals.camera_motion);
+      const characters = parseCharacters(vals.characters_definition);
+      const dialogue = parseDialogue(vals.dialogue);
 
-      if (vals.object_interaction && vals.object_interaction.trim() !== '') {
-        prompt += ` Key transition event and magic interaction: ${vals.object_interaction}.`;
-      }
+      const jsonPrompt = {
+        cinematography: camera,
+        subject: {
+          primary: {
+            type: "guided_by_frames",
+            description: "seamless high-fidelity transition connecting the start and end frames",
+            action: vals.initial_hook || "natural fluid connection",
+            magic_interaction: vals.object_interaction || "smooth trajectory interpolation"
+          },
+          ...(characters.length > 0 ? { characters } : {})
+        },
+        environment: {
+          lighting: "maintain_from_frames",
+          atmosphere: {
+            weather: "maintain_from_frames",
+            mood: vals.general_notes || "funny comedic skit for TikTok"
+          },
+          style_quality: vals.visual_quality || "hyper-realistic, 8k, cinematic lighting"
+        },
+        motion: {
+          temporal_logic: "continuous",
+          physics: "fluid_pacing_and_retention",
+          transitions: {
+            from_start_frame: "match_cut",
+            to_end_frame: "smooth_interpolation"
+          }
+        },
+        audio: {
+          sound_effects: vals.sound_effects || "no audio",
+          ...(dialogue.length > 0 ? {
+            dialogue,
+            language: "pt-BR",
+            lip_sync: "perfect"
+          } : {})
+        },
+        negative_prompts: VIDEO_NEGATIVE_PROMPTS
+      };
 
-      if (vals.initial_hook && vals.initial_hook.trim() !== '') {
-        prompt += ` Main action and retention hook: ${vals.initial_hook}.`;
-      } else {
-        prompt += ` The characters perform a natural and fluid motion to connect the two poses.`;
-      }
-
-      prompt += ` The environment remains perfectly consistent with the provided frames.`;
-
-      if (vals.general_notes && vals.general_notes.trim() !== '') {
-        prompt += ` Tone and atmosphere: ${vals.general_notes}.`;
-      }
-
-      prompt += ` Dynamic camera: ${vals.camera_motion || 'Smooth cinematic movement'}.`;
-
-      if (vals.characters_definition && vals.characters_definition.trim() !== '') {
-        prompt += ` Visual identity details: ${vals.characters_definition}.`;
-      }
-
-      if (vals.sound_effects && vals.sound_effects.toLowerCase() !== 'no audio' && vals.sound_effects.toLowerCase() !== 'sem som') {
-        prompt += ` SFX: ${vals.sound_effects}.`;
-      }
-      
-      if (vals.dialogue && vals.dialogue.trim() !== '') {
-        prompt += ` Dubbing: The characters speak the following dialogue with perfect lip-sync in Brazilian Portuguese (pt-BR): "${vals.dialogue}". Use the format [character]: [speech].`;
-      }
-      
-      prompt += ` Ensure extreme temporal consistency, fluid physics, and no sudden cuts.`;
-      
-      return prompt;
+      return JSON.stringify(jsonPrompt, null, 2);
     }
     ```
 
