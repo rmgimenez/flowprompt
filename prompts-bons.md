@@ -24,27 +24,20 @@ A high-resolution, professional-grade photograph of Samurai [ANIMAL] who is merg
 
 A funny and expressive [ANIMAL] wearing a tall professional white chef's hat and a tiny white apron, standing behind a counter in a high-end restaurant kitchen. This subject has a shocked and panicked facial expression with wide eyes as a giant cloud of white flour explodes in the air, covering its face. Setting: A professional gourmet kitchen with stainless steel counters, miniature kitchen utensils, and fresh scattered vegetables. Cinematography: Action freeze-frame, macro shot focusing on the flour particles and the character's detailed skin or fur textures. Lighting: Bright, warm professional kitchen lighting with steam reflections and a slight lens flare. Technical Fidelity: Masterpiece, hyper-realistic, 8k resolution, cinematic composition, vertical 9:16 aspect ratio.
 
-## Animais Nacionais Estilo Pixar (Coleção Viral)
+## Países como Animais Filhotes: Estilo Pixar (Estratégia Viral)
 
-### Exemplo: Onça-Pintada (Brasil)
-A cute baby Jaguar (Onça-Pintada) with large expressive eyes and heart-shaped spots, wearing a tiny Brazil flag bandana, playing with a miniature soccer ball. **The image features bold 3D typography at the bottom displaying the country name "BRASIL" in a friendly Pixar-style font.** Setting: A lush, sun-drenched Amazon rainforest clearing with tropical flowers. Cinematography: Macro 3D animation style, Pixar aesthetic, shallow depth of field. Lighting: Warm dappled sunlight filtering through leaves. Technical Fidelity: Masterpiece, 8k, hyper-detailed fur textures, vibrant colors, vertical 9:16.
+Esta coleção é projetada para maximizar o engajamento no TikTok através do orgulho nacional e da estética "Premium" de animação 3D.
 
-**Por que este prompt é bom?**
-1. **Conexão Emocional Imediata:** O estilo "Baby Animal" com olhos grandes (estilo Pixar/Disney) gera alta retenção e compartilhamento (fator "fofura").
-2. **Identidade Cultural e Texto Local:** O uso de acessórios e o nome do país escrito em **Português (BRASIL)** cria identificação direta e orgulho nacional, incentivando comentários.
-3. **Fórmula Técnica Rígida:** Segue a estrutura [Subject] + [Action] + [Setting] + [Typography] + [Cinematography] + [Lighting] + [Quality].
-4. **Otimização para TikTok:** Formato vertical 9:16 e iluminação cinematográfica que se destaca no scroll infinito.
+### 💎 Por que este prompt é bom?
+1. **Gatilho de Identificação:** Ao colocar o nome do país em **Português (Brasil)** e a bandeira, você força o usuário a parar o scroll para ver como o país dele ficou.
+2. **Retenção Emocional:** O estilo Pixar (olhos grandes, texturas macias, iluminação quente) gera uma resposta emocional positiva imediata.
+3. **Padrão Visual Rígido:** Manter o mesmo padrão de iluminação e tipografia 3D em todos os slides cria uma experiência coesa e profissional.
 
-### Música
+### 🛠️ Fórmula Mestre (Prompt Técnico)
+`A hyper-adorable [ANIMAL] cub, Pixar 3D animation style, big expressive eyes, [ACCESSORY] with the [COUNTRY] flag. [SETTING] background. The image features bold stylized 3D bubble text at the bottom displaying "[COUNTRY_NAME_IN_PORTUGUESE]". Cinematic lighting, 8k resolution, masterpiece, ray tracing, vibrant colors.`
 
-Use uma trilha sonora que comece calma e "mágica" (estilo introdução da Disney) e mude para algo mais rítmico conforme os animais aparecem.
-
-### Descrição do vídeo para o Tik Tok
-
-Duvido você escolher apenas um! 😱
-Os animais nacionais de cada país se fossem bebês da Pixar. O final é o melhor! 🐯🇦🇺🇧🇷
-Marca alguém que precisa ver essa fofura hoje! 💖
-#aiart #curiosidades #paises #fofura #animais #shibainu #brasil #midjourney #aigenerated
+### 🌍 Lista de Países e Animais (53 Países - Especial Copa 2026)
+1. **BRASIL:** Onça-Pintada | 2. **JAPÃO:** Panda Vermelho | 3. **EUA:** Águia Careca | 4. **AUSTRÁLIA:** Coala | 5. **EGITO:** Raposa Fennec | 6. **ÍNDIA:** Tigre de Bengala | 7. **CANADÁ:** Castor | 8. **FRANÇA:** Bulldog Francês | 9. **CHINA:** Panda Gigante | 10. **PORTUGAL:** Lince Ibérico | 11. **ARGENTINA:** Pinguim | 12. **MÉXICO:** Axolote | 13. **ALEMANHA:** Pastor Alemão | 14. **ITÁLIA:** Lobo | 15. **ÁFRICA DO SUL:** Leão | 16. **RÚSSIA:** Urso Pardo | 17. **MARROCOS:** Camelo | 18. **HAITI:** Pássaro Trogon | 19. **ESCÓCIA:** Vaca das Terras Altas (Highland Cow) | 20. **PARAGUAI:** Capivara | 21. **URUGUAI:** Ovelha | 22. **EQUADOR:** Tartaruga de Galápagos | 23. **COLÔMBIA:** Urso de Óculos | 24. **COSTA RICA:** Bicho-Preguiça | 25. **INGLATERRA:** Bulldog Inglês | 26. **ESPANHA:** Bezerro (Touro) | 27. **HOLANDA:** Leão Holandês | 28. **BÉLGICA:** Lobo Europeu | 29. **SUÍÇA:** Cão São Bernardo | 30. **CROÁCIA:** Dálmata | 31. **TURQUIA:** Lobo Cinzento | 32. **SUÉCIA:** Rena | 33. **NORUEGA:** Alce | 34. **ÁUSTRIA:** Marmota | 35. **CHÉQUIA:** Lince | 36. **BÓSNIA:** Cão Tornjak | 37. **SENEGAL:** Leão | 38. **COSTA DO MARFIM:** Elefante | 39. **GANA:** Águia | 40. **TUNÍSIA:** Águia de Cartago | 41. **ARGÉLIA:** Macaco-de-Gibraltar | 42. **RD CONGO:** Gorila | 43. **CABO VERDE:** Tartaruga Marinha | 44. **COREIA DO SUL:** Tigre Branco | 45. **ARÁBIA SAUDITA:** Leopardo-da-Arábia | 46. **CATAR:** Falcão | 47. **IRÃ:** Guepardo Asiático | 48. **IRAQUE:** Cavalo Árabe | 49. **JORDÂNIA:** Órix | 50. **UZBEQUISTÃO:** Leopardo das Neves | 51. **NOVA ZELÂNDIA:** Pássaro Kiwi | 52. **PANAMÁ:** Bicho-Preguiça | 53. **CURAÇAO:** Flamingo
 
 ## Pôster de filmes no estilo do filme Parasita (Parasite)
 
