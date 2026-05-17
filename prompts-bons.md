@@ -107,3 +107,31 @@ Este prompt foi desenvolvido especificamente para o modelo de vídeo **Google Ve
 ## Transforma um filme em um poster estilo Dragon Ball Z
 
 Arte oficial vertical no estilo de pôster/anime de Dragon Ball para uma adaptação do filme o senhor dos anéis 3. A composição deve ser uma colagem épica com múltiplos painéis dinâmicos inspirados nas artes promocionais clássicas de Dragon Ball Z e Dragon Ball Super. O protagonista principal deve aparecer no centro em uma pose poderosa e heroica, com aura de energia intensa, expressão determinada e músculos destacados no estilo anime shounen. O antagonista principal deve aparecer com presença ameaçadora, emanando energia sombria e olhar intimidador. Inclua cenas de batalha explosivas, personagens secundários importantes do filme reinterpretados como guerreiros de Dragon Ball, ataques de energia gigantes, efeitos de velocidade, destruição cinematográfica e cenários icônicos do filme recriados no universo de Dragon Ball. Adicione elementos visuais típicos do anime como ki brilhando, explosões coloridas, rachaduras no chão, partículas de energia, raios de luz e poses dramáticas. No centro da arte, exiba o título do filme em um logotipo inspirado nas aberturas e pôsteres clássicos de Dragon Ball, com tipografia grande, energética e estilizada. O visual deve transmitir ação extrema, aventura e sensação de batalha lendária. Estilo visual: arte promocional oficial de anime, estética Dragon Ball Z/Dragon Ball Super, cores vibrantes e saturadas, iluminação intensa, traços limpos, cel shading detalhado, efeitos de energia brilhantes, composição cinematográfica, alto nível de detalhes, qualidade premium 8K, formato vertical 9:16. Todo texto presente no pôster deve estar em português do Brasil.
+
+## Fórmula F1 1990 x Pinturas de 2026: Perspectiva 3/4 (Coleção Retro Viral)
+
+Este estilo inverte a lógica do tempo ao colocar os chassis icônicos, mecânicos e puros de **1990** (cockpit aberto sem Halo, pneus Goodyear slicks gigantescos, asa traseira quadrada e suspensão exposta) pintados com a identidade visual, patrocinadores e cores vibrantes das **equipes de 2026**.
+
+### 💎 Por que este prompt é bom?
+1. **Fidelidade Histórica Forçada:** O uso sistemático de exclusões estruturais ("completely open cockpit with no halo device", "simple blocky square rear wing") impede a IA de desenhar um carro moderno com roupagem retrô.
+2. **A Perspectiva de Ouro (3/4):** Exigir explicitamente "Low-angle dramatic 3/4 front action shot" garante que as fotos mostrem toda a aerodinâmica dianteira e mantenham a lateral e as marcas patrocinadoras totalmente legíveis.
+3. **Fotografia Analógica Realista:** Elementos como "35mm film", "rich analog grain" e "vintage motorsport photography style" trazem o clima autêntico das transmissões de F1 da era Senna/Prost.
+
+### 🛠️ Fórmula Mestre (Prompt Técnico)
+`An authentic, genuine 1990 Formula 1 racing car chassis, vintage [BODY_SHAPE] body shape of a 1990 [CHASSIS]. The car features a completely open cockpit with no halo device, very wide vintage Goodyear slick tires, a simple blocky square rear wing, and retro exposed rear suspension. The entire 1990 vintage chassis is custom-painted with the modern [MODERN_LIVERY] livery. Low-angle dramatic 3/4 front action shot, speeding through [TRACK_LOCATION] in 1990, captured on 35mm film, rich analog grain, motion blur, vintage motorsport photography style, highly detailed.`
+
+### 🏎️ Exemplos Práticos de Equipes (Grid 2026)
+
+* **Oracle Red Bull Racing:**
+  `An authentic, genuine 1990 Formula 1 racing car chassis, vintage low-slung wide body shape of a 1990 Ferrari 641. The car features a completely open cockpit with no halo device, very wide vintage Goodyear slick tires, a simple blocky square rear wing, and retro exposed rear suspension. The entire 1990 vintage chassis is custom-painted with the modern matte dark navy blue and yellow Red Bull Racing livery with the red bull graphics. Low-angle dramatic 3/4 front action shot, speeding through Monza Curva Grande in 1990, captured on 35mm film, rich analog grain, motion blur, vintage motorsport photography style, highly detailed.`
+
+* **Scuderia Ferrari:**
+  `An authentic, genuine 1990 Formula 1 racing car chassis, vintage sleek high-nose body shape of a 1990 Ferrari 641. The car features a completely open cockpit with no halo device, very wide vintage Goodyear slick tires, a simple blocky square rear wing, and retro exposed rear suspension. The entire 1990 vintage chassis is custom-painted with the modern glossy scarlet Scuderia Ferrari HP livery with white and yellow accent lines and Shell decals. Low-angle dramatic 3/4 front action shot, speeding through Imola Acque Minerali in 1990, captured on 35mm film, rich analog grain, motion blur, vintage motorsport photography style, highly detailed.`
+
+* **McLaren Racing:**
+  `An authentic, genuine 1990 Formula 1 racing car chassis, vintage wide low-nose body shape of a 1990 McLaren MP4/5B. The car features a completely open cockpit with no halo device, very wide vintage Goodyear slick tires, a simple blocky square rear wing, and retro exposed rear suspension. The entire 1990 vintage chassis is custom-painted with the modern high-vis papaya orange and anthracite grey McLaren Racing livery with Google Chrome accents. Low-angle dramatic 3/4 front action shot, speeding through Suzuka S-Curves in 1990, captured on 35mm film, rich analog grain, motion blur, vintage motorsport photography style, highly detailed.`
+
+### 📈 Dicas de Edição para TikTok/Reels
+- **Trilha Sonora:** Use faixas rápidas de Synthwave/Phonk ou monte uma trilha sonora combinando o ronco estridente dos motores V10 clássicos abrindo o vídeo.
+- **Transição Coesa:** Realize cortes rápidos (1.5 a 2 segundos) sempre acompanhando a batida mais forte do áudio.
+- **Hook Text:** Adicione uma pergunta instigante na tela: `"E se a F1 de 1990 usasse as pinturas de HOJE? 🤔🔥"` para explodir a taxa de retenção dos primeiros 3 segundos.
