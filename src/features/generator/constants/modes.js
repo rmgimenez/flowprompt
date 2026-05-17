@@ -117,9 +117,9 @@ const parseCharacters = (charStr) => {
     const matches = [...line.matchAll(/\[([^\]]+)\]/g)].map(m => m[1]);
     if (matches.length >= 2) {
       chars.push({
-        name: matches[0],
-        description: matches[1],
-        voice_attributes: matches[2] || ''
+        name: matches[0].trim(),
+        description: matches[1].trim(),
+        voice_attributes: matches[2] ? matches[2].trim() : ''
       });
     }
   });
@@ -130,18 +130,87 @@ const parseDialogue = (dialStr) => {
   if (!dialStr || dialStr.includes('<<<') || dialStr.trim() === '') return [];
   const lines = dialStr.split('\n').filter(l => l.trim() !== '');
   const dialogue = [];
+  let currentTime = 0.0;
+
   lines.forEach(line => {
-    const parts = line.split(':');
-    if (parts.length >= 2) {
-      const charPart = parts[0].replace(/[\[\]]/g, '').trim();
-      const speechPart = parts[1].replace(/[\[\]]/g, '').trim();
-      dialogue.push({
-        character: charPart,
-        speech: speechPart
-      });
+    const colonIdx = line.indexOf(':');
+    if (colonIdx === -1) return;
+
+    let charPart = line.substring(0, colonIdx).trim();
+    let speechPart = line.substring(colonIdx + 1).trim();
+
+    // Clean brackets
+    speechPart = speechPart.replace(/^\[|\]$/g, '').trim();
+
+    // Extract emotion in parentheses from charPart
+    let emotion = 'natural';
+    const emotionMatch = charPart.match(/\(([^)]+)\)/);
+    if (emotionMatch) {
+      emotion = emotionMatch[1].trim();
+      charPart = charPart.replace(/\(([^)]+)\)/, '').trim();
     }
+    
+    charPart = charPart.replace(/^\[|\]$/g, '').trim();
+
+    // Auto-detect emotion from speech punctuation if it is still 'natural'
+    if (emotion === 'natural') {
+      const lowerSpeech = speechPart.toLowerCase();
+      if (lowerSpeech.includes('haha') || lowerSpeech.includes('kkk') || lowerSpeech.includes('risada') || lowerSpeech.includes('rsrs')) {
+        emotion = 'laughing';
+      } else if (speechPart.endsWith('!')) {
+        emotion = 'excited';
+      } else if (speechPart.endsWith('?')) {
+        emotion = 'inquisitive';
+      } else if (speechPart.endsWith('...')) {
+        emotion = 'thoughtful';
+      }
+    }
+
+    // Dynamic timing calculation based on word count
+    const words = speechPart.split(/\s+/).filter(w => w.length > 0);
+    const duration = Math.max(1.5, Math.min(6.0, words.length * 0.35)); // ~3 words per second, min 1.5s, max 6s
+    const timing_start = parseFloat(currentTime.toFixed(1));
+    const timing_end = parseFloat((currentTime + duration).toFixed(1));
+    currentTime = parseFloat((timing_end + 0.3).toFixed(1)); // 0.3s gap
+
+    dialogue.push({
+      character: charPart,
+      speech: speechPart,
+      emotion_tone: emotion,
+      timing: {
+        start: timing_start,
+        end: timing_end
+      },
+      voice_pacing: duration > 4 ? "moderate" : "lively",
+      ducking_level_db: -12
+    });
   });
+
   return dialogue;
+};
+
+const enrichCharacters = (characters, dialogue) => {
+  return characters.map(char => {
+    const charNameLower = char.name.toLowerCase().trim();
+    const charDialogue = dialogue.filter(d => d.character.toLowerCase().trim() === charNameLower);
+    
+    const expression_timeline = charDialogue.map(d => ({
+      time_offset: d.timing.start,
+      expression: d.emotion_tone,
+      intensity: d.emotion_tone === 'laughing' || d.emotion_tone === 'excited' ? 0.9 : 0.7
+    }));
+
+    return {
+      name: char.name,
+      description: char.description,
+      voice_attributes: char.voice_attributes,
+      visual_consistency_id: `char_seed_${charNameLower.replace(/[^a-z0-9]/g, '')}_v31`,
+      motion_signature: char.description.toLowerCase().includes('agitad') || char.voice_attributes.toLowerCase().includes('agitad') 
+        ? "high_energy_expressive" 
+        : "composed_natural",
+      ...(expression_timeline.length > 0 ? { expression_timeline } : {})
+    };
+  });
 };
 
 const parseAmbiance = (context, styleAmbiance) => {
@@ -223,8 +292,8 @@ export const MODES = {
     helpText: 'Para obter os melhores resultados, seja específico sobre o movimento da câmera e a iluminação. Use termos como "cinematic", "slow motion" ou "handheld" para definir o ritmo e a emoção da cena.',
     formula: (vals) => {
       const camera = parseCamera(vals.cinematography);
-      const characters = parseCharacters(vals.characters_definition);
       const dialogue = parseDialogue(vals.dialogue);
+      const characters = enrichCharacters(parseCharacters(vals.characters_definition), dialogue);
       const envAmbiance = parseAmbiance(vals.context, vals.style_ambiance);
 
       const jsonPrompt = {
@@ -280,11 +349,12 @@ export const MODES = {
       { 
         id: 'dialogue', 
         label: 'Falas dos Personagens (Dublagem)', 
-        hint: 'Use o formato [personagem]: [fala]', 
-        placeholder: 'Ex: [morango]: [oi, eu sou a morango]', 
+        hint: 'Use o formato [personagem] (emoção): [fala]', 
+        placeholder: 'Ex: [morango] (feliz): [oi, eu sou a morango!]', 
         type: 'textarea', 
         suggestions: [
-          { label: 'Exemplo Morango', value: '[morango]: [oi, eu sou a morango]' },
+          { label: 'Diálogo Expressivo', value: '[morango] (feliz): [olá abacaxi, você viu o sol hoje?!]\n[abacaxi] (calmo): [sim morango, ele está radiante e quente!]\n[uva] (sarcástica): [radiante? está um forno isso aqui!]' },
+          { label: 'Comédia Rápida', value: '[morango] (rindo): [hahaha abacaxi, você parece uma coroa!]\n[abacaxi] (irritado): [ei morango, respeite minha realeza vegetal!]' },
           { label: 'Sem Fala', value: '' }
         ] 
       }
@@ -297,8 +367,8 @@ export const MODES = {
     helpText: 'Dê vida às suas fotos! Descreva o que deve se mover na cena, o movimento de câmera e os efeitos sonoros. Dica: você pode escolher "Sem Som" se desejar apenas a animação visual.',
     formula: (vals) => {
       const camera = parseCamera(vals.camera_motion);
-      const characters = parseCharacters(vals.characters_definition);
       const dialogue = parseDialogue(vals.dialogue);
+      const characters = enrichCharacters(parseCharacters(vals.characters_definition), dialogue);
 
       const jsonPrompt = {
         cinematography: {
@@ -431,11 +501,12 @@ export const MODES = {
       { 
         id: 'dialogue', 
         label: 'Falas dos Personagens (Dublagem)', 
-        hint: 'Use o formato [personagem]: [fala]', 
-        placeholder: 'Ex: [morango]: [oi, eu sou a morango]', 
+        hint: 'Use o formato [personagem] (emoção): [fala]', 
+        placeholder: 'Ex: [morango] (feliz): [oi, eu sou a morango!]', 
         type: 'textarea', 
         suggestions: [
-          { label: 'Exemplo Morango', value: '[morango]: [oi, eu sou a morango]' },
+          { label: 'Diálogo Expressivo', value: '[morango] (feliz): [olá abacaxi, você viu o sol hoje?!]\n[abacaxi] (calmo): [sim morango, ele está radiante e quente!]\n[uva] (sarcástica): [radiante? está um forno isso aqui!]' },
+          { label: 'Comédia Rápida', value: '[morango] (rindo): [hahaha abacaxi, você parece uma coroa!]\n[abacaxi] (irritado): [ei morango, respeite minha realeza vegetal!]' },
           { label: 'Sem Fala', value: '' }
         ] 
       }
@@ -573,8 +644,8 @@ export const MODES = {
     helpText: 'Foque nos primeiros 2 segundos (O Gancho) e na trajetória dos objetos para evitar glitches e maximizar o engajamento.',
     formula: (vals) => {
       const camera = parseCamera(vals.camera_motion);
-      const characters = parseCharacters(vals.characters_definition);
       const dialogue = parseDialogue(vals.dialogue);
+      const characters = enrichCharacters(parseCharacters(vals.characters_definition), dialogue);
 
       const jsonPrompt = {
         cinematography: camera,
@@ -719,9 +790,13 @@ export const MODES = {
       { 
         id: 'dialogue', 
         label: 'Falas (Dublagem pt-BR)', 
-        hint: 'Use [personagem]: [fala]', 
-        placeholder: 'Ex: [uva]: [olha só isso!]', 
-        type: 'textarea'
+        hint: 'Use o formato [personagem] (emoção): [fala]', 
+        placeholder: 'Ex: [uva] (assustada): [olha só isso!]', 
+        type: 'textarea',
+        suggestions: [
+          { label: 'Diálogo Expressivo', value: '[morango] (feliz): [olá abacaxi, você viu o sol hoje?!]\n[abacaxi] (calmo): [sim morango, ele está radiante e quente!]\n[uva] (sarcástica): [radiante? está um forno isso aqui!]' },
+          { label: 'Comédia Rápida', value: '[morango] (rindo): [hahaha abacaxi, você parece uma coroa!]\n[abacaxi] (irritado): [ei morango, respeite minha realeza vegetal!]' }
+        ]
       },
       {
         id: 'help_info',
@@ -735,7 +810,7 @@ export const MODES = {
 📝 GUIA RÁPIDO DOS CAMPOS:
 • Personagens: Mantenha este campo idêntico em todos os vídeos para que seu público reconheça sua "marca".
 • Qualidade Visual: Você pode combinar várias sugestões. Ex: "8k, Unreal Engine 5, Pixar Style".
-• Dublagem: O formato [personagem]: [fala] é obrigatório para que a IA saiba exatamente quem está falando e mova a boca correta.
+• Dublagem: O formato [personagem] (emoção): [fala] é recomendado para que a IA saiba a entonação correta, crie a linha do tempo e mova a boca correspondente de forma perfeita.
 • Campos Vazios: Não se preocupe em preencher tudo. Se deixar vazio, o sistema usa "Default Inteligentes" para garantir que o vídeo não fique parado.`
       }
     ]
