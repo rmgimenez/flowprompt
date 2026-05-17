@@ -195,25 +195,25 @@
 
 .auxiliaryButtons {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(3, 1fr);
   gap: 0.75rem;
   margin-top: 0.25rem;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 768px) {
   .auxiliaryButtons {
     grid-template-columns: 1fr;
   }
 }
 
-.auxBtnSpeech, .auxBtnNoSpeech {
+.auxBtnSpeech, .auxBtnSfx, .auxBtnSilent {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  padding: 0.75rem 1rem;
+  padding: 0.75rem 0.5rem;
   border-radius: 10px;
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -234,13 +234,26 @@
   box-shadow: 0 4px 15px rgba(168, 85, 247, 0.25);
 }
 
-.auxBtnNoSpeech {
+.auxBtnSfx {
+  background: linear-gradient(135deg, rgba(13, 148, 136, 0.15), rgba(6, 182, 212, 0.15));
+  border-color: rgba(13, 148, 136, 0.3);
+  color: #2dd4bf;
+}
+
+.auxBtnSfx:hover {
+  background: linear-gradient(135deg, rgba(13, 148, 136, 0.25), rgba(6, 182, 212, 0.25));
+  border-color: #14b8a6;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(20, 184, 166, 0.25);
+}
+
+.auxBtnSilent {
   background: linear-gradient(135deg, rgba(236, 72, 153, 0.15), rgba(244, 63, 94, 0.15));
   border-color: rgba(236, 72, 153, 0.3);
   color: #f472b6;
 }
 
-.auxBtnNoSpeech:hover {
+.auxBtnSilent:hover {
   background: linear-gradient(135deg, rgba(236, 72, 153, 0.25), rgba(244, 63, 94, 0.25));
   border-color: #ec4899;
   transform: translateY(-2px);

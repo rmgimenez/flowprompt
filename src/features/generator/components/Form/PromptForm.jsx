@@ -1,36 +1,42 @@
 import React, { useMemo, useState } from 'react';
 import styles from './PromptForm.module.css';
-import { Wand2, Eraser, MessageSquare, MessageSquareOff, Sparkles, Check } from 'lucide-react';
+import { Wand2, Eraser, MessageSquare, Volume2, VolumeX, Sparkles, Check } from 'lucide-react';
 import { clsx } from 'clsx';
 
 const VIRAL_PROMPTS = {
   'video-from-frames': {
     speech: `Using the provided start frame and end frame as absolute structural guides, generate a highly engaging, viral 9:16 vertical video transition optimized for TikTok and Reels. The AI has absolute creative freedom to animate the transition in the most dynamic, visually stunning, and creative way possible to maximize audience retention. \nTechnical quality: hyper-realistic, 8k resolution, cinematic lighting, unreal engine 5 style, masterfully executed, smooth fluid physics, and flawless temporal consistency.\nHook & Camera: Start the sequence with a high-energy camera snap-zoom or orbit to capture immediate attention within the first 2 seconds, maintaining intense pacing.\nAudio & Dialogue: If there is any speaking or character dialogue in the video, the characters must speak natively in Brazilian Portuguese (pt-BR) with perfect lip-sync, using the [character]: [speech] dubbing format (e.g., [personagem]: [fala]). The dialogue should be witty, engaging, and highly relatable for social media.\nEnsure no sudden cuts, artifacting, or morphing glitches.`,
-    noSpeech: `Using the provided start frame and end frame as absolute structural guides, generate a highly engaging, viral 9:16 vertical video transition optimized for TikTok and Reels. The AI has absolute creative freedom to animate the transition in the most dynamic, visually stunning, and creative way possible to maximize audience retention. \nTechnical quality: hyper-realistic, 8k resolution, cinematic lighting, unreal engine 5 style, masterfully executed, smooth fluid physics, and flawless temporal consistency.\nHook & Camera: Start the sequence with a high-energy camera snap-zoom or orbit to capture immediate attention within the first 2 seconds, maintaining intense pacing.\nAudio & Dialogue: This must be a purely visual, silent video sequence with no dialogue or speech. Focus completely on rich visual storytelling, dynamic physical interactions, and sound effects/music cues if applicable, with absolutely no spoken words.\nEnsure no sudden cuts, artifacting, or morphing glitches.`
+    sfx: `Using the provided start frame and end frame as absolute structural guides, generate a highly engaging, viral 9:16 vertical video transition optimized for TikTok and Reels. The AI has absolute creative freedom to animate the transition in the most dynamic, visually stunning, and creative way possible to maximize audience retention. \nTechnical quality: hyper-realistic, 8k resolution, cinematic lighting, unreal engine 5 style, masterfully executed, smooth fluid physics, and flawless temporal consistency.\nHook & Camera: Start the sequence with a high-energy camera snap-zoom or orbit to capture immediate attention within the first 2 seconds, maintaining intense pacing.\nAudio & Dialogue: This video sequence must contain absolutely no spoken words, voiceover, or character dialogue. However, the scene must be enriched with immersive sound effects (SFX), realistic ambient audio cues, and an engaging cinematic background soundtrack to match the action perfectly, creating a rich auditory experience.\nEnsure no sudden cuts, artifacting, or morphing glitches.`,
+    silent: `Using the provided start frame and end frame as absolute structural guides, generate a highly engaging, viral 9:16 vertical video transition optimized for TikTok and Reels. The AI has absolute creative freedom to animate the transition in the most dynamic, visually stunning, and creative way possible to maximize audience retention. \nTechnical quality: hyper-realistic, 8k resolution, cinematic lighting, unreal engine 5 style, masterfully executed, smooth fluid physics, and flawless temporal consistency.\nHook & Camera: Start the sequence with a high-energy camera snap-zoom or orbit to capture immediate attention within the first 2 seconds, maintaining intense pacing.\nAudio & Dialogue: This must be a purely visual, silent video sequence with no dialogue or speech. Focus completely on rich visual storytelling, dynamic physical interactions, and sound effects/music cues if applicable, with absolutely no spoken words.\nEnsure no sudden cuts, artifacting, or morphing glitches.`
   },
   'video-from-img': {
     speech: `Using the provided high-quality base image as a foundation, initiate a highly engaging, viral 9:16 vertical video sequence optimized for TikTok and Reels. The AI has absolute creative freedom to animate the scene and decide the ending of the video in the most unexpected, dynamic, and visually stunning way to maximize audience retention.\nTechnical quality: hyper-realistic, 8k resolution, cinematic lighting, unreal engine 5 style, masterfully executed, smooth fluid physics, and flawless temporal consistency.\nHook & Camera: Begin with a strong visual hook in the first 2 seconds, utilizing a dynamic camera movement such as a dolly zoom or rapid pan to capture immediate attention.\nAudio & Dialogue: If there is any speaking or character dialogue in the video, the characters must speak natively in Brazilian Portuguese (pt-BR) with perfect lip-sync, using the [character]: [speech] dubbing format (e.g., [personagem]: [fala]). The dialogue should be witty, engaging, and highly relatable for social media.\nEnsure the animation flows naturally towards a surprising, high-retention climax and ending.`,
-    noSpeech: `Using the provided high-quality base image as a foundation, initiate a highly engaging, viral 9:16 vertical video sequence optimized for TikTok and Reels. The AI has absolute creative freedom to animate the scene and decide the ending of the video in the most unexpected, dynamic, and visually stunning way to maximize audience retention.\nTechnical quality: hyper-realistic, 8k resolution, cinematic lighting, unreal engine 5 style, masterfully executed, smooth fluid physics, and flawless temporal consistency.\nHook & Camera: Begin with a strong visual hook in the first 2 seconds, utilizing a dynamic camera movement such as a dolly zoom or rapid pan to capture immediate attention.\nAudio & Dialogue: This must be a purely visual, silent video sequence with no dialogue or speech. Focus completely on rich visual storytelling, dynamic physical interactions, and sound effects/music cues if applicable, with absolutely no spoken words.\nEnsure the animation flows naturally towards a surprising, high-retention climax and ending.`
+    sfx: `Using the provided high-quality base image as a foundation, initiate a highly engaging, viral 9:16 vertical video sequence optimized for TikTok and Reels. The AI has absolute creative freedom to animate the scene and decide the ending of the video in the most unexpected, dynamic, and visually stunning way to maximize audience retention.\nTechnical quality: hyper-realistic, 8k resolution, cinematic lighting, unreal engine 5 style, masterfully executed, smooth fluid physics, and flawless temporal consistency.\nHook & Camera: Begin with a strong visual hook in the first 2 seconds, utilizing a dynamic camera movement such as a dolly zoom or rapid pan to capture immediate attention.\nAudio & Dialogue: This video sequence must contain absolutely no spoken words, voiceover, or character dialogue. However, the scene must be enriched with immersive sound effects (SFX), realistic ambient audio cues, and an engaging cinematic background soundtrack to match the action perfectly, creating a rich auditory experience.\nEnsure the animation flows naturally towards a surprising, high-retention climax and ending.`,
+    silent: `Using the provided high-quality base image as a foundation, initiate a highly engaging, viral 9:16 vertical video sequence optimized for TikTok and Reels. The AI has absolute creative freedom to animate the scene and decide the ending of the video in the most unexpected, dynamic, and visually stunning way to maximize audience retention.\nTechnical quality: hyper-realistic, 8k resolution, cinematic lighting, unreal engine 5 style, masterfully executed, smooth fluid physics, and flawless temporal consistency.\nHook & Camera: Begin with a strong visual hook in the first 2 seconds, utilizing a dynamic camera movement such as a dolly zoom or rapid pan to capture immediate attention.\nAudio & Dialogue: This must be a purely visual, silent video sequence with no dialogue or speech. Focus completely on rich visual storytelling, dynamic physical interactions, and sound effects/music cues if applicable, with absolutely no spoken words.\nEnsure the animation flows naturally towards a surprising, high-retention climax and ending.`
   }
 };
 
 const PromptForm = ({ currentModeId, fields, values, onUpdate, onAddSuggestion, onRandomize, onClear }) => {
   const [copiedSpeech, setCopiedSpeech] = useState(false);
-  const [copiedNoSpeech, setCopiedNoSpeech] = useState(false);
+  const [copiedSfx, setCopiedSfx] = useState(false);
+  const [copiedSilent, setCopiedSilent] = useState(false);
 
-  const handleCopyAuxPrompt = (withSpeech) => {
+  const handleCopyAuxPrompt = (type) => {
     const modePrompts = VIRAL_PROMPTS[currentModeId];
     if (!modePrompts) return;
 
-    const promptText = withSpeech ? modePrompts.speech : modePrompts.noSpeech;
+    const promptText = modePrompts[type];
     navigator.clipboard.writeText(promptText);
 
-    if (withSpeech) {
+    if (type === 'speech') {
       setCopiedSpeech(true);
       setTimeout(() => setCopiedSpeech(false), 2000);
-    } else {
-      setCopiedNoSpeech(true);
-      setTimeout(() => setCopiedNoSpeech(false), 2000);
+    } else if (type === 'sfx') {
+      setCopiedSfx(true);
+      setTimeout(() => setCopiedSfx(false), 2000);
+    } else if (type === 'silent') {
+      setCopiedSilent(true);
+      setTimeout(() => setCopiedSilent(false), 2000);
     }
   };
 
@@ -156,20 +162,29 @@ const PromptForm = ({ currentModeId, fields, values, onUpdate, onAddSuggestion, 
             <button
               type="button"
               className={styles.auxBtnSpeech}
-              onClick={() => handleCopyAuxPrompt(true)}
-              title="Copiar prompt viral com fala nativa em português"
+              onClick={() => handleCopyAuxPrompt('speech')}
+              title="Copiar prompt viral com fala nativa em português e lip-sync"
             >
               {copiedSpeech ? <Check size={16} /> : <MessageSquare size={16} />}
-              <span>{copiedSpeech ? 'Copiado!' : 'IA Decide + Com Falas (pt-BR)'}</span>
+              <span>{copiedSpeech ? 'Copiado!' : 'IA Decide + Falas (pt-BR)'}</span>
             </button>
             <button
               type="button"
-              className={styles.auxBtnNoSpeech}
-              onClick={() => handleCopyAuxPrompt(false)}
-              title="Copiar prompt viral puramente visual e silencioso"
+              className={styles.auxBtnSfx}
+              onClick={() => handleCopyAuxPrompt('sfx')}
+              title="Copiar prompt viral sem fala, mas com efeitos sonoros (SFX) e ambiente"
             >
-              {copiedNoSpeech ? <Check size={16} /> : <MessageSquareOff size={16} />}
-              <span>{copiedNoSpeech ? 'Copiado!' : 'IA Decide + Sem Falas'}</span>
+              {copiedSfx ? <Check size={16} /> : <Volume2 size={16} />}
+              <span>{copiedSfx ? 'Copiado!' : 'IA Decide + Efeitos (SFX)'}</span>
+            </button>
+            <button
+              type="button"
+              className={styles.auxBtnSilent}
+              onClick={() => handleCopyAuxPrompt('silent')}
+              title="Copiar prompt viral puramente silencioso, sem áudio"
+            >
+              {copiedSilent ? <Check size={16} /> : <VolumeX size={16} />}
+              <span>{copiedSilent ? 'Copiado!' : 'IA Decide + Sem Áudio'}</span>
             </button>
           </div>
         </div>
