@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import styles from './PromptForm.module.css';
-import { Wand2, Eraser, MessageSquare, Volume2, VolumeX, Sparkles, Check } from 'lucide-react';
+import { Wand2, Eraser, MessageSquare, Volume2, VolumeX, Sparkles, Check, History } from 'lucide-react';
 import { clsx } from 'clsx';
 
 const VIRAL_PROMPTS = {
@@ -238,8 +238,53 @@ const PromptForm = ({ currentModeId, fields, values, onUpdate, onAddSuggestion, 
   const [copiedSpeech, setCopiedSpeech] = useState(false);
   const [copiedSfx, setCopiedSfx] = useState(false);
   const [copiedSilent, setCopiedSilent] = useState(false);
+  const [copiedRestore, setCopiedRestore] = useState(false);
 
   const handleCopyAuxPrompt = (type) => {
+    if (type === 'restore') {
+      const restorePrompt = `{
+  "transformation": {
+    "reference_mode": "structural_composition_fidelity",
+    "relationship_to_source": "high-fidelity restoration and precise colorization of the historical archive photograph, absolute structure and portrait line preservation",
+    "target_scenario": "flawlessly restored and realistically colorized version of the original image, removing scratches, fading, grain, noise, dust, and stains"
+  },
+  "environment": {
+    "context": "as captured in the original frame, but in realistic true-to-life colors",
+    "time_of_day": "natural daylight",
+    "lighting": {
+      "key_light": "balanced photographic key light",
+      "fill_light": "soft natural fill to eliminate harsh shadows",
+      "rim_light": "none"
+    },
+    "atmosphere": {
+      "weather": "clear",
+      "mood": "nostalgic, warm, high-fidelity memory"
+    }
+  },
+  "style_and_quality": {
+    "medium": "photograph",
+    "rendering_engine": "none",
+    "color_grading": "realistic full color spectrum, warm lifelike skin tones, vibrant natural environments",
+    "golden_tokens": [
+      "professional restoration",
+      "scratch-free",
+      "colorized masterpiece",
+      "micro-details preserved",
+      "sharp focus",
+      "8k resolution"
+    ]
+  },
+  "negative_prompts": [
+    "black and white", "sepia", "grayscale", "scratches", "noise", "dust", 
+    "cracks", "stains", "blurry", "faded colors", "oversaturated", "artifacts"
+  ]
+}`;
+      navigator.clipboard.writeText(restorePrompt);
+      setCopiedRestore(true);
+      setTimeout(() => setCopiedRestore(false), 2000);
+      return;
+    }
+
     const modePrompts = VIRAL_PROMPTS[currentModeId];
     if (!modePrompts) return;
 
@@ -403,6 +448,30 @@ const PromptForm = ({ currentModeId, fields, values, onUpdate, onAddSuggestion, 
             >
               {copiedSilent ? <Check size={16} /> : <VolumeX size={16} />}
               <span>{copiedSilent ? 'Copiado!' : 'IA Decide + Sem Áudio'}</span>
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Auxiliary button for photo-transform restoration */}
+      {currentModeId === 'photo-transform' && (
+        <div className={styles.auxiliarySection}>
+          <h5 className={styles.auxiliaryTitle}>
+            <History size={14} className={styles.auxiliaryIcon} />
+            <span>Restauração e Colorização Profissional</span>
+          </h5>
+          <p className={styles.auxiliaryDesc}>
+            Copie um prompt JSON pronto, otimizado para restaurar a nitidez, colorir com realismo e remover arranhões de fotos antigas sem perder a fidelidade do sujeito.
+          </p>
+          <div className={styles.auxiliaryButtons}>
+            <button
+              type="button"
+              className={styles.auxBtnSpeech}
+              onClick={() => handleCopyAuxPrompt('restore')}
+              title="Copiar prompt JSON pronto para restauração e colorização"
+            >
+              {copiedRestore ? <Check size={16} /> : <History size={16} />}
+              <span>{copiedRestore ? 'Copiado!' : 'Copiar Prompt de Restauração'}</span>
             </button>
           </div>
         </div>
