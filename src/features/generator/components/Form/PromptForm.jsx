@@ -1,9 +1,39 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import styles from './PromptForm.module.css';
-import { Wand2, Eraser } from 'lucide-react';
+import { Wand2, Eraser, MessageSquare, MessageSquareOff, Sparkles, Check } from 'lucide-react';
 import { clsx } from 'clsx';
 
-const PromptForm = ({ fields, values, onUpdate, onAddSuggestion, onRandomize, onClear }) => {
+const VIRAL_PROMPTS = {
+  'video-from-frames': {
+    speech: `Using the provided start frame and end frame as absolute structural guides, generate a highly engaging, viral 9:16 vertical video transition optimized for TikTok and Reels. The AI has absolute creative freedom to animate the transition in the most dynamic, visually stunning, and creative way possible to maximize audience retention. \nTechnical quality: hyper-realistic, 8k resolution, cinematic lighting, unreal engine 5 style, masterfully executed, smooth fluid physics, and flawless temporal consistency.\nHook & Camera: Start the sequence with a high-energy camera snap-zoom or orbit to capture immediate attention within the first 2 seconds, maintaining intense pacing.\nAudio & Dialogue: If there is any speaking or character dialogue in the video, the characters must speak natively in Brazilian Portuguese (pt-BR) with perfect lip-sync, using the [character]: [speech] dubbing format (e.g., [personagem]: [fala]). The dialogue should be witty, engaging, and highly relatable for social media.\nEnsure no sudden cuts, artifacting, or morphing glitches.`,
+    noSpeech: `Using the provided start frame and end frame as absolute structural guides, generate a highly engaging, viral 9:16 vertical video transition optimized for TikTok and Reels. The AI has absolute creative freedom to animate the transition in the most dynamic, visually stunning, and creative way possible to maximize audience retention. \nTechnical quality: hyper-realistic, 8k resolution, cinematic lighting, unreal engine 5 style, masterfully executed, smooth fluid physics, and flawless temporal consistency.\nHook & Camera: Start the sequence with a high-energy camera snap-zoom or orbit to capture immediate attention within the first 2 seconds, maintaining intense pacing.\nAudio & Dialogue: This must be a purely visual, silent video sequence with no dialogue or speech. Focus completely on rich visual storytelling, dynamic physical interactions, and sound effects/music cues if applicable, with absolutely no spoken words.\nEnsure no sudden cuts, artifacting, or morphing glitches.`
+  },
+  'video-from-img': {
+    speech: `Using the provided high-quality base image as a foundation, initiate a highly engaging, viral 9:16 vertical video sequence optimized for TikTok and Reels. The AI has absolute creative freedom to animate the scene and decide the ending of the video in the most unexpected, dynamic, and visually stunning way to maximize audience retention.\nTechnical quality: hyper-realistic, 8k resolution, cinematic lighting, unreal engine 5 style, masterfully executed, smooth fluid physics, and flawless temporal consistency.\nHook & Camera: Begin with a strong visual hook in the first 2 seconds, utilizing a dynamic camera movement such as a dolly zoom or rapid pan to capture immediate attention.\nAudio & Dialogue: If there is any speaking or character dialogue in the video, the characters must speak natively in Brazilian Portuguese (pt-BR) with perfect lip-sync, using the [character]: [speech] dubbing format (e.g., [personagem]: [fala]). The dialogue should be witty, engaging, and highly relatable for social media.\nEnsure the animation flows naturally towards a surprising, high-retention climax and ending.`,
+    noSpeech: `Using the provided high-quality base image as a foundation, initiate a highly engaging, viral 9:16 vertical video sequence optimized for TikTok and Reels. The AI has absolute creative freedom to animate the scene and decide the ending of the video in the most unexpected, dynamic, and visually stunning way to maximize audience retention.\nTechnical quality: hyper-realistic, 8k resolution, cinematic lighting, unreal engine 5 style, masterfully executed, smooth fluid physics, and flawless temporal consistency.\nHook & Camera: Begin with a strong visual hook in the first 2 seconds, utilizing a dynamic camera movement such as a dolly zoom or rapid pan to capture immediate attention.\nAudio & Dialogue: This must be a purely visual, silent video sequence with no dialogue or speech. Focus completely on rich visual storytelling, dynamic physical interactions, and sound effects/music cues if applicable, with absolutely no spoken words.\nEnsure the animation flows naturally towards a surprising, high-retention climax and ending.`
+  }
+};
+
+const PromptForm = ({ currentModeId, fields, values, onUpdate, onAddSuggestion, onRandomize, onClear }) => {
+  const [copiedSpeech, setCopiedSpeech] = useState(false);
+  const [copiedNoSpeech, setCopiedNoSpeech] = useState(false);
+
+  const handleCopyAuxPrompt = (withSpeech) => {
+    const modePrompts = VIRAL_PROMPTS[currentModeId];
+    if (!modePrompts) return;
+
+    const promptText = withSpeech ? modePrompts.speech : modePrompts.noSpeech;
+    navigator.clipboard.writeText(promptText);
+
+    if (withSpeech) {
+      setCopiedSpeech(true);
+      setTimeout(() => setCopiedSpeech(false), 2000);
+    } else {
+      setCopiedNoSpeech(true);
+      setTimeout(() => setCopiedNoSpeech(false), 2000);
+    }
+  };
+
   // Memoize random suggestions so they don't change while typing
   const displaySuggestions = useMemo(() => {
     const map = {};
@@ -111,6 +141,39 @@ const PromptForm = ({ fields, values, onUpdate, onAddSuggestion, onRandomize, on
           )}
         </div>
       ))}
+
+      {/* Auxiliary/Quick-generate buttons for Video modes */}
+      {(currentModeId === 'video-from-frames' || currentModeId === 'video-from-img') && (
+        <div className={styles.auxiliarySection}>
+          <h5 className={styles.auxiliaryTitle}>
+            <Sparkles size={14} className={styles.auxiliaryIcon} />
+            <span>Prompts Rápidos Virais (TikTok/Reels)</span>
+          </h5>
+          <p className={styles.auxiliaryDesc}>
+            Copie prompts otimizados independentes das seleções acima, onde a IA tem total liberdade criativa para guiar a cena e viralizar.
+          </p>
+          <div className={styles.auxiliaryButtons}>
+            <button
+              type="button"
+              className={styles.auxBtnSpeech}
+              onClick={() => handleCopyAuxPrompt(true)}
+              title="Copiar prompt viral com fala nativa em português"
+            >
+              {copiedSpeech ? <Check size={16} /> : <MessageSquare size={16} />}
+              <span>{copiedSpeech ? 'Copiado!' : 'IA Decide + Com Falas (pt-BR)'}</span>
+            </button>
+            <button
+              type="button"
+              className={styles.auxBtnNoSpeech}
+              onClick={() => handleCopyAuxPrompt(false)}
+              title="Copiar prompt viral puramente visual e silencioso"
+            >
+              {copiedNoSpeech ? <Check size={16} /> : <MessageSquareOff size={16} />}
+              <span>{copiedNoSpeech ? 'Copiado!' : 'IA Decide + Sem Falas'}</span>
+            </button>
+          </div>
+        </div>
+      )}
     </form>
   );
 };

@@ -77,6 +77,7 @@ function App() {
                 ) : (
                   <GlassCard className="p-8">
                     <PromptForm 
+                      currentModeId={currentModeId}
                       fields={currentMode.fields}
                       values={formValues}
                       onUpdate={updateField}
