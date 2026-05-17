@@ -213,6 +213,128 @@ const enrichCharacters = (characters, dialogue) => {
   });
 };
 
+const parseImageComposition = (text) => {
+  if (!text || text.includes('<<<') || text.trim() === '') {
+    return {
+      framing: 'medium',
+      camera_angle: 'eye_level',
+      lens: { focal_length: '50mm', aperture: 'f/1.8' },
+      depth_of_field: 'shallow'
+    };
+  }
+
+  const lowerText = text.toLowerCase();
+  
+  // Framing
+  let framing = 'medium';
+  if (lowerText.includes('macro') || lowerText.includes('close-up extremo') || lowerText.includes('extreme close-up')) {
+    framing = 'extreme_close_up';
+  } else if (lowerText.includes('close-up') || lowerText.includes('close up') || lowerText.includes('closeup') || lowerText.includes('retrato')) {
+    framing = 'close_up';
+  } else if (lowerText.includes('wide') || lowerText.includes('aberto') || lowerText.includes('paisagem') || lowerText.includes('panorâmico')) {
+    framing = 'wide_establishing';
+  } else if (lowerText.includes('pov') || lowerText.includes('primeira pessoa')) {
+    framing = 'pov';
+  }
+
+  // Camera Angle
+  let camera_angle = 'eye_level';
+  if (lowerText.includes('pássaro') || lowerText.includes('bird') || lowerText.includes('aéreo') || lowerText.includes('aerial')) {
+    camera_angle = 'birds_eye_view';
+  } else if (lowerText.includes('formiga') || lowerText.includes('worm') || lowerText.includes('plongée total')) {
+    camera_angle = 'worms_eye_view';
+  } else if (lowerText.includes('contra-mergulho') || lowerText.includes('low angle') || lowerText.includes('baixo')) {
+    camera_angle = 'low_angle';
+  } else if (lowerText.includes('mergulho') || lowerText.includes('high angle') || lowerText.includes('alto')) {
+    camera_angle = 'high_angle';
+  } else if (lowerText.includes('holandês') || lowerText.includes('dutch') || lowerText.includes('inclinado')) {
+    camera_angle = 'dutch_angle';
+  }
+
+  // Lens & Depth of Field
+  let lens = { focal_length: '50mm', aperture: 'f/1.8' };
+  let depth_of_field = 'shallow';
+
+  if (framing === 'extreme_close_up' || lowerText.includes('macro')) {
+    lens = { focal_length: '90mm', aperture: 'f/2.8' };
+    depth_of_field = 'shallow';
+  } else if (framing === 'close_up' || lowerText.includes('retrato') || lowerText.includes('studio')) {
+    lens = { focal_length: '85mm', aperture: 'f/1.4' };
+    depth_of_field = 'shallow';
+  } else if (framing === 'wide_establishing' || lowerText.includes('aberto')) {
+    lens = { focal_length: '24mm', aperture: 'f/4.0' };
+    depth_of_field = 'deep';
+  }
+
+  return {
+    framing,
+    camera_angle,
+    lens,
+    depth_of_field
+  };
+};
+
+const parseImageStyle = (text) => {
+  if (!text || text.includes('<<<') || text.trim() === '') {
+    return {
+      medium: 'photograph',
+      rendering_engine: 'none',
+      color_grading: 'natural',
+      golden_tokens: ['hyper-realistic', '8k', 'sharp focus']
+    };
+  }
+
+  const lowerText = text.toLowerCase();
+  
+  // Artistic Medium
+  let medium = 'photograph';
+  if (lowerText.includes('pintura') || lowerText.includes('oil painting') || lowerText.includes('óleo')) {
+    medium = 'oil_painting';
+  } else if (lowerText.includes('esboço') || lowerText.includes('lápis') || lowerText.includes('sketch') || lowerText.includes('desenho')) {
+    medium = 'pencil_sketch';
+  } else if (lowerText.includes('anime') || lowerText.includes('manga') || lowerText.includes('desenho animado') || lowerText.includes('cartoon') || lowerText.includes('ghibli') || lowerText.includes('simpsons')) {
+    medium = 'anime_illustration';
+  } else if (lowerText.includes('render') || lowerText.includes('3d') || lowerText.includes('blender') || lowerText.includes('octane') || lowerText.includes('unreal')) {
+    medium = '3d_render';
+  } else if (lowerText.includes('aquarela') || lowerText.includes('watercolor')) {
+    medium = 'watercolor';
+  }
+
+  // Rendering Engine
+  let rendering_engine = 'none';
+  if (lowerText.includes('unreal')) {
+    rendering_engine = 'unreal_engine_5';
+  } else if (lowerText.includes('octane')) {
+    rendering_engine = 'octane_render';
+  } else if (lowerText.includes('blender') || lowerText.includes('cycles')) {
+    rendering_engine = 'blender_cycles';
+  }
+
+  // Color Grading
+  let color_grading = 'natural';
+  if (lowerText.includes('neon') || lowerText.includes('cyberpunk') || lowerText.includes('vibrant')) {
+    color_grading = 'neon_cyberpunk';
+  } else if (lowerText.includes('quente') || lowerText.includes('golden') || lowerText.includes('warm')) {
+    color_grading = 'warm_golden';
+  } else if (lowerText.includes('frio') || lowerText.includes('cool') || lowerText.includes('blue')) {
+    color_grading = 'cool_toned';
+  } else if (lowerText.includes('preto') || lowerText.includes('black and white') || lowerText.includes('monocrom')) {
+    color_grading = 'monochrome';
+  } else if (lowerText.includes('pastel')) {
+    color_grading = 'pastel_tones';
+  }
+
+  // Golden Tokens
+  const golden_tokens = text.split(',').map(s => s.trim()).filter(s => s !== '' && !s.includes('<<<'));
+
+  return {
+    medium,
+    rendering_engine,
+    color_grading,
+    golden_tokens: golden_tokens.length > 0 ? golden_tokens : ['high-resolution', 'professional-grade', 'intricate textures']
+  };
+};
+
 const parseAmbiance = (context, styleAmbiance) => {
   let time_of_day = 'day';
   let weather = 'clear';
@@ -517,9 +639,55 @@ export const MODES = {
     title: 'Foto Nova (Nano Banana)',
     desc: 'Gere imagens estáticas com riqueza de detalhes.',
     helpText: 'Crie imagens incríveis focando no sujeito e na composição. Experimente diferentes estilos artísticos, de realismo fotográfico a ilustrações conceituais, para encontrar o visual perfeito.',
-    formula: (vals) => `A high-resolution, professional-grade photograph of ${vals.subject} who is ${vals.action}. The scene is situated in a breathtaking ${vals.context}. The composition is a masterfully executed ${vals.composition}, emphasizing visual balance. The overall artistic style is ${vals.style}, featuring intricate textures, precise lighting, and a premium aesthetic finish.`,
+    formula: (vals) => {
+      const composition = parseImageComposition(vals.composition);
+      const styleInfo = parseImageStyle(vals.style);
+      const characters = parseCharacters(vals.characters_definition);
+      const envAmbiance = parseAmbiance(vals.context, vals.style);
+
+      const processedCharacters = characters.map(char => ({
+        name: char.name,
+        description: char.description,
+        visual_consistency_id: `char_seed_${char.name.toLowerCase().trim().replace(/[^a-z0-9]/g, '')}_v31`,
+        pose_or_expression: char.voice_attributes || "natural presentation"
+      }));
+
+      const jsonPrompt = {
+        subject: {
+          primary: {
+            type: characters.length > 0 ? "character" : "environment",
+            description: vals.subject || "main focus scenery",
+            action: vals.action || "posing naturally",
+            attributes: styleInfo.golden_tokens.slice(0, 3)
+          },
+          ...(processedCharacters.length > 0 ? { characters: processedCharacters } : {})
+        },
+        composition,
+        environment: {
+          context: vals.context || "studio environment",
+          ...envAmbiance
+        },
+        style_and_quality: styleInfo,
+        negative_prompts: [
+          "blurry", "low quality", "mutated details", "deformed limbs", 
+          "extra fingers", "unstable anatomy", "flickering artifacts", "noisy text"
+        ]
+      };
+
+      return JSON.stringify(jsonPrompt, null, 2);
+    },
     fields: [
-      { id: 'subject', label: 'Sujeito', hint: 'O elemento principal da imagem', placeholder: 'Ex: Guerreiro Cyberpunk', type: 'text', suggestions: [{ label: 'Guerreiro Cyberpunk', value: 'Cyberpunk Warrior' }, { label: 'Espírito da Floresta', value: 'Forest Spirit' }, { label: 'Carro Vintage', value: 'Vintage Car' }, { label: 'Coruja Robótica', value: 'Robotic Owl' }, { label: 'Xamã Místico', value: 'Mystical Shaman' }, { label: 'Arranha-céu Futurista', value: 'Futuristic Skyscraper' }, { label: 'Água-viva Bioluminescente', value: 'Bioluminescent Jellyfish' }, { label: 'Gato Samurai', value: 'Samurai Cat' }, { label: 'Explorador Vitoriano', value: 'Victorian Explorer' }, { label: 'Botânico Alienígena', value: 'Alien Botanist' }, { label: 'Relojoeiro Steampunk', value: 'Steampunk Clockmaker' }, { label: 'Dragão Cósmico', value: 'Cosmic Dragon' }] },
+      { 
+        id: 'characters_definition', 
+        label: 'Definição dos Personagens (Consistência)', 
+        hint: 'Formato: [nome][descrição][pose ou expressão]', 
+        placeholder: 'Ex: [morango][personagem morango][sorridente e olhando para a câmera]', 
+        type: 'textarea', 
+        suggestions: [
+          { label: 'Exemplo Frutas', value: '[morango][personagem vermelho com cara de morango][sorridente e olhando para a câmera]\n[abacaxi][personagem amarelo com cara de abacaxi][pose heroica e confiante]\n[uva][personagem roxo com cara de uva][braços cruzados com expressão sarcástica]' }
+        ] 
+      },
+      { id: 'subject', label: 'Sujeito Principal', hint: 'O elemento principal da imagem', placeholder: 'Ex: Guerreiro Cyberpunk', type: 'text', suggestions: [{ label: 'Guerreiro Cyberpunk', value: 'Cyberpunk Warrior' }, { label: 'Espírito da Floresta', value: 'Forest Spirit' }, { label: 'Carro Vintage', value: 'Vintage Car' }, { label: 'Coruja Robótica', value: 'Robotic Owl' }, { label: 'Xamã Místico', value: 'Mystical Shaman' }, { label: 'Arranha-céu Futurista', value: 'Futuristic Skyscraper' }, { label: 'Água-viva Bioluminescente', value: 'Bioluminescent Jellyfish' }, { label: 'Gato Samurai', value: 'Samurai Cat' }, { label: 'Explorador Vitoriano', value: 'Victorian Explorer' }, { label: 'Botânico Alienígena', value: 'Alien Botanist' }, { label: 'Relojoeiro Steampunk', value: 'Steampunk Clockmaker' }, { label: 'Dragão Cósmico', value: 'Cosmic Dragon' }] },
       { id: 'action', label: 'Ação', hint: 'O que está acontecendo', placeholder: 'Ex: posando', type: 'text', suggestions: [{ label: 'olhando para a câmera', value: 'staring at camera' }, { label: 'dissolvendo em fumaça', value: 'dissolving into smoke' }, { label: 'levitando sobre um lago', value: 'levitating above a lake' }, { label: 'lançando feitiço', value: 'casting a glowing spell' }, { label: 'consertando um relógio', value: 'repairing a golden clock' }, { label: 'andando num mercado neon', value: 'wandering through a neon market' }, { label: 'tocando violino', value: 'playing a transparent violin' }, { label: 'mesclando com código', value: 'merging with digital code' }, { label: 'descansando em flores de vidro', value: 'resting in a field of glass flowers' }] },
       { id: 'context', label: 'Local', hint: 'Cenário da fotografia', placeholder: 'Ex: estúdio', type: 'text', suggestions: [{ label: 'Espaço Abstrato', value: 'Abstract Space' }, { label: 'Catedral Abandonada', value: 'Abandoned Cathedral' }, { label: 'Telhado Cyberpunk na chuva', value: 'Cyberpunk rooftop at rain' }, { label: 'Caverna Subaquática', value: 'Bioluminescent underwater cave' }, { label: 'Ilhas Flutuantes', value: 'Floating islands in the clouds' }, { label: 'Biblioteca de Luz', value: 'Library made of light' }, { label: 'Ruínas Antigas em Marte', value: 'Ancient ruins on a desert planet' }, { label: 'Laboratório Vitoriano', value: 'Victorian laboratory' }, { label: 'Sala de Espelhos', value: 'Enchanted mirror room' }] },
       { id: 'composition', label: 'Composição', hint: 'Organização visual (ex: Macro)', placeholder: 'Ex: Close-up', type: 'text', suggestions: [{ label: 'Foto Macro', value: 'Macro Shot' }, { label: 'Regra dos Terços', value: 'Rule of Thirds' }, { label: 'Simétrico', value: 'Symmetrical' }, { label: 'Vista de Pássaro', value: 'Bird\'s Eye View' }, { label: 'Vista de Formiga', value: 'Worm\'s Eye View' }, { label: 'Ângulo Holandês', value: 'Dutch Angle' }, { label: 'Close-up Extremo', value: 'Extreme Close-up' }, { label: 'Silhueta na Lua', value: 'Silhouette against the moon' }, { label: 'Exposição Longa', value: 'Long exposure motion blur' }, { label: 'Plano Cinematográfico', value: 'Cinematic Wide Shot' }] },
@@ -531,7 +699,28 @@ export const MODES = {
     title: 'Transformar Foto (Nano Banana)',
     desc: 'Aplique novos estilos ou modifique cenas.',
     helpText: 'Mude o estilo ou o cenário de uma foto existente de forma criativa. Mantenha a essência do sujeito principal enquanto descreve as mudanças radicais de ambiente ou estética.',
-    formula: (vals) => `Taking the provided source image as the structural reference, ${vals.relationship}. The transformation should result in ${vals.new_scenario}, preserving the core subject's identity while completely reimagining the aesthetic and atmosphere in a high-fidelity manner.`,
+    formula: (vals) => {
+      const styleInfo = parseImageStyle(vals.relationship);
+      const envAmbiance = parseAmbiance(vals.new_scenario, vals.relationship);
+
+      const jsonPrompt = {
+        transformation: {
+          reference_mode: "structural_composition_fidelity",
+          relationship_to_source: vals.relationship || "reimagine aesthetic and atmosphere",
+          target_scenario: vals.new_scenario || "same scenery with new style"
+        },
+        environment: {
+          context: vals.new_scenario || "reimagined context",
+          ...envAmbiance
+        },
+        style_and_quality: styleInfo,
+        negative_prompts: [
+          "blurry", "low quality", "deformed features", "artifacts", "unstable structural lines"
+        ]
+      };
+
+      return JSON.stringify(jsonPrompt, null, 2);
+    },
     fields: [
       {
         id: 'relationship',

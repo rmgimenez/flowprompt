@@ -239,6 +239,79 @@ Este modo otimiza transições fluidas e dinâmicas de 2 imagens fornecidas para
     }
     ```
 
+### 5.3. Modo: Foto Nova (Nano Banana 2)
+Este modo gera imagens estáticas altamente detalhadas usando um formato estruturado em JSON que mapeia foco, profundidade de campo, consistência de personagens, iluminação de estúdio e tokens de qualidade.
+*   **ID:** `photo-new`
+*   **Fórmula:**
+    ```javascript
+    (vals) => {
+      const composition = parseImageComposition(vals.composition);
+      const styleInfo = parseImageStyle(vals.style);
+      const characters = parseCharacters(vals.characters_definition);
+      const envAmbiance = parseAmbiance(vals.context, vals.style);
+
+      const processedCharacters = characters.map(char => ({
+        name: char.name,
+        description: char.description,
+        visual_consistency_id: `char_seed_${char.name.toLowerCase().trim().replace(/[^a-z0-9]/g, '')}_v31`,
+        pose_or_expression: char.voice_attributes || "natural presentation"
+      }));
+
+      const jsonPrompt = {
+        subject: {
+          primary: {
+            type: characters.length > 0 ? "character" : "environment",
+            description: vals.subject || "main focus scenery",
+            action: vals.action || "posing naturally",
+            attributes: styleInfo.golden_tokens.slice(0, 3)
+          },
+          ...(processedCharacters.length > 0 ? { characters: processedCharacters } : {})
+        },
+        composition,
+        environment: {
+          context: vals.context || "studio environment",
+          ...envAmbiance
+        },
+        style_and_quality: styleInfo,
+        negative_prompts: [
+          "blurry", "low quality", "mutated details", "deformed limbs", 
+          "extra fingers", "unstable anatomy", "flickering artifacts", "noisy text"
+        ]
+      };
+
+      return JSON.stringify(jsonPrompt, null, 2);
+    }
+    ```
+
+### 5.4. Modo: Transformar Foto (Nano Banana 2)
+Permite que os usuários insiram uma referência estrutural existente e apliquem modificações de estilo artístico, renderizadores e iluminação em formato estruturado.
+*   **ID:** `photo-transform`
+*   **Fórmula:**
+    ```javascript
+    (vals) => {
+      const styleInfo = parseImageStyle(vals.relationship);
+      const envAmbiance = parseAmbiance(vals.new_scenario, vals.relationship);
+
+      const jsonPrompt = {
+        transformation: {
+          reference_mode: "structural_composition_fidelity",
+          relationship_to_source: vals.relationship || "reimagine aesthetic and atmosphere",
+          target_scenario: vals.new_scenario || "same scenery with new style"
+        },
+        environment: {
+          context: vals.new_scenario || "reimagined context",
+          ...envAmbiance
+        },
+        style_and_quality: styleInfo,
+        negative_prompts: [
+          "blurry", "low quality", "deformed features", "artifacts", "unstable structural lines"
+        ]
+      };
+
+      return JSON.stringify(jsonPrompt, null, 2);
+    }
+    ```
+
 ---
 
 ## 6. Integração e Ciclo de Dados (Data Flow)
