@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Sidebar from './features/generator/components/Sidebar/Sidebar';
+import { Menu, Wand2 } from 'lucide-react';
 import MainLayout from './layouts/MainLayout';
 import PromptForm from './features/generator/components/Form/PromptForm';
 import PromptPreview from './features/generator/components/Preview/PromptPreview';
@@ -13,6 +14,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Analytics } from '@vercel/analytics/react';
 
 function App() {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const {
     currentMode,
     currentModeId,
@@ -109,6 +111,21 @@ function App() {
 
   return (
     <>
+      {/* Mobile Glassmorphic Header */}
+      <header className="mobile-header">
+        <button 
+          className="mobile-menu-btn"
+          onClick={() => setIsSidebarOpen(true)}
+          aria-label="Abrir menu"
+        >
+          <Menu size={24} />
+        </button>
+        <div className="mobile-logo">
+          <Wand2 className="mobile-logo-icon" size={24} />
+          <span className="mobile-logo-text">Flow Prompt</span>
+        </div>
+      </header>
+
       <MainLayout 
         sidebar={
           <Sidebar 
@@ -118,6 +135,8 @@ function App() {
             favorites={favorites}
             onLoadItem={loadSavedItem}
             onToggleFavorite={toggleFavorite}
+            isOpen={isSidebarOpen}
+            onClose={() => setIsSidebarOpen(false)}
           />
         }
         content={renderContent()}

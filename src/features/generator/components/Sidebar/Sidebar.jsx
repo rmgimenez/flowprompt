@@ -2,13 +2,13 @@ import React, { useState } from 'react';
 import { 
   Play, Image, Camera, Sparkles, Info, Wand2, 
   History, Star, LayoutGrid, Copy, RotateCcw, Check,
-  Layers
+  Layers, X
 } from 'lucide-react';
 import { clsx } from 'clsx';
 import styles from './Sidebar.module.css';
 import { MODES } from '../../constants/modes';
 
-const SavedItem = ({ item, onToggleFavorite, onLoadItem }) => {
+const SavedItem = ({ item, onToggleFavorite, onLoadItem, onClose }) => {
   const mode = MODES[item.modeId] || { title: 'Desconhecido' };
   const [copied, setCopied] = useState(false);
 
@@ -33,7 +33,14 @@ const SavedItem = ({ item, onToggleFavorite, onLoadItem }) => {
           <button onClick={handleCopy} className={styles.actionBtn}>
             {copied ? <Check size={14} className={styles.successIcon} /> : <Copy size={14} />}
           </button>
-          <button onClick={() => onLoadItem(item)} className={styles.actionBtn} title="Restaurar Campos">
+          <button 
+            onClick={() => { 
+              onLoadItem(item); 
+              if (onClose) onClose(); 
+            }} 
+            className={styles.actionBtn} 
+            title="Restaurar Campos"
+          >
             <RotateCcw size={14} />
           </button>
         </div>
@@ -52,7 +59,9 @@ const Sidebar = ({
   history = [], 
   favorites = [], 
   onLoadItem, 
-  onToggleFavorite 
+  onToggleFavorite,
+  isOpen,
+  onClose
 }) => {
   const [activeTab, setActiveTab] = useState('modes'); // 'modes', 'history', 'favorites'
 
@@ -69,11 +78,20 @@ const Sidebar = ({
   ];
 
   return (
-    <aside className={styles.sidebar}>
-      <div className={styles.logo}>
-        <Wand2 className={styles.logoIcon} size={32} />
-        <span className={styles.logoText}>Flow Prompt</span>
-      </div>
+    <>
+      {/* Backdrop overlay for mobile drawer */}
+      {isOpen && <div className={styles.backdrop} onClick={onClose} />}
+
+      <aside className={clsx(styles.sidebar, isOpen && styles.sidebarOpen)}>
+        {/* Mobile close button */}
+        <button className={styles.closeBtn} onClick={onClose} aria-label="Fechar menu">
+          <X size={20} />
+        </button>
+
+        <div className={styles.logo}>
+          <Wand2 className={styles.logoIcon} size={32} />
+          <span className={styles.logoText}>Flow Prompt</span>
+        </div>
 
       <div className={styles.tabContainer}>
         <button 
@@ -114,7 +132,10 @@ const Sidebar = ({
                 <button
                   key={item.id}
                   className={clsx(styles.navLink, currentModeId === item.id && styles.active)}
-                  onClick={() => onModeChange(item.id)}
+                  onClick={() => {
+                    onModeChange(item.id);
+                    if (onClose) onClose();
+                  }}
                 >
                   <Icon size={20} className={styles.icon} />
                   <span>{item.label}</span>
@@ -136,6 +157,7 @@ const Sidebar = ({
                   item={item} 
                   onToggleFavorite={onToggleFavorite} 
                   onLoadItem={onLoadItem} 
+                  onClose={onClose}
                 />
               ))
             )}
@@ -154,6 +176,7 @@ const Sidebar = ({
                   item={item} 
                   onToggleFavorite={onToggleFavorite} 
                   onLoadItem={onLoadItem} 
+                  onClose={onClose}
                 />
               ))
             )}
@@ -167,6 +190,7 @@ const Sidebar = ({
         </div>
       </div>
     </aside>
+    </>
   );
 };
 
