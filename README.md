@@ -139,6 +139,7 @@ O projeto está configurado para deploy contínuo na **Vercel**.
 - [Promptu AI](https://promptu.ai/): site para gerar prompts para IA
 - [OpenRouter](https://openrouter.ai/): agregador de APIs de IA
 - [Exemplo Json imagem](https://aiformarketings.com/blog/nano-banana-json-guide/)
+- [Documentação Nano Banana 2](https://cloud.google.com/blog/products/ai-machine-learning/ultimate-prompting-guide-for-nano-banana)
 
 ---
 
