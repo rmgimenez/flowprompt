@@ -494,7 +494,7 @@ export const TikTokCollections = () => {
 Sua função é criar um post carrossel altamente viral no **TikTok** com o tema fornecido. O seu retorno DEVE conter exatamente os seguintes itens estruturados, cada um dentro de um bloco de código/artefato separado para fácil cópia individual:
 
 1. **Título do Post (em Português):** Um título ultra-chamativo que desperte curiosidade nos primeiros 2 segundos.
-2. **Legenda/Descrição do Post (em Português):** Um texto curto, envolvente e focado em engajamento com exatamente 5 hashtags relevantes no final.
+2. **Legenda/Descrição do Post (em Português):** Um texto curto, envolvendo e focado em engajamento com exatamente 5 hashtags relevantes no final.
 3. **Imagens da Coleção (JSONs Individuais):** Uma coleção com exatamente ${quantity} imagens. Cada imagem deve ser representada por um bloco de código JSON único e independente (estilo 'photo-new') contendo prompts detalhados em **Inglês** adequados para o modelo **Nano Banana 2**.
 
 ---
@@ -670,121 +670,127 @@ Cada uma das ${quantity} imagens deve ter seu próprio bloco de código contendo
             </div>
           </div>
 
-          {/* Preset de Estilo */}
-          <div className={styles.controlGroup}>
-            <label htmlFor="styleSelect">Estilo Visual Principal (Fórmula Nano Banana)</label>
-            <select 
-              id="styleSelect"
-              className={styles.selectField}
-              value={selectedStyle}
-              onChange={(e) => setSelectedStyle(e.target.value)}
-            >
-              {STYLE_PRESETS.map(preset => (
-                <option key={preset.id} value={preset.id} title={preset.desc}>
-                  {preset.id === 'normal' && '✨ '}
-                  {preset.id === 'pixar' && '🧸 '}
-                  {preset.id === 'gtav' && '🚗 '}
-                  {preset.id === 'darksouls' && '⚔️ '}
-                  {preset.id === 'wesanderson' && '📐 '}
-                  {preset.id === 'motivacional' && '🌅 '}
-                  {preset.id === 'realista' && '📸 '}
-                  {preset.id === 'anime' && '🎨 '}
-                  {preset.id === 'ghibli' && '🌳 '}
-                  {preset.id === 'cyberpunk2077' && '🏙️ '}
-                  {preset.id === 'timburton' && '🦇 '}
-                  {preset.id === 'retro30s' && '🎞️ '}
-                  {preset.id === 'pixelart' && '👾 '}
-                  {preset.id === 'claymation' && '🦖 '}
-                  {preset.id === 'papercut' && '✂️ '}
-                  {preset.id === 'gopro' && '🏎️ '}
-                  {preset.id === 'polaroid' && '📼 '}
-                  {preset.id === 'steampunk' && '⚙️ '}
-                  {preset.id === 'tarantino' && '🎬 '}
-                  {preset.id === 'nolan' && '🚀 '}
-                  {preset.id === 'kubrick' && '👁️ '}
-                  {preset.id === 'popart' && '💥 '}
-                  {preset.id === 'surrealismo' && '⏳ '}
-                  {preset.id === 'vangogh' && '🌻 '}
-                  {preset.id === 'watercolor' && '🖌️ '}
-                  {preset.id === 'pencilsketch' && '✏️ '}
-                  {preset.id === 'cyber_gothic' && '🖤 '}
-                  {preset.id === 'natgeo' && '🌍 '}
-                  {preset.id === 'macro' && '🔍 '}
-                  {preset.id === 'thermal' && '🌡️ '}
-                  {preset.id === 'goldenhour' && '🌅 '}
-                  {preset.id === 'holomap' && '🌐 '}
-                  {preset.id === 'minecraft' && '🧱 '}
-                  {preset.id === 'artnouveau' && '⚜️ '}
-                  {preset.id === 'lowpoly' && '📐 '}
-                  {preset.id === 'synthwave' && '🕶️ '}
-                  {preset.id === 'chalk' && '🖍️ '}
-                  {preset.id === 'blueprint' && '🗺️ '}
-                  {preset.id === 'davinci' && '📜 '}
-                  {preset.id === 'picasso' && '🧱 '}
-                  {preset.id === 'monet' && '🪷 '}
-                  {preset.id === 'michelangelo' && '🏛️ '}
-                  {preset.id === 'munch' && '😱 '}
-                  {preset.id === 'fridakahlo' && '🌺 '}
-                  {preset.id === 'klimt' && '🌟 '}
-                  {preset.id === 'hokusai' && '🌊 '}
-                  {preset.id === 'warhol' && '🥫 '}
-                  {preset.id === 'rembrandt' && '🕯️ '}
-                  {preset.id === 'matisse' && '✂️ '}
-                  {preset.label}
-                </option>
-              ))}
-            </select>
+          {/* Grid de Seleção Dual 1: Estilo e Público-Alvo */}
+          <div className={styles.selectorsGrid}>
+            {/* Preset de Estilo */}
+            <div className={styles.controlGroup}>
+              <label htmlFor="styleSelect">Estilo Principal (Fórmula Nano)</label>
+              <select 
+                id="styleSelect"
+                className={styles.selectField}
+                value={selectedStyle}
+                onChange={(e) => setSelectedStyle(e.target.value)}
+              >
+                {STYLE_PRESETS.map(preset => (
+                  <option key={preset.id} value={preset.id} title={preset.desc}>
+                    {preset.id === 'normal' && '✨ '}
+                    {preset.id === 'pixar' && '🧸 '}
+                    {preset.id === 'gtav' && '🚗 '}
+                    {preset.id === 'darksouls' && '⚔️ '}
+                    {preset.id === 'wesanderson' && '📐 '}
+                    {preset.id === 'motivacional' && '🌅 '}
+                    {preset.id === 'realista' && '📸 '}
+                    {preset.id === 'anime' && '🎨 '}
+                    {preset.id === 'ghibli' && '🌳 '}
+                    {preset.id === 'cyberpunk2077' && '🏙️ '}
+                    {preset.id === 'timburton' && '🦇 '}
+                    {preset.id === 'retro30s' && '🎞️ '}
+                    {preset.id === 'pixelart' && '👾 '}
+                    {preset.id === 'claymation' && '🦖 '}
+                    {preset.id === 'papercut' && '✂️ '}
+                    {preset.id === 'gopro' && '🏎️ '}
+                    {preset.id === 'polaroid' && '📼 '}
+                    {preset.id === 'steampunk' && '⚙️ '}
+                    {preset.id === 'tarantino' && '🎬 '}
+                    {preset.id === 'nolan' && '🚀 '}
+                    {preset.id === 'kubrick' && '👁️ '}
+                    {preset.id === 'popart' && '💥 '}
+                    {preset.id === 'surrealismo' && '⏳ '}
+                    {preset.id === 'vangogh' && '🌻 '}
+                    {preset.id === 'watercolor' && '🖌️ '}
+                    {preset.id === 'pencilsketch' && '✏️ '}
+                    {preset.id === 'cyber_gothic' && '🖤 '}
+                    {preset.id === 'natgeo' && '🌍 '}
+                    {preset.id === 'macro' && '🔍 '}
+                    {preset.id === 'thermal' && '🌡️ '}
+                    {preset.id === 'goldenhour' && '🌅 '}
+                    {preset.id === 'holomap' && '🌐 '}
+                    {preset.id === 'minecraft' && '🧱 '}
+                    {preset.id === 'artnouveau' && '⚜️ '}
+                    {preset.id === 'lowpoly' && '📐 '}
+                    {preset.id === 'synthwave' && '🕶️ '}
+                    {preset.id === 'chalk' && '🖍️ '}
+                    {preset.id === 'blueprint' && '🗺️ '}
+                    {preset.id === 'davinci' && '📜 '}
+                    {preset.id === 'picasso' && '🧱 '}
+                    {preset.id === 'monet' && '🪷 '}
+                    {preset.id === 'michelangelo' && '🏛️ '}
+                    {preset.id === 'munch' && '😱 '}
+                    {preset.id === 'fridakahlo' && '🌺 '}
+                    {preset.id === 'klimt' && '🌟 '}
+                    {preset.id === 'hokusai' && '🌊 '}
+                    {preset.id === 'warhol' && '🥫 '}
+                    {preset.id === 'rembrandt' && '🕯️ '}
+                    {preset.id === 'matisse' && '✂️ '}
+                    {preset.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* Público-Alvo */}
+            <div className={styles.controlGroup}>
+              <label htmlFor="targetSelect">Público-Alvo (Cópia/Roteiro)</label>
+              <select 
+                id="targetSelect"
+                className={styles.selectField}
+                value={selectedTarget}
+                onChange={(e) => setSelectedTarget(e.target.value)}
+              >
+                {TARGET_PRESETS.map(preset => (
+                  <option key={preset.id} value={preset.id} title={preset.desc}>
+                    {preset.label}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
 
-          {/* Tom / Vibe */}
-          <div className={styles.controlGroup}>
-            <label htmlFor="vibeSelect">Tom / Vibe do Post (Legenda e Histórias)</label>
-            <select 
-              id="vibeSelect"
-              className={styles.selectField}
-              value={selectedVibe}
-              onChange={(e) => setSelectedVibe(e.target.value)}
-            >
-              {VIBE_PRESETS.map(preset => (
-                <option key={preset.id} value={preset.id} title={preset.desc}>
-                  {preset.label}
-                </option>
-              ))}
-            </select>
-          </div>
+          {/* Grid de Seleção Dual 2: Vibe e Paleta de Cores */}
+          <div className={styles.selectorsGrid}>
+            {/* Tom / Vibe */}
+            <div className={styles.controlGroup}>
+              <label htmlFor="vibeSelect">Tom / Vibe do Post</label>
+              <select 
+                id="vibeSelect"
+                className={styles.selectField}
+                value={selectedVibe}
+                onChange={(e) => setSelectedVibe(e.target.value)}
+              >
+                {VIBE_PRESETS.map(preset => (
+                  <option key={preset.id} value={preset.id} title={preset.desc}>
+                    {preset.label}
+                  </option>
+                ))}
+              </select>
+            </div>
 
-          {/* Paleta de Cores */}
-          <div className={styles.controlGroup}>
-            <label htmlFor="colorSelect">Paleta de Cores (Diretriz Visual)</label>
-            <select 
-              id="colorSelect"
-              className={styles.selectField}
-              value={selectedColors}
-              onChange={(e) => setSelectedColors(e.target.value)}
-            >
-              {COLOR_PRESETS.map(preset => (
-                <option key={preset.id} value={preset.id} title={preset.value}>
-                  {preset.label}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          {/* Público-Alvo */}
-          <div className={styles.controlGroup}>
-            <label htmlFor="targetSelect">Público-Alvo (Engajamento e Cópia)</label>
-            <select 
-              id="targetSelect"
-              className={styles.selectField}
-              value={selectedTarget}
-              onChange={(e) => setSelectedTarget(e.target.value)}
-            >
-              {TARGET_PRESETS.map(preset => (
-                <option key={preset.id} value={preset.id} title={preset.desc}>
-                  {preset.label}
-                </option>
-              ))}
-            </select>
+            {/* Paleta de Cores */}
+            <div className={styles.controlGroup}>
+              <label htmlFor="colorSelect">Paleta de Cores (Diretriz Visual)</label>
+              <select 
+                id="colorSelect"
+                className={styles.selectField}
+                value={selectedColors}
+                onChange={(e) => setSelectedColors(e.target.value)}
+              >
+                {COLOR_PRESETS.map(preset => (
+                  <option key={preset.id} value={preset.id} title={preset.value}>
+                    {preset.label}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
 
           {/* Observações Opcionais */}

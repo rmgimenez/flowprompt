@@ -48,6 +48,11 @@ body {
   width: 100%;
   max-width: 1400px;
   margin: 0 auto;
+  transition: max-width 0.3s ease;
+}
+
+.content-grid.custom-full-width {
+  max-width: 1750px;
 }
 
 .content-header {

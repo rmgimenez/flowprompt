@@ -1,14 +1,15 @@
 .container {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1.1fr 1.3fr;
   gap: 2rem;
   width: 100%;
-  max-width: 1200px;
+  max-width: 1650px;
   margin: 0 auto;
   align-items: start;
+  padding: 0 1rem;
 }
 
-@media (max-width: 968px) {
+@media (max-width: 1024px) {
   .container {
     grid-template-columns: 1fr;
     gap: 1.5rem;
@@ -26,10 +27,10 @@
   flex-direction: column;
   gap: 1.5rem;
   position: sticky;
-  top: 2rem;
+  top: 1.5rem;
 }
 
-@media (max-width: 968px) {
+@media (max-width: 1024px) {
   .workspaceColumn {
     position: static;
   }
@@ -62,6 +63,14 @@
   color: rgba(255, 255, 255, 0.7);
   display: flex;
   justify-content: space-between;
+}
+
+/* Selectors layout - vertical stack for high readability */
+.selectorsGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  width: 100%;
 }
 
 .inputField,
@@ -103,7 +112,7 @@
 /* Flex row for basic inputs */
 .basicInputsRow {
   display: grid;
-  grid-template-columns: 3fr 1fr;
+  grid-template-columns: 3.5fr 1fr;
   gap: 1rem;
 }
 
@@ -145,7 +154,7 @@
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 0 8px 8px 0;
   color: #ec4899;
-  padding: 0.75rem 1rem;
+  padding: 0.75rem 1.25rem;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -280,6 +289,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
   margin-bottom: 1.25rem;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   padding-bottom: 0.75rem;
@@ -337,13 +348,15 @@
   border: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: 8px;
   padding: 1.25rem;
-  max-height: 480px;
+  max-height: 680px; /* Increased from 480px to utilize height on large displays */
+  height: calc(100vh - 290px);
+  min-height: 480px;
   overflow-y: auto;
   white-space: pre-wrap;
   font-family: 'Fira Code', 'Courier New', Courier, monospace;
   font-size: 0.85rem;
   color: rgba(255, 255, 255, 0.85);
-  line-height: 1.5;
+  line-height: 1.55;
 }
 
 /* Custom Scrollbar for Output */
@@ -398,10 +411,12 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 4rem 2rem;
+  padding: 6rem 2rem;
   color: rgba(255, 255, 255, 0.3);
   text-align: center;
   gap: 1rem;
+  height: calc(100vh - 290px);
+  min-height: 480px;
 }
 
 .emptyStateText {

@@ -38,7 +38,7 @@ function App() {
 
   const renderContent = () => {
     return (
-      <div className="content-grid">
+      <div className={`content-grid ${currentMode.isCustom ? 'custom-full-width' : ''}`}>
         <header className="content-header">
           <motion.h1 
             key={`${currentModeId}-title`}
@@ -58,57 +58,70 @@ function App() {
           </motion.p>
         </header>
 
-        <div className="main-grid">
-          <div className="form-column">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={currentModeId}
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: 20 }}
-                transition={{ duration: 0.3 }}
-              >
-                <HelpBox text={currentMode.helpText} />
-                {currentMode.isAbout ? (
-                  <GlassCard className="p-8">
-                    <About />
-                  </GlassCard>
-                ) : currentMode.isCustom ? (
-                  currentModeId === 'photo-montage' ? <ImageMontage /> :
-                  currentModeId === 'image-stacker' ? <ImageStacker /> :
-                  currentModeId === 'tiktok-collections' ? <TikTokCollections /> : null
-                ) : (
-                  <GlassCard className="p-8">
-                    <PromptForm 
-                      currentModeId={currentModeId}
-                      fields={currentMode.fields}
-                      values={formValues}
-                      onUpdate={updateField}
-                      onAddSuggestion={addSuggestion}
-                      onRandomize={randomize}
-                      onClear={clearFields}
-                    />
-                  </GlassCard>
-                )}
-              </motion.div>
-            </AnimatePresence>
-          </div>
-
-          {!currentMode.isAbout && !currentMode.isCustom && (
-            <div className="preview-column">
-              <PromptPreview 
-                prompt={generatedPrompt} 
-                onCopy={addToHistory}
-                isFavorite={isFavorite}
-                onToggleFavorite={() => toggleFavorite({
-                  modeId: currentModeId,
-                  values: formValues,
-                  prompt: generatedPrompt
-                })}
-              />
+        {currentMode.isCustom ? (
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={currentModeId}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.3 }}
+            >
+              <HelpBox text={currentMode.helpText} />
+              {currentModeId === 'photo-montage' ? <ImageMontage /> :
+               currentModeId === 'image-stacker' ? <ImageStacker /> :
+               currentModeId === 'tiktok-collections' ? <TikTokCollections /> : null}
+            </motion.div>
+          </AnimatePresence>
+        ) : (
+          <div className="main-grid">
+            <div className="form-column">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={currentModeId}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: 20 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <HelpBox text={currentMode.helpText} />
+                  {currentMode.isAbout ? (
+                    <GlassCard className="p-8">
+                      <About />
+                    </GlassCard>
+                  ) : (
+                    <GlassCard className="p-8">
+                      <PromptForm 
+                        currentModeId={currentModeId}
+                        fields={currentMode.fields}
+                        values={formValues}
+                        onUpdate={updateField}
+                        onAddSuggestion={addSuggestion}
+                        onRandomize={randomize}
+                        onClear={clearFields}
+                      />
+                    </GlassCard>
+                  )}
+                </motion.div>
+              </AnimatePresence>
             </div>
-          )}
-        </div>
+
+            {!currentMode.isAbout && (
+              <div className="preview-column">
+                <PromptPreview 
+                  prompt={generatedPrompt} 
+                  onCopy={addToHistory}
+                  isFavorite={isFavorite}
+                  onToggleFavorite={() => toggleFavorite({
+                    modeId: currentModeId,
+                    values: formValues,
+                    prompt: generatedPrompt
+                  })}
+                />
+              </div>
+            )}
+          </div>
+        )}
       </div>
     );
   };
