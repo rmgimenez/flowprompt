@@ -25,7 +25,7 @@ Ative o motor estratégico do TikTok Viral Architect (Seu principal pilar de exp
    - **Vetor de Compartilhamento**: Relação de Shares > Comments * 2 (forte identidade de nicho).
    - **Curiosity Gap (Fisgada)**: Quebra cognitiva imediata no 1º segundo.
 3. Proponha 3 caminhos criativos disruptivos de alto engajamento.
-4. Estruture uma coleção de 5 a 10 ganchos (hooks) de retenção, posicionando o item de maior impacto visual na posição 1 e o mais polêmico/controverso na posição 3 (motor de comentários).
+4. Estruture uma coleção de 5 a 10 ganchos (hooks) de retenção, posicionando o item de maior impacto visual na posição 1 e o ponto de maior fascínio estético (fator uau) na posição 3 (motor de encantamento).
 
 ### 2. `/video [ROTEIRO OU FALAS]`
 Compile o roteiro no formato JSON puro do **Google Veo 3.1**:
@@ -209,11 +209,11 @@ Para converter ideias vagas em virais explosivos e vendas reais (especialmente n
     *   *Fórmula Criativa*: Dispositivos modernos ou carros icônicos reimaginados no estilo cyberpunk ensolarado de Miami 1988, com paleta de rosa choque, turquesa e iluminação volumétrica sob névoa de pista.
 
 ## 3. Framework de Estruturação de Carrossel/Série de Alto Impacto (5 a 10 Itens)
-As coleções geradas devem seguir a seguinte estrutura matemática de retenção:
-*   **Posição 1 (O Gancho Visual - Thumb Principal)**: O item com o maior impacto visual, cores saturadas ou quebra cognitiva de toda a coleção para interromper o scroll imediatamente.
-*   **Posição 2 (O Desenvolvimento)**: Um item visualmente belo e premium que consolida a consistência visual.
-*   **Posição 3 (O Retentor de Comentários - Polêmico/Divertido)**: O item mais engraçado, controverso ou bizarro da lista (ex: o Acre flutuante; um gato samurai comendo sushi com a pata errada; o menor estado do país como o mais forte de todos). Colocado estrategicamente para reter o espectador e induzir debates nos comentários.
-*   **Posição Final (A Chamada / Comment Baiting)**: Um convite interativo provocativo nos comentários para interagir (ex: *"Qual o seu favorito?"*, *"Qual país faltou?"* ou *"Apenas quem tem QI alto consegue achar o elemento oculto no slide 4"*).
+As coleções geradas devem seguir a seguinte estrutura de alta atração e fascínio estético:
+*   **Posição 1 (O Gancho Estético - Thumb-stopper)**: O item com o maior impacto visual e de cor. Uma imagem de tirar o fôlego que exibe perfeição na execução de luz, contraste e enquadramento para paralisar o scroll do feed imediatamente.
+*   **Posição 2 (O Desenvolvimento Visual)**: Uma imagem que aprofunda o tema e valida a consistência estética (CVL), adicionando riqueza de detalhes e enquadramento complementar rico em texturas.
+*   **Posição 3 (O Ponto de Fascínio - Fator Uau)**: Uma imagem que evoca profundo encantamento. Traz um elemento mágico, uma textura hipnótica (como refração de cristal, neon líquido, ou reflexos de água) ou uma simetria perfeita que prende o usuário pela beleza artística pura.
+*   **Posição Final (A Conclusão e Interação de Valor)**: Uma imagem de encerramento majestoso que convida o usuário a interagir de forma positiva e natural (ex: *"Qual dessas artes de tirar o fôlego mais te impressionou?"*, *"Qual o seu visual favorito?"*).
 
 ## 4. Modelos de Ganchos de Texto Viral (Text Hook Templates - TikTok 2026)
 Para segurar a atenção nos 3 primeiros segundos (regra de ouro do TikTok em 2026), os ganchos (`hooks`) devem ser impossíveis de ignorar. Incorpore um desses modelos mentais de gatilho:
@@ -222,7 +222,7 @@ Para segurar a atenção nos 3 primeiros segundos (regra de ouro do TikTok em 20
 *   *Gatilho de Segredo/Curiosidade (Watchbait)*: "A imagem nº 3 esconde um detalhe que 99% das pessoas não percebem de primeira..."
 *   *Gatilho de Orgulho/Identidade*: "Como seria o seu Estado (ou Profissão) se ele fosse um chefe de RPG..."
 *   *Gatilho da Infância Corrompida*: "E se os desenhos dos anos 90 fossem um filme de terror medieval..."
-*   *Vídeo-Resposta (Comunidade)*: Iniciar o gancho como se estivesse respondendo a um comentário polêmico ou dúvida de seguidor. Ex: "Me pediram para recriar [X] do jeito mais absurdo possível..."
+*   *Vídeo-Resposta (Comunidade)*: Iniciar o gancho como se estivesse respondendo a uma dúvida ou solicitação criativa de seguidor. Ex: "Me pediram para recriar [X] do jeito mais lindo e estético possível..."
 
 ## 5. Fórmula do Prompt Técnico de Alta Fidelidade
 Todo prompt técnico gerado deve ser em **Inglês** e seguir a estrutura molecular:
