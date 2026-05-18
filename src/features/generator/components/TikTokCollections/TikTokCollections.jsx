@@ -549,11 +549,157 @@ const groupByCategory = (presets) => {
 };;
 
 const TARGET_PRESETS = [
-  { id: 'normal', label: 'Público Geral (Padrão)', desc: 'Narrativa natural e engajante para qualquer espectador do feed.' },
-  { id: 'jovens', label: 'Geração Z / Jovens', desc: 'Linguagem rápida, memes, engajamento dinâmico.' },
-  { id: 'gamers', label: 'Gamers', desc: 'Referências de jogos, jargão gamer, ritmo forte.' },
-  { id: 'empreendedores', label: 'Empreendedores', desc: 'Foco em valor, negócios, hacks e crescimento.' },
-  { id: 'criativos', label: 'Artistas / Criativos', desc: 'Foco na estética, design e inspiração técnica.' }
+  // Geral & Amplo
+  { 
+    id: 'normal', 
+    category: 'Geral & Amplo', 
+    emoji: '👥',
+    label: 'Público Geral (Padrão)', 
+    desc: 'Narrativa natural e engajante para qualquer espectador do feed.' 
+  },
+  { 
+    id: 'curiosos', 
+    category: 'Geral & Amplo', 
+    emoji: '💡',
+    label: 'Curiosos por Curiosidades', 
+    desc: 'Foco em fatos chocantes, mistérios cotidianos e gatilhos de "você sabia?".' 
+  },
+  { 
+    id: 'storytelling', 
+    category: 'Geral & Amplo', 
+    emoji: '🍿',
+    label: 'Caçadores de Storytelling', 
+    desc: 'Amantes de narrativas envolvendo casos da vida real, fofocas e sagas divididas em partes.' 
+  },
+
+  // Jovens & Tendências
+  { 
+    id: 'jovens', 
+    category: 'Jovens & Tendências', 
+    emoji: '⚡',
+    label: 'Geração Z / Jovens', 
+    desc: 'Linguagem rápida, memes de última hora, ironia refinada e dinâmicas virais.' 
+  },
+  { 
+    id: 'millennials', 
+    category: 'Jovens & Tendências', 
+    emoji: '☕',
+    label: 'Millennials Nostálgicos', 
+    desc: 'Humor sobre a vida adulta, cansaço, café, boletos e forte apelo aos anos 90 e 2000.' 
+  },
+  { 
+    id: 'estudantes', 
+    category: 'Jovens & Tendências', 
+    emoji: '📚',
+    label: 'Estudantes & Vestibulandos', 
+    desc: 'Dicas de estudo, rotina exaustiva de provas, produtividade e humor escolar.' 
+  },
+  { 
+    id: 'lifestyle', 
+    category: 'Jovens & Tendências', 
+    emoji: '✨',
+    label: 'Estilo de Vida & Moda', 
+    desc: 'Público interessado em estética visual, roupas, cuidados pessoais, skincare e rotinas bonitas.' 
+  },
+
+  // Tecnologia & Inovação
+  { 
+    id: 'gamers', 
+    category: 'Tecnologia & Inovação', 
+    emoji: '🎮',
+    label: 'Gamers', 
+    desc: 'Referências a mecânicas de jogos, jargão gamer, humor de consoles/PC e ritmo enérgico.' 
+  },
+  { 
+    id: 'ia_entusiastas', 
+    category: 'Tecnologia & Inovação', 
+    emoji: '🤖',
+    label: 'Entusiastas de Inteligência Artificial', 
+    desc: 'Procurando novos prompts, automações, ferramentas de IA inovadoras e segredos tecnológicos.' 
+  },
+  { 
+    id: 'programadores', 
+    category: 'Tecnologia & Inovação', 
+    emoji: '💻',
+    label: 'Devs & Programadores', 
+    desc: 'Humor corporativo técnico sobre códigos, bugs, reuniões, café e rotina de home office.' 
+  },
+
+  // Carreira & Finanças
+  { 
+    id: 'empreendedores', 
+    category: 'Carreira & Finanças', 
+    emoji: '🚀',
+    label: 'Empreendedores & Founders', 
+    desc: 'Foco em geração de valor, negócios, hacks de produtividade extrema e crescimento de marcas.' 
+  },
+  { 
+    id: 'clt_exausto', 
+    category: 'Carreira & Finanças', 
+    emoji: '💼',
+    label: 'CLT Exausto', 
+    desc: 'Identificação imediata sobre rotina corporativa, bater ponto, chefe mala e cansaço diário.' 
+  },
+  { 
+    id: 'investidores', 
+    category: 'Carreira & Finanças', 
+    emoji: '📈',
+    label: 'Investidores & Finanças', 
+    desc: 'Interessados em educação financeira, como investir, economia pessoal e liberdade financeira.' 
+  },
+
+  // Desenvolvimento & Saúde
+  { 
+    id: 'academia', 
+    category: 'Desenvolvimento & Saúde', 
+    emoji: '💪',
+    label: 'Mundo Fitness & Academia', 
+    desc: 'Foco em treino pesado (maromba), dieta restrita, memes de academia e superação diária.' 
+  },
+  { 
+    id: 'desenvolvimento_pessoal', 
+    category: 'Desenvolvimento & Saúde', 
+    emoji: '🧠',
+    label: 'Evolução e Desenvolvimento Pessoal', 
+    desc: 'Crescimento individual, hábitos saudáveis, disciplina constante e produtividade.' 
+  },
+  { 
+    id: 'motivacional_hardcore', 
+    category: 'Desenvolvimento & Saúde', 
+    emoji: '🔥',
+    label: 'Motivacional Hardcore', 
+    desc: 'Atitude estoica, frases marcantes, disciplina militar e superação de limites.' 
+  },
+
+  // Hobbies & Cultura Pop
+  { 
+    id: 'criativos', 
+    category: 'Hobbies & Cultura Pop', 
+    emoji: '🎨',
+    label: 'Artistas & Criativos', 
+    desc: 'Profissionais ou entusiastas de design, fotografia, artes visuais e estética premium.' 
+  },
+  { 
+    id: 'leitores', 
+    category: 'Hobbies & Cultura Pop', 
+    emoji: '📖',
+    label: 'Leitores & BookTok', 
+    desc: 'Comunidade apaixonada por livros, romance dramático, humor literário e resenhas emocionantes.' 
+  },
+  { 
+    id: 'cinefilos', 
+    category: 'Hobbies & Cultura Pop', 
+    emoji: '🎬',
+    label: 'Cinefilos & Series', 
+    desc: 'Amantes de análises de filmes, teorias de séries e fofocas da cultura pop.' 
+  },
+  { 
+    id: 'foodies', 
+    category: 'Hobbies & Cultura Pop', 
+    emoji: '🍳',
+    label: 'Cozinheiros & Foodies', 
+    desc: 'Apreciadores de culinária descomplicada, receitas rápidas, hacks de cozinha e laricas de fim de noite.' 
+  }
 ];
 
 // Mashup Arrays para gerar temas infinitos e virais
@@ -896,10 +1042,14 @@ Cada uma das ${quantity} imagens deve ter seu próprio bloco de código contendo
                 value={selectedTarget}
                 onChange={(e) => setSelectedTarget(e.target.value)}
               >
-                {TARGET_PRESETS.map(preset => (
-                  <option key={preset.id} value={preset.id} title={preset.desc}>
-                    {preset.label}
-                  </option>
+                {Object.entries(groupByCategory(TARGET_PRESETS)).map(([category, items]) => (
+                  <optgroup key={category} label={category} className={styles.optGroup}>
+                    {items.map(preset => (
+                      <option key={preset.id} value={preset.id} title={preset.desc}>
+                        {preset.emoji ? `${preset.emoji} ` : ''}{preset.label}
+                      </option>
+                    ))}
+                  </optgroup>
                 ))}
               </select>
             </div>
