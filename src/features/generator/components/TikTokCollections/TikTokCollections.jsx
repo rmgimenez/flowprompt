@@ -656,6 +656,7 @@ export const TikTokCollections = () => {
   const [notes, setNotes] = useState('');
   const [copied, setCopied] = useState(false);
   const [generatedPrompt, setGeneratedPrompt] = useState('');
+  const [portugueseText, setPortugueseText] = useState(true);
 
   // Atualiza o prompt em tempo real sempre que qualquer dependência mudar
   useEffect(() => {
@@ -670,7 +671,15 @@ export const TikTokCollections = () => {
     const vibeDesc = vibeObj ? `${vibeObj.label} (${vibeObj.desc})` : 'Vibe equilibrada';
     const colorDesc = colorObj ? colorObj.value : 'Paleta natural';
     const targetDesc = targetObj ? `${targetObj.label} (${targetObj.desc})` : 'Feed geral';
-    const optionalNotes = notes.trim() ? notes.trim() : 'Nenhuma observação adicional.';
+    
+    let finalNotes = notes.trim() ? notes.trim() : 'Nenhuma observação adicional.';
+    if (portugueseText) {
+      finalNotes = `ATENÇÃO: Toda e qualquer imagem que contiver textos, letreiros, placas ou tipografia DEVE ter o texto gerado em Português do Brasil (PT-BR). ${finalNotes}`;
+    }
+
+    const portugueseInstruction = portugueseText 
+      ? `\n4. **Textos em Português nas Imagens:** Como o público-alvo é brasileiro, caso alguma das imagens possua texto visível (placas, camisetas, cartazes, balões de fala, letreiros, ou elementos gráficos), você DEVE especificar no prompt em inglês que esse texto deve ser gerado rigorosamente em **Português do Brasil** (por exemplo: "with Brazilian Portuguese text written: '[Texto Aqui]'" ou "bold typography in Brazilian Portuguese showing: '[Texto]'").`
+      : '';
 
     const promptText = `Você é o **FlowPrompt Image Engine**, um Engenheiro de Prompts e Diretor de Arte Sênior especializado no modelo **Google's Nano Banana 2**. 
 
@@ -689,7 +698,7 @@ Sua função é criar um post carrossel altamente viral no **TikTok** com o tema
 - **Tom da Narrativa/Legenda:** ${vibeDesc}
 - **Diretriz de Paleta de Cores:** ${colorDesc}
 - **Público-Alvo Priorizado:** ${targetDesc}
-- **Observações Importantes e Refinamentos:** ${optionalNotes}
+- **Observações Importantes e Refinamentos:** ${finalNotes}
 
 ---
 
@@ -756,10 +765,10 @@ Cada uma das ${quantity} imagens deve ter seu próprio bloco de código contendo
    - O Título deve estar dentro de: \`\`\`text
    - A Legenda com as 5 hashtags deve estar dentro de: \`\`\`text
    - Cada imagem (total de ${quantity}) deve estar dentro de seu próprio bloco: \`\`\`json (totalizando ${quantity} blocks JSON separados).
-3. **Sem Conversação Extra:** Responda diretamente com os blocos contendo os resultados. Não insira saudações, introduções ou explicações antes ou depois.`;
+3. **Sem Conversação Extra:** Responda diretamente com os blocos contendo os resultados. Não insira saudações, introduções ou explicações antes ou depois.${portugueseInstruction}`;
 
     setGeneratedPrompt(promptText);
-  }, [theme, quantity, selectedStyle, selectedVibe, selectedColors, selectedTarget, notes]);
+  }, [theme, quantity, selectedStyle, selectedVibe, selectedColors, selectedTarget, notes, portugueseText]);
 
   const handleCopy = () => {
     if (!generatedPrompt) return;
@@ -795,6 +804,7 @@ Cada uma das ${quantity} imagens deve ter seu próprio bloco de código contendo
     setSelectedVibe(randomVibe);
     setSelectedColors(randomColor);
     setSelectedTarget(randomTarget);
+    setPortugueseText(Math.random() > 0.5);
   };
 
   const handleClear = () => {
@@ -805,6 +815,7 @@ Cada uma das ${quantity} imagens deve ter seu próprio bloco de código contendo
     setSelectedColors('normal');
     setSelectedTarget('normal');
     setNotes('');
+    setPortugueseText(true);
   };
 
   return (
@@ -938,6 +949,22 @@ Cada uma das ${quantity} imagens deve ter seu próprio bloco de código contendo
               </select>
             </div>
           </div>
+
+          {/* Texto em Português Opcional */}
+          <label className={styles.toggleRow} htmlFor="portugueseTextToggle">
+            <input 
+              id="portugueseTextToggle"
+              type="checkbox"
+              className={styles.toggleInput}
+              checked={portugueseText}
+              onChange={(e) => setPortugueseText(e.target.checked)}
+            />
+            <div className={styles.toggleSwitch}></div>
+            <div className={styles.toggleLabelText}>
+              <span className={styles.toggleLabelTitle}>Forçar Texto das Imagens em Português</span>
+              <span className={styles.toggleLabelDesc}>Caso as imagens contenham letreiros, placas ou camisas, força o texto em PT-BR.</span>
+            </div>
+          </label>
 
           {/* Observações Opcionais */}
           <div className={styles.controlGroup}>
