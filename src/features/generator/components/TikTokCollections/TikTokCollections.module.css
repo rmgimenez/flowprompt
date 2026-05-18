@@ -99,9 +99,18 @@
   cursor: pointer;
 }
 
+.selectField optgroup {
+  background: #111115;
+  color: #ec4899; /* Pink accent matching the theme */
+  font-weight: 600;
+  font-style: normal;
+}
+
 .selectField option {
   background: #18181c;
-  color: #ffffff;
+  color: #e4e4e7;
+  padding: 0.5rem;
+  font-weight: normal;
 }
 
 .textareaField {
