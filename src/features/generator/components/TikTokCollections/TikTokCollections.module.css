@@ -511,3 +511,89 @@
   color: rgba(255, 255, 255, 0.45);
   line-height: 1.3;
 }
+
+/* Quick Presets Grid & Cards */
+.presetsSection {
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.5rem;
+}
+
+.presetsSectionLabel {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 0.6rem;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.presetsGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+}
+
+@media (max-width: 600px) {
+  .presetsGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 380px) {
+  .presetsGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.presetCard {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+  padding: 0.75rem 0.5rem;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  outline: none;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+.presetCard:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(236, 72, 153, 0.25);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.presetCardActive {
+  background: linear-gradient(135deg, rgba(236, 72, 153, 0.08), rgba(139, 92, 246, 0.08));
+  border-color: rgba(236, 72, 153, 0.6);
+  box-shadow: 0 0 12px rgba(236, 72, 153, 0.2);
+}
+
+.presetCardActive:hover {
+  border-color: rgba(236, 72, 153, 0.8);
+  transform: translateY(-2px);
+}
+
+.presetCardEmoji {
+  font-size: 1.4rem;
+  margin-bottom: 0.35rem;
+}
+
+.presetCardLabel {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #ffffff;
+  margin-bottom: 0.2rem;
+}
+
+.presetCardDesc {
+  font-size: 0.65rem;
+  color: rgba(255, 255, 255, 0.45);
+  line-height: 1.25;
+}

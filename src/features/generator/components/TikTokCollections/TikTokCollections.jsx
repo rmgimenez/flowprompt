@@ -702,6 +702,81 @@ const TARGET_PRESETS = [
   }
 ];
 
+const COLLECTION_PRESETS = [
+  {
+    id: 'geracao_z',
+    emoji: '⚡',
+    label: 'Gen-Z Viral',
+    desc: 'Humor rápido & memes',
+    style: 'pixar',
+    vibe: 'sarcástico',
+    color: 'cyberpunk',
+    target: 'jovens',
+    qty: 5,
+    notes: 'Priorizar storytelling humorístico, cortes dinâmicos e cores neon vibrantes focadas em ironia.'
+  },
+  {
+    id: 'storytelling',
+    emoji: '🍿',
+    label: 'Storytelling',
+    desc: 'Casos, suspense & fofocas',
+    style: 'tarantino',
+    vibe: 'sombrio_misterio',
+    color: 'frio',
+    target: 'storytelling',
+    qty: 7,
+    notes: 'Criar atmosfera de suspense contínuo. As imagens devem progredir narrativamente revelando detalhes a cada slide.'
+  },
+  {
+    id: 'clt',
+    emoji: '💼',
+    label: 'CLT Exausto',
+    desc: 'Humor corporativo real',
+    style: 'realista',
+    vibe: 'revoltado',
+    color: 'normal',
+    target: 'clt_exausto',
+    qty: 5,
+    notes: 'Estilo de fotografia realista crua e contrastante, com forte identificação e empatia com a rotina de trabalho.'
+  },
+  {
+    id: 'motivacional',
+    emoji: '🔥',
+    label: 'Motivacional',
+    desc: 'Disciplina & estoicismo',
+    style: 'villeneuve',
+    vibe: 'inspirador',
+    color: 'desert_sand',
+    target: 'motivacional_hardcore',
+    qty: 6,
+    notes: 'Visual de grande escala brutalista, tons terrosos dourados e atmosfera estóica reflexiva de profunda determinação.'
+  },
+  {
+    id: 'autocuidado',
+    emoji: '✨',
+    label: 'Aesthetic / Calm',
+    desc: 'Skincare, lifestyle & paz',
+    style: 'goldenhour',
+    vibe: 'estético',
+    color: 'pastel',
+    target: 'lifestyle',
+    qty: 5,
+    notes: 'Visual extremamente limpo e harmônico, com cores pastel suaves, atmosfera de calmaria, luz de golden hour e paz.'
+  },
+  {
+    id: 'geek',
+    emoji: '🎮',
+    label: 'Cultura Geek',
+    desc: 'Jogos, animes & teorias',
+    style: 'ghibli',
+    vibe: 'gamer',
+    color: 'retro_arcade',
+    target: 'gamers',
+    qty: 5,
+    notes: 'Ilustração artística mágica combinada com paleta neon vibrante e fortes referências geek/gamer.'
+  }
+];
+
 // Mashup Arrays para gerar temas infinitos e virais
 const THEME_SUBJECTS = [
   'Capivaras brasileiras',
@@ -803,6 +878,34 @@ export const TikTokCollections = () => {
   const [copied, setCopied] = useState(false);
   const [generatedPrompt, setGeneratedPrompt] = useState('');
   const [portugueseText, setPortugueseText] = useState(true);
+  const [activePresetId, setActivePresetId] = useState(null);
+
+  // Sincroniza o preset selecionado com os campos individuais. Se o usuário mudar manualmente algum campo, limpa o preset ativo.
+  useEffect(() => {
+    if (!activePresetId) return;
+    const currentPreset = COLLECTION_PRESETS.find(p => p.id === activePresetId);
+    if (
+      currentPreset &&
+      (selectedStyle !== currentPreset.style ||
+       selectedVibe !== currentPreset.vibe ||
+       selectedColors !== currentPreset.color ||
+       selectedTarget !== currentPreset.target ||
+       quantity !== currentPreset.qty ||
+       notes !== currentPreset.notes)
+    ) {
+      setActivePresetId(null);
+    }
+  }, [selectedStyle, selectedVibe, selectedColors, selectedTarget, quantity, notes, activePresetId]);
+
+  const handleSelectPreset = (preset) => {
+    setActivePresetId(preset.id);
+    setSelectedStyle(preset.style);
+    setSelectedVibe(preset.vibe);
+    setSelectedColors(preset.color);
+    setSelectedTarget(preset.target);
+    setQuantity(preset.qty);
+    setNotes(preset.notes);
+  };
 
   // Atualiza o prompt em tempo real sempre que qualquer dependência mudar
   useEffect(() => {
@@ -951,6 +1054,7 @@ Cada uma das ${quantity} imagens deve ter seu próprio bloco de código contendo
     setSelectedColors(randomColor);
     setSelectedTarget(randomTarget);
     setPortugueseText(Math.random() > 0.5);
+    setActivePresetId(null);
   };
 
   const handleClear = () => {
@@ -962,6 +1066,7 @@ Cada uma das ${quantity} imagens deve ter seu próprio bloco de código contendo
     setSelectedTarget('normal');
     setNotes('');
     setPortugueseText(true);
+    setActivePresetId(null);
   };
 
   return (
@@ -972,6 +1077,29 @@ Cada uma das ${quantity} imagens deve ter seu próprio bloco de código contendo
             <Folders size={18} className={styles.sectionTitleIcon} />
             Configuração da Coleção TikTok
           </h3>
+
+          {/* Presets de Alta Conversão */}
+          <div className={styles.presetsSection}>
+            <span className={styles.presetsSectionLabel}>
+              <Sparkles size={14} style={{ color: '#ec4899' }} />
+              Combos de Alta Conversão (Preenchimento Rápido)
+            </span>
+            <div className={styles.presetsGrid}>
+              {COLLECTION_PRESETS.map((preset) => (
+                <button
+                  key={preset.id}
+                  type="button"
+                  className={`${styles.presetCard} ${activePresetId === preset.id ? styles.presetCardActive : ''}`}
+                  onClick={() => handleSelectPreset(preset)}
+                  title={`Clique para aplicar as configurações recomendadas para ${preset.label}`}
+                >
+                  <span className={styles.presetCardEmoji}>{preset.emoji}</span>
+                  <span className={styles.presetCardLabel}>{preset.label}</span>
+                  <span className={styles.presetCardDesc}>{preset.desc}</span>
+                </button>
+              ))}
+            </div>
+          </div>
 
           {/* Tema e Quantidade */}
           <div className={styles.controlGroup}>
