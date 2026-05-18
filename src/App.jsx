@@ -7,6 +7,7 @@ import PromptPreview from './features/generator/components/Preview/PromptPreview
 import About from './features/generator/components/About/About';
 import ImageStacker from './features/generator/components/ImageStacker/ImageStacker';
 import ImageMontage from './features/generator/components/ImageMontage/ImageMontage';
+import TikTokCollections from './features/generator/components/TikTokCollections/TikTokCollections';
 import { useGenerator } from './features/generator/hooks/useGenerator';
 import { GlassCard } from './components/ui/GlassCard';
 import { HelpBox } from './components/ui/HelpBox';
@@ -73,7 +74,9 @@ function App() {
                     <About />
                   </GlassCard>
                 ) : currentMode.isCustom ? (
-                  currentModeId === 'photo-montage' ? <ImageMontage /> : <ImageStacker />
+                  currentModeId === 'photo-montage' ? <ImageMontage /> :
+                  currentModeId === 'image-stacker' ? <ImageStacker /> :
+                  currentModeId === 'tiktok-collections' ? <TikTokCollections /> : null
                 ) : (
                   <GlassCard className="p-8">
                     <PromptForm 

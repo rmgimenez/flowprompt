@@ -1003,5 +1003,12 @@ export const MODES = {
 • Campos Vazios: Não se preocupe em preencher tudo. Se deixar vazio, o sistema usa "Default Inteligentes" para garantir que o vídeo não fique parado.`
       }
     ]
+  },
+  'tiktok-collections': {
+    id: 'tiktok-collections',
+    title: 'Coleção TikTok (Nano Banana 2)',
+    desc: 'Crie prompts mestres para gerar posts de coleções virais (carrossel) no TikTok.',
+    helpText: 'Preencha os campos criativos e copie o prompt gerado. Use-o em qualquer chat de IA (como ChatGPT, Gemini ou Claude) para receber a legenda e as imagens prontas e formatadas individualmente em artefatos para fácil cópia.',
+    isCustom: true
   }
 };
