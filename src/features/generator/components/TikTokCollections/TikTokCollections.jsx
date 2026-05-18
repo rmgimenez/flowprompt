@@ -6,7 +6,7 @@ import {
 } from 'lucide-react';
 import styles from './TikTokCollections.module.css';
 
-// Estilos de Alta Conversão (Nano Banana 2 Formulas)
+// Estilos de Alta Conversão (Nano Banana 2 Formulas - Total de 49 estilos)
 const STYLE_PRESETS = [
   { 
     id: 'normal', 
@@ -55,18 +55,286 @@ const STYLE_PRESETS = [
     label: 'Anime Anos 90', 
     desc: 'Aparência nostálgica de desenhos clássicos pintados à mão.', 
     formula: 'Nostalgic 90s anime illustration, hand-drawn aesthetic, cel-shaded animation style, lush hand-painted background texture, vintage soft color grading, Ghibli style visual cues.'
+  },
+  { 
+    id: 'ghibli', 
+    label: 'Anime Ghibli', 
+    desc: 'Aquarela pintada à mão, natureza verdejante e atmosfera nostálgica.', 
+    formula: 'Studio Ghibli aesthetic, hand-painted lush watercolor background, soft natural lighting, nostalgic warm mood, highly detailed anime illustration, vertical 9:16.'
+  },
+  { 
+    id: 'cyberpunk2077', 
+    label: 'Cyberpunk Neon', 
+    desc: 'Metrópole futurista com luzes neon intensas e sombras cibernéticas.', 
+    formula: 'Cyberpunk 2077 aesthetic, wet rain-slicked futuristic city streets reflecting pink and cyan neon lights, glowing holographic advertisements, high tech low life, vertical 9:16.'
+  },
+  { 
+    id: 'timburton', 
+    label: 'Gótico Tim Burton', 
+    desc: 'Personagens magros e caricatos com olheiras profundas em ambientes misteriosos.', 
+    formula: 'Tim Burton gothic art style, pale whimsical character with large dark expressive eyes, high contrast shadows, twisted trees, gloomy spiral backdrops, surreal claymation feel, vertical 9:16.'
+  },
+  { 
+    id: 'retro30s', 
+    label: 'Cartoon Clássico Anos 30', 
+    desc: 'Estilo desenho antigo com animação rubberhose e granulado de película.', 
+    formula: '1930s rubberhose cartoon style, Cuphead aesthetic, monochrome black and white, vintage film grain and scratches, high contrast ink-and-paint illustration, vertical 9:16.'
+  },
+  { 
+    id: 'pixelart', 
+    label: 'Retro 16-Bit Pixel Art', 
+    desc: 'Estilo videogame nostálgico com pixels detalhados e cores saturadas.', 
+    formula: 'Detailed 16-bit pixel art style, vibrant limited color palette, clean grid sprites, nostalgic retro game aesthetic, vertical 9:16.'
+  },
+  { 
+    id: 'claymation', 
+    label: 'Massinha ClaymationStop-Motion', 
+    desc: 'Visual de animação stop-motion com texturas reais de massinha e marcas de dedo.', 
+    formula: 'Stop-motion claymation style, hand-crafted plasticine clay textures with subtle fingerprint details, studio lighting, highly adorable miniature models, vertical 9:16.'
+  },
+  { 
+    id: 'papercut', 
+    label: 'Origami / Papel Recortado', 
+    desc: 'Camadas tridimensionais de papel colorido recortado com sombras suaves.', 
+    formula: 'Intricate 3D papercut illustration style, layered colored paper sheets creating deep drop shadows, origami art elements, clean minimalist craft design, vertical 9:16.'
+  },
+  { 
+    id: 'gopro', 
+    label: 'GoPro Action POV', 
+    desc: 'Perspectiva em primeira pessoa com lente fisheye ultra-angular e ação dinâmica.', 
+    formula: 'GoPro action camera POV shot, extreme wide-angle fisheye lens perspective, dramatic motion blur, high action adrenaline-fueled camera angle, vertical 9:16.'
+  },
+  { 
+    id: 'polaroid', 
+    label: 'Polaroid Vintage', 
+    desc: 'Visual analógico nostálgico com cores levemente desbotadas e brilho vintage.', 
+    formula: 'Vintage Polaroid snapshot photo style, faded washed-out analog colors, warm light leaks, nostalgic film grain, authentic retro atmosphere, vertical 9:16.'
+  },
+  { 
+    id: 'steampunk', 
+    label: 'Steampunk Vitoriano', 
+    desc: 'Máquinas de cobre, engrenagens douradas e fumaça em atmosfera vitoriana.', 
+    formula: 'Steampunk industrial aesthetic, Victorian copper and brass clockwork gears, glowing bronze pressure meters, steam vents, sepia atmospheric lighting, vertical 9:16.'
+  },
+  { 
+    id: 'tarantino', 
+    label: 'Cinematográfico Tarantino', 
+    desc: 'Cores quentes e saturadas com ângulos de câmera dramáticos e atitude de filme clássico.', 
+    formula: 'Gritty 70s cinema style inspired by Quentin Tarantino, rich warm saturated color palette, high contrast dramatic lighting, intense character expression, vintage movie frame look, vertical 9:16.'
+  },
+  { 
+    id: 'nolan', 
+    label: 'IMAX Christopher Nolan', 
+    desc: 'Cores frias, tom realista estéril e escalas monumentais.', 
+    formula: 'Epic IMAX cinematic style, cold clinical color grading, grand architectural scale, dramatic natural lighting, sterile sci-fi thriller atmosphere, vertical 9:16.'
+  },
+  { 
+    id: 'kubrick', 
+    label: 'Simetria Stanley Kubrick', 
+    desc: 'Composição perfeitamente centralizada com perspectiva de um ponto de fuga.', 
+    formula: 'Stanley Kubrick signature style, perfect one-point perspective, perfectly symmetrical composition, intense centered subject gaze, cold sterile atmospheric lighting, vertical 9:16.'
+  },
+  { 
+    id: 'popart', 
+    label: 'Pop Art Comics', 
+    desc: 'Cores chapadas primárias com contornos fortes e retículas estilo quadrinho antigo.', 
+    formula: '1960s Pop Art style, Roy Lichtenstein inspired, bold primary colors, heavy black outlines, retro comic book halftone dot pattern, dramatic dialogue panel feel, vertical 9:16.'
+  },
+  { 
+    id: 'surrealismo', 
+    label: 'Surrealismo de Sonho', 
+    desc: 'Mundos oníricos com objetos derretendo e física distorcida.', 
+    formula: 'Surrealist dreamscape art style inspired by Salvador Dali, melting clocks and floating surreal structures, desert canvas background, strange dream logic, warm soft golden lighting, vertical 9:16.'
+  },
+  { 
+    id: 'vangogh', 
+    label: 'Óleo Impressionista', 
+    desc: 'Pintura texturizada com pinceladas grossas e redemoinhos de tinta a óleo à la Van Gogh.', 
+    formula: 'Post-impressionist oil painting style inspired by Vincent van Gogh, thick textured impasto brushstrokes, swirly sky details, vibrant complementary colors, vertical 9:16.'
+  },
+  { 
+    id: 'watercolor', 
+    label: 'Aquarela Artística', 
+    desc: 'Bordas de tinta fluida e manchas transparentes de aquarela com textura de papel.', 
+    formula: 'Artistic watercolor illustration, bleeding translucent colorful paint margins, organic paint splashes, elegant wet brush texture on rough textured paper backdrop, vertical 9:16.'
+  },
+  { 
+    id: 'pencilsketch', 
+    label: 'Desenho a Lápis de Grafite', 
+    desc: 'Rascunho feito à mão com sombreamento cruzado clássico e traços brutos.', 
+    formula: 'Detailed graphite pencil sketch, hand-drawn cross-hatching shading, raw charcoal pencil lines on aged cream sketch paper, high contrast textured drawing, vertical 9:16.'
+  },
+  { 
+    id: 'cyber_gothic', 
+    label: 'Cyber-Gótico Neon', 
+    desc: 'Roupas escuras cibernéticas combinadas com detalhes e maquiagens em neon brilhante.', 
+    formula: 'Cyber-gothic aesthetic, dark leather and futuristic chrome cyberwear, glowing neon hair and makeup, high-contrast gothic rave lighting, deep shadows, vertical 9:16.'
+  },
+  { 
+    id: 'natgeo', 
+    label: 'Documentário NatGeo', 
+    desc: 'Fotografia documental de natureza crua e realismo geográfico impecável.', 
+    formula: 'National Geographic documentary photography, raw natural lighting, tack-sharp realism, professional telephoto lens composition, authentic environmental textures, vertical 9:16.'
+  },
+  { 
+    id: 'macro', 
+    label: 'Macro Lente Extrema', 
+    desc: 'Foco hiper-detalhado em texturas microscópicas com fundo totalmente desfocado.', 
+    formula: 'Extreme macro photography, hyper-detailed texture patterns (water droplets, skin scales, fiber weaves), razor-thin depth of field, giant scale perspective, professional studio lighting, vertical 9:16.'
+  },
+  { 
+    id: 'thermal', 
+    label: 'Câmera Térmica / Infravermelho', 
+    desc: 'Cores de assinatura de calor, do azul frio ao amarelo e vermelho incandescente.', 
+    formula: 'Thermal imaging camera filter style, infrared heat signature map, glowing hot red and orange zones, warm yellow contours, deep cold blue and purple background shadows, vertical 9:16.'
+  },
+  { 
+    id: 'goldenhour', 
+    label: 'Golden Hour / Pôr do Sol', 
+    desc: 'Luz dourada difusa com contra-luz suave e reflexos solares cinematográficos.', 
+    formula: 'Stunning golden hour photography, warm glowing sun flare backlighting, long dramatic shadows, soft ambient orange and gold light, dreamy cinematic atmosphere, vertical 9:16.'
+  },
+  { 
+    id: 'holomap', 
+    label: 'Projeção Holográfica 3D', 
+    desc: 'Grade de feixes azuis translúcidos, scanlines e pontos de dados flutuantes.', 
+    formula: 'Translucent blue glowing 3D holographic projection, digital matrix scanlines, floating glowing wireframes and data nodes, high-tech interface design, vertical 9:16.'
+  },
+  { 
+    id: 'minecraft', 
+    label: 'Minecraft Voxel 3D', 
+    desc: 'Construção em blocos tridimensionais voxelizados com luzes suaves.', 
+    formula: 'Minecraft-inspired voxel 3D blocky art style, pixelated textures, soft volumetric lighting, cute cubic character design, high-fidelity block world aesthetic, vertical 9:16.'
+  },
+  { 
+    id: 'artnouveau', 
+    label: 'Art Nouveau Elegante', 
+    desc: 'Linhas curvas e contornos florais orgânicos inspirados em Alphonse Mucha.', 
+    formula: 'Elegant Art Nouveau illustration style inspired by Alphonse Mucha, ornate golden borders, flowing long organic hair and floral vine motifs, flat warm colors, vertical 9:16.'
+  },
+  { 
+    id: 'lowpoly', 
+    label: 'Low Poly Retro 3D', 
+    desc: 'Modelos 3D geométricos feitos de poucos polígonos com cores sólidas e retrô.', 
+    formula: 'Minimalist low-poly 3D render style, flat-shaded geometric polygon meshes, cute clean shapes, soft warm ambient lighting, retro game console aesthetic, vertical 9:16.'
+  },
+  { 
+    id: 'synthwave', 
+    label: 'Synthwave / Retro-Future', 
+    desc: 'Grade 3D no horizonte, sol roxo gigante e palmeiras neon dos anos 80.', 
+    formula: 'Synthwave outrun aesthetic, glowing wireframe grid horizon, giant retro sun graphic, neon pink palm tree silhouettes, 80s futuristic vector lines, vertical 9:16.'
+  },
+  { 
+    id: 'chalk', 
+    label: 'Lousa de Giz Escolar', 
+    desc: 'Desenho feito a giz colorido em quadro negro clássico com textura apagada.', 
+    formula: 'Chalkboard drawings style, colorful dusty chalk sketches on a textured black slate chalkboard, chalk dust smudges, raw hand-crafted artistic blackboard feel, vertical 9:16.'
+  },
+  { 
+    id: 'blueprint', 
+    label: 'Cópia Heliográfica / Blueprint', 
+    desc: 'Desenhos técnicos de engenharia em azul com linhas de giz e notas de projeto.', 
+    formula: 'Architectural blueprint style, technical white chalk draft lines on deep cyan blueprint grid paper, handwritten engineering notes and measurements, vertical 9:16.'
+  },
+  {
+    id: 'davinci',
+    label: 'Leonardo da Vinci',
+    desc: 'Esfuminho renascentista clássico, tons terrosos e traços anatômicos detalhados.',
+    formula: 'Classical Renaissance painting inspired by Leonardo da Vinci, masterfully executed sfumato shading, soft atmospheric contours, rich earthy pigments, detailed ink-and-wash anatomical sketch elements, vertical 9:16.'
+  },
+  {
+    id: 'picasso',
+    label: 'Cubismo Pablo Picasso',
+    desc: 'Figuras geométricas abstratas, múltiplas perspectivas e formas desconstruídas.',
+    formula: 'Analytical Cubism masterpiece inspired by Pablo Picasso, fragmented geometric shapes, multiple simultaneous perspective planes, deconstructed portrait composition, muted earthy and blue color palette, vertical 9:16.'
+  },
+  {
+    id: 'monet',
+    label: 'Impressionismo Claude Monet',
+    desc: 'Pinceladas rápidas e suaves com luz natural vibrante e foco em paisagens aquáticas.',
+    formula: 'French Impressionism painting style inspired by Claude Monet, soft delicate brushstrokes, vibrant play of outdoor sunlight, glowing pastel textures, dappled light reflection, vertical 9:16.'
+  },
+  {
+    id: 'michelangelo',
+    label: 'Afresco Michelangelo',
+    desc: 'Figuras humanas esculturais, musculosas e expressivas com textura de afresco de parede.',
+    formula: 'Sistine Chapel fresco painting style inspired by Michelangelo, heroic hyper-muscular human anatomy, dynamic expressive poses, chalky weathered plaster wall texture, classical Renaissance masterwork, vertical 9:16.'
+  },
+  {
+    id: 'munch',
+    label: 'Expressionismo Edvard Munch',
+    desc: 'O Grito. Linhas ondulantes, cores dramáticas e forte carga emocional.',
+    formula: 'Expressionist painting style inspired by Edvard Munch (The Scream), swirling wavy brushstrokes, intense dramatic blood-orange and dark teal sky, heavy emotional anxiety tone, stark black silhouettes, vertical 9:16.'
+  },
+  {
+    id: 'fridakahlo',
+    label: 'Surrealismo Frida Kahlo',
+    desc: 'Arte folclórica mexicana, autorretratos com natureza exuberante e simbolismo profundo.',
+    formula: 'Naïve folk surrealist art style inspired by Frida Kahlo, vibrant Mexican cultural motifs, lush exotic tropical plants, symbolic animals (monkeys, birds), rich warm decorative colors, vertical 9:16.'
+  },
+  {
+    id: 'klimt',
+    label: 'Simbolismo Gustav Klimt',
+    desc: 'O Beijo. Padrões ornamentais intrincados, folhas de ouro brilhantes e mosaicos decorativos.',
+    formula: 'Symbolist golden art style inspired by Gustav Klimt (The Kiss), intricate swirling decorative patterns, glittering gold leaf overlays, mosaic textures, warm amber and bronze tones, vertical 9:16.'
+  },
+  {
+    id: 'hokusai',
+    label: 'Xilogravura Katsushika Hokusai',
+    desc: 'Gravuras em madeira de estilo Ukiyo-e clássico com ondas dramáticas e contornos fortes.',
+    formula: 'Classical Japanese Ukiyo-e woodblock print style inspired by Katsushika Hokusai, dynamic stylized ocean wave patterns, bold black ink outlines, clean solid color fills on aged block print paper texture, vertical 9:16.'
+  },
+  {
+    id: 'warhol',
+    label: 'Pop Art Andy Warhol',
+    desc: 'Serigrafia colorida repetitiva em cores neon saturadas e alto contraste.',
+    formula: '1960s silkscreen pop art portrait style inspired by Andy Warhol, high-contrast flat neon screen-print textures, vibrant saturated colors, offset printing misalignment artifacts, vertical 9:16.'
+  },
+  {
+    id: 'rembrandt',
+    label: 'Chiaroscuro Rembrandt',
+    desc: 'Contraste dramático de luz e sombra (chiaroscuro) com tons dourados ricos e intimistas.',
+    formula: 'Baroque chiaroscuro portrait painting inspired by Rembrandt, dramatic deep shadow contrast, rich golden candlelight glow illuminating face, highly detailed organic skin textures, dark earthy backdrops, vertical 9:16.'
+  },
+  {
+    id: 'matisse',
+    label: 'Fauvismo Henri Matisse',
+    desc: 'Cores puras e selvagens com recortes de papel minimalistas e expressivos.',
+    formula: 'Fauvist cut-out paper art style inspired by Henri Matisse, bold abstract minimalist organic shapes, highly vibrant flat pure colors, expressive naive composition, vertical 9:16.'
   }
 ];
 
+// Total de 26 vibes
 const VIBE_PRESETS = [
   { id: 'normal', label: 'Neutro / Natural (Padrão)', desc: 'Narrativa equilibrada e direta, sem exageros dramáticos.' },
   { id: 'cômico', label: 'Humorístico / Cômico', desc: 'Engraçado, inusitado e descontraído.' },
   { id: 'épico', label: 'Épico / Heroico', desc: 'Grandioso, poderoso e impactante.' },
   { id: 'inspirador', label: 'Inspirador / Motivacional', desc: 'Profundo, reflexivo e encorajador.' },
   { id: 'curioso', label: 'Curiosidades / Fatos', desc: 'Instigante, didático e intrigante.' },
-  { id: 'drama', label: 'Sombrio / Drama', desc: 'Misterioso, tenso e cinematográfico.' }
+  { id: 'drama', label: 'Sombrio / Drama', desc: 'Misterioso, tenso e cinematográfico.' },
+  { id: 'sarcástico', label: 'Sarcástico e Irônico', desc: 'Humor ácido, respostas afiadas e identificação rápida.' },
+  { id: 'nostálgico', label: 'Nostálgico Anos 90/2000', desc: 'Gera forte apelo emocional com memórias da infância.' },
+  { id: 'sombrio_misterio', label: 'Sombrio e Misterioso', desc: 'Suspense puro, histórias de suspense e segredos.' },
+  { id: 'romântico', label: 'Romântico / Love Story', desc: 'Foco em conexões, afeto, casais e sentimentos calorosos.' },
+  { id: 'futurista', label: 'Tecnológico / Sci-Fi', desc: 'Narrativas com jargões de tecnologia e visões futuristas.' },
+  { id: 'estético', label: 'Aesthetic / Relaxante', desc: 'Visualmente harmônico, focado em paz e tranquilidade.' },
+  { id: 'terror', label: 'Terror / Lendas Urbanas', desc: 'Narrativa arrepiante ideal para histórias assustadoras.' },
+  { id: 'fofoca', label: 'Fofocas / Storytelling', desc: 'Estilo segredo revelado, bastidores quentes e intrigas.' },
+  { id: 'investigativo', label: 'Investigativo / True Crime', desc: 'Focado em suspense realista e desvendar mistérios.' },
+  { id: 'revoltado', label: 'Indignado / Crítico', desc: 'Divertida indignação com problemas irritantes do dia a dia.' },
+  { id: 'tutorial', label: 'Didático / Passo a Passo', desc: 'Linguagem de tutorial, direta, focada em ensinar algo.' },
+  { id: 'desafio', label: 'Desafio / Interativo', desc: 'Estimula o usuário com testes e desafios intelectuais.' },
+  { id: 'lifestyle', label: 'Vlog / Lifestyle', desc: 'Tom íntimo, espontâneo e mostrando o dia a dia.' },
+  { id: 'absurdo', label: 'Humor Nonsense / Surreal', desc: 'Totalmente sem sentido, focado no humor absurdo.' },
+  { id: 'premium', label: 'Luxuoso / Aspiracional', desc: 'Sofisticado, elegante, focado em alto padrão de vida.' },
+  { id: 'gamer', label: 'Gamer / Guilda', desc: 'Termos e jargões gamers com referências a e-sports.' },
+  { id: 'filosófico', label: 'Filosófico / Existencial', desc: 'Reflexões sobre a mente humana e os mistérios cósmicos.' },
+  { id: 'cinematic', label: 'Trailer Cinematográfico', desc: 'Estilo narração de trailer de Hollywood super dramático.' },
+  { id: 'festa', label: 'Enérgico / Balada', desc: 'Vibe dinâmica, alegre, rápida e contagiante.' },
+  { id: 'minimalista', label: 'Direto / Sem Rodeios', desc: 'Linguagem direta, simples e focada na mensagem central.' }
 ];
 
+// Total de 27 paletas
 const COLOR_PRESETS = [
   { id: 'normal', label: 'Cores Naturais (Padrão)', value: 'Natural, lifelike color representation, balanced contrast and exposure' },
   { id: 'cyberpunk', label: 'Neon Cyberpunk', value: 'Vibrant neon pink, electric blue, acid green, deep cybertech shadows' },
@@ -74,7 +342,27 @@ const COLOR_PRESETS = [
   { id: 'vibrante', label: 'Cores Vibrantes', value: 'Highly saturated primary colors, high-contrast, energetic visual tone' },
   { id: 'quente', label: 'Tons Quentes', value: 'Golden hour sunset glow, warm orange, rich reds, soft ambient lighting' },
   { id: 'frio', label: 'Tons Frios', value: 'Cool moody blue hour, deep teal, silver highlights, twilight atmosphere' },
-  { id: 'monocromático', label: 'Preto e Branco', value: 'High contrast monochrome, rich silver grain, dramatic play of shadows' }
+  { id: 'monocromático', label: 'Preto e Branco', value: 'High contrast monochrome, rich silver grain, dramatic play of shadows' },
+  { id: 'vaporwave', label: 'Vaporwave Estético', value: 'Vibrant violet, hot pink, teal, turquoise, dreamy retro sunset tones' },
+  { id: 'vintage_sepia', label: 'Sépia Analógico Retro', value: 'Rich sepia tones, aged cream, dusty amber, low saturation vintage brown' },
+  { id: 'forest_moss', label: 'Verde Floresta e Musgo', value: 'Deep forest green, earthy brown, sage, damp moss green, soft woodland light' },
+  { id: 'ocean_deep', label: 'Profundezas do Oceano', value: 'Abyssal blue, navy, marine teal, bioluminescent cyan highlights' },
+  { id: 'desert_sand', label: 'Areia do Deserto e Ouro', value: 'Warm desert sand, terracotta, rich golden dust, dry high-contrast shadows' },
+  { id: 'royal_luxury', label: 'Ouro e Realeza', value: 'Rich imperial purple, deep royal blue, glistening metallic gold details' },
+  { id: 'toxic_waste', label: 'Resíduo Tóxico e Ácido', value: 'Acid lime green, radioactive yellow, pitch black, industrial charcoal grey' },
+  { id: 'cherry_blossom', label: 'Cerejeira e Sakura', value: 'Soft cherry blossom pink, crisp white, gentle rose petals, pale blue sky' },
+  { id: 'candy_shop', label: 'Doce de Algodão', value: 'Cotton candy pink, sky blue, sugar yellow, bright bubblegum hues' },
+  { id: 'retro_arcade', label: 'Fliperama Anos 80', value: 'Pitch black background, glowing neon red, electric blue, radioactive yellow accents' },
+  { id: 'space_nebula', label: 'Nebulosa Espacial', value: 'Cosmic purple, starry black, ultraviolet, deep magenta dust' },
+  { id: 'earthy_terracotta', label: 'Argila e Terracota', value: 'Earthy clay, baked terracotta, olive green, warm copper tones' },
+  { id: 'steampunk_bronze', label: 'Bronze Steampunk', value: 'Polished bronze, heavy black charcoal, glowing copper light accents' },
+  { id: 'arctic_glacier', label: 'Glaciar Ártico', value: 'Frosty white, ice blue, deep freezing grey, subtle teal accents' },
+  { id: 'halloween_spooky', label: 'Spooky Abóbora', value: 'Jack-o-lantern orange, pitch black, eerie purple, poisonous green glow' },
+  { id: 'military_camo', label: 'Camuflagem Militar', value: 'Olive drab green, khaki sand, military black, matte military brown' },
+  { id: 'cyberpunk_glitch', label: 'Glitch RGB', value: 'Saturated primary red, green, and blue pixels, static noise color artifacts' },
+  { id: 'sunset_silhouettes', label: 'Silhueta no Pôr do Sol', value: 'Bright fiery orange, magenta, silhouettes in solid black' },
+  { id: 'mint_chocolate', label: 'Chocolate com Menta', value: 'Cool mint green, deep rich chocolate brown, creamy white highlights' },
+  { id: 'royal_velvet', label: 'Veludo Nobre', value: 'Deep royal burgundy, dark velvet navy blue, elegant silver accents' }
 ];
 
 const TARGET_PRESETS = [
@@ -305,6 +593,47 @@ Cada uma das ${quantity} imagens deve ter seu próprio bloco de código contendo
                   {preset.id === 'motivacional' && '🌅 '}
                   {preset.id === 'realista' && '📸 '}
                   {preset.id === 'anime' && '🎨 '}
+                  {preset.id === 'ghibli' && '🌳 '}
+                  {preset.id === 'cyberpunk2077' && '🏙️ '}
+                  {preset.id === 'timburton' && '🦇 '}
+                  {preset.id === 'retro30s' && '🎞️ '}
+                  {preset.id === 'pixelart' && '👾 '}
+                  {preset.id === 'claymation' && '🦖 '}
+                  {preset.id === 'papercut' && '✂️ '}
+                  {preset.id === 'gopro' && '🏎️ '}
+                  {preset.id === 'polaroid' && '📼 '}
+                  {preset.id === 'steampunk' && '⚙️ '}
+                  {preset.id === 'tarantino' && '🎬 '}
+                  {preset.id === 'nolan' && '🚀 '}
+                  {preset.id === 'kubrick' && '👁️ '}
+                  {preset.id === 'popart' && '💥 '}
+                  {preset.id === 'surrealismo' && '⏳ '}
+                  {preset.id === 'vangogh' && '🌻 '}
+                  {preset.id === 'watercolor' && '🖌️ '}
+                  {preset.id === 'pencilsketch' && '✏️ '}
+                  {preset.id === 'cyber_gothic' && '🖤 '}
+                  {preset.id === 'natgeo' && '🌍 '}
+                  {preset.id === 'macro' && '🔍 '}
+                  {preset.id === 'thermal' && '🌡️ '}
+                  {preset.id === 'goldenhour' && '🌅 '}
+                  {preset.id === 'holomap' && '🌐 '}
+                  {preset.id === 'minecraft' && '🧱 '}
+                  {preset.id === 'artnouveau' && '⚜️ '}
+                  {preset.id === 'lowpoly' && '📐 '}
+                  {preset.id === 'synthwave' && '🕶️ '}
+                  {preset.id === 'chalk' && '🖍️ '}
+                  {preset.id === 'blueprint' && '🗺️ '}
+                  {preset.id === 'davinci' && '📜 '}
+                  {preset.id === 'picasso' && '🧱 '}
+                  {preset.id === 'monet' && '🪷 '}
+                  {preset.id === 'michelangelo' && '🏛️ '}
+                  {preset.id === 'munch' && '😱 '}
+                  {preset.id === 'fridakahlo' && '🌺 '}
+                  {preset.id === 'klimt' && '🌟 '}
+                  {preset.id === 'hokusai' && '🌊 '}
+                  {preset.id === 'warhol' && '🥫 '}
+                  {preset.id === 'rembrandt' && '🕯️ '}
+                  {preset.id === 'matisse' && '✂️ '}
                   {preset.label}
                 </option>
               ))}
