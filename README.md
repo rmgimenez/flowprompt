@@ -138,6 +138,7 @@ O projeto está configurado para deploy contínuo na **Vercel**.
 - [OpenRouter Multimedia Explorer](https://multimedia-explorer.openrouter.ai/): gerador de imagens e vídeos via api do openrouter. 
 - [Promptu AI](https://promptu.ai/): site para gerar prompts para IA
 - [OpenRouter](https://openrouter.ai/): agregador de APIs de IA
+- [Exemplo Json imagem](https://aiformarketings.com/blog/nano-banana-json-guide/)
 
 ---
 
