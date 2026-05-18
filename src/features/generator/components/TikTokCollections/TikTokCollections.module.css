@@ -113,6 +113,73 @@
   }
 }
 
+/* Premium Dynamic Theme Generator UI Inputs */
+.themeInputContainer {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.inputFieldTheme {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px 0 0 8px;
+  color: #ffffff;
+  padding: 0.75rem 1rem;
+  font-size: 0.95rem;
+  outline: none;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  width: 100%;
+  border-right: none;
+}
+
+.inputFieldTheme:focus {
+  border-color: rgba(236, 72, 153, 0.5);
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 0 12px rgba(236, 72, 153, 0.2);
+}
+
+.themeMagicBtn {
+  background: linear-gradient(135deg, rgba(236, 72, 153, 0.1), rgba(139, 92, 246, 0.1));
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 0 8px 8px 0;
+  color: #ec4899;
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  align-self: stretch;
+}
+
+.themeMagicBtn:hover {
+  background: linear-gradient(135deg, rgba(236, 72, 153, 0.2), rgba(139, 92, 246, 0.2));
+  border-color: rgba(236, 72, 153, 0.4);
+  color: #ffffff;
+  box-shadow: 0 0 12px rgba(236, 72, 153, 0.3);
+}
+
+.inputFieldQty {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  color: #ffffff;
+  padding: 0.75rem 0.5rem;
+  font-size: 0.95rem;
+  outline: none;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  width: 100%;
+  text-align: center;
+}
+
+.inputFieldQty:focus {
+  border-color: rgba(236, 72, 153, 0.5);
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 0 12px rgba(236, 72, 153, 0.2);
+}
+
 /* Quick selections tag pills container */
 .pillsContainer {
   display: flex;

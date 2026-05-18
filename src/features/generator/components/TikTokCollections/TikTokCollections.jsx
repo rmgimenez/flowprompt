@@ -373,17 +373,94 @@ const TARGET_PRESETS = [
   { id: 'criativos', label: 'Artistas / Criativos', desc: 'Foco na estética, design e inspiração técnica.' }
 ];
 
-const CREATIVE_THEMES = [
-  'Frutas falantes brasileiras discutindo sobre o clima quente',
-  'Animais fofos vestidos de samurais lendários defendendo sushis',
-  'Cidades cyberpunk onde capivaras gigantes são animais de estimação',
-  'Profissões comuns do Brasil representadas como chefões de Dark Souls',
-  'Super-heróis idosos reclamando sobre coisas do dia a dia',
-  'Objetos de escritório ganhando vida no estilo Pixar 3D',
-  'Monstros assustadores que na verdade são extremamente tímidos',
-  'Faraós do Egito antigo tentando entender como funciona um smartphone',
-  'Gatos astronautas descobrindo um planeta feito inteiramente de novelos',
-  'Legumes fitness fazendo exercícios pesados na academia'
+// Mashup Arrays para gerar temas infinitos e virais
+const THEME_SUBJECTS = [
+  'Capivaras brasileiras',
+  'Legumes fitness',
+  'Frutas tropicais falantes',
+  'Gatos detetives',
+  'Objetos de escritório',
+  'Dinossauros corporativos',
+  'Pinguins mafiosos',
+  'Super-heróis idosos',
+  'Pães caseiros artesanais',
+  'Estátuas clássicas de mármore',
+  'Plantas carnívoras de estimação',
+  'Monstros extremamente tímidos',
+  'ETs tentando se integrar no Brasil',
+  'Cachorros caramelos lendários',
+  'Astronautas perdidos',
+  'Profissões brasileiras comuns',
+  'Utensílios de cozinha falantes',
+  'Ursinhos de pelúcia rebeldes',
+  'Dragões com problemas do cotidiano',
+  'Múmias tentando usar tecnologia',
+  'Computadores antigos dos anos 90',
+  'Inconfidentes mineiros modernos',
+  'Drácula vivendo no Rio de Janeiro',
+  'Robôs limpadores de chão inteligentes',
+  'Preguiças velocistas',
+  'Tubarões vegetarianos',
+  'Sorvetes que não querem derreter',
+  'Livros antigos da biblioteca',
+  'Formigas operárias de elite',
+  'Capangas de desenho animado'
+];
+
+const THEME_ACTIONS = [
+  'discutindo na fila do pão da padaria',
+  'tentando entender como funciona o Pix',
+  'em uma reunião de condomínio caótica',
+  'fazendo treino pesado de crossfit',
+  'enfrentando a segunda-feira de manhã no metrô',
+  'em uma chamada de vídeo tensa no Zoom',
+  'comprando pastel e caldo de cana na feira',
+  'jogando uma partida intensa de dominó',
+  'tentando declarar o imposto de renda',
+  'organizando uma revolta contra a impressora',
+  'se preparando para um desfile de moda de luxo',
+  'cantando no karaokê de madrugada',
+  'planejando um assalto a uma fábrica de sushis',
+  'jogando futebol de várzea na chuva',
+  'tirando foto para a carteira de motorista',
+  'em uma missão ultrassecreta de espionagem',
+  'fazendo compras de supermercado no sábado',
+  'tentando cozinhar um miojo gourmet',
+  'em uma balada cyberpunk tocando samba',
+  'pedindo aumento de salário para o chefe',
+  'se exercitando na praia de Copacabana',
+  'tentando montar um móvel sem manual',
+  'em um duelo de rap medieval',
+  'fazendo terapia para lidar com o estresse',
+  'viajando de ônibus interestadual na janela',
+  'tentando cancelar uma assinatura de internet',
+  'comemorando o aniversário com bolo de padaria',
+  'aprendendo a andar de skate na praça',
+  'procurando a chave de casa perdida no sofá',
+  'preparando um churrasco de domingo clássico'
+];
+
+const THEME_TWISTS = [
+  'com muita atitude cyberpunk e luzes neon',
+  'vestidos como samurais medievais lendários',
+  'no estilo de chefões épicos de Dark Souls',
+  'em versão adorável e fofa de animação 3D',
+  'com roupas elegantes de alta costura parisiense',
+  'de forma extremamente sarcástica e irônica',
+  'com uma vibe nostálgica de comercial dos anos 90',
+  'reclamando das dores da vida adulta',
+  'com uma iluminação dramática de filme noir',
+  'em um estilo de desenho animado clássico rubberhose',
+  'completamente cobertos de ouro e joias brilhantes',
+  'com óculos escuros e visual de filme de ação retro',
+  'com uma energia caótica de memes da internet',
+  'como se fossem pinturas clássicas a óleo de museu',
+  'com detalhes hiper-realistas e expressões engraçadas',
+  'tentando agir de forma extremamente natural',
+  'com uma paleta de cores pastel super estética',
+  'esbanjando carisma e humor cômico',
+  'com fumaça e atmosfera épica ao redor',
+  'com um toque dramático de trailer de cinema'
 ];
 
 export const TikTokCollections = () => {
@@ -495,7 +572,7 @@ Cada uma das ${quantity} imagens deve ter seu próprio bloco de código contendo
 2. **Formato de Saída Obrigatório:** Forneça a sua resposta estritamente usando os blocos de código markdown (\`\`\`) separados para cada item, garantindo facilidade no clique de cópia individual.
    - O Título deve estar dentro de: \`\`\`text
    - A Legenda com as 5 hashtags deve estar dentro de: \`\`\`text
-   - Cada imagem (total de ${quantity}) deve estar dentro de seu próprio bloco: \`\`\`json (totalizando ${quantity} blocos JSON separados).
+   - Cada imagem (total de ${quantity}) deve estar dentro de seu próprio bloco: \`\`\`json (totalizando ${quantity} blocks JSON separados).
 3. **Sem Conversação Extra:** Responda diretamente com os blocos contendo os resultados. Não insira saudações, introduções ou explicações antes ou depois.`;
 
     setGeneratedPrompt(promptText);
@@ -508,15 +585,24 @@ Cada uma das ${quantity} imagens deve ter seu próprio bloco de código contendo
     setTimeout(() => setCopied(false), 2000);
   };
 
+  const handleGenerateRandomTheme = () => {
+    const subject = THEME_SUBJECTS[Math.floor(Math.random() * THEME_SUBJECTS.length)];
+    const action = THEME_ACTIONS[Math.floor(Math.random() * THEME_ACTIONS.length)];
+    const twist = THEME_TWISTS[Math.floor(Math.random() * THEME_TWISTS.length)];
+    setTheme(`${subject} ${action} ${twist}`);
+  };
+
   const handleRandomize = () => {
-    // Escolhe um tema criativo aleatório
-    const randomTheme = CREATIVE_THEMES[Math.floor(Math.random() * CREATIVE_THEMES.length)];
-    setTheme(randomTheme);
+    // Escolhe um tema criativo aleatório usando a mashup engine
+    const subject = THEME_SUBJECTS[Math.floor(Math.random() * THEME_SUBJECTS.length)];
+    const action = THEME_ACTIONS[Math.floor(Math.random() * THEME_ACTIONS.length)];
+    const twist = THEME_TWISTS[Math.floor(Math.random() * THEME_TWISTS.length)];
+    setTheme(`${subject} ${action} ${twist}`);
 
     // Quantidade entre 3 e 7
     setQuantity(Math.floor(Math.random() * 5) + 3);
 
-    // Randomiza presets (pode incluir normal!)
+    // Randomiza presets
     const randomStyle = STYLE_PRESETS[Math.floor(Math.random() * STYLE_PRESETS.length)].id;
     const randomVibe = VIBE_PRESETS[Math.floor(Math.random() * VIBE_PRESETS.length)].id;
     const randomColor = COLOR_PRESETS[Math.floor(Math.random() * COLOR_PRESETS.length)].id;
@@ -554,19 +640,29 @@ Cada uma das ${quantity} imagens deve ter seu próprio bloco de código contendo
               <span>* Obrigatório</span>
             </label>
             <div className={styles.basicInputsRow}>
-              <input 
-                id="themeInput"
-                type="text" 
-                className={styles.inputField} 
-                placeholder="Ex: Legumes bombados na academia, Capivaras cyberpunk..." 
-                value={theme}
-                onChange={(e) => setTheme(e.target.value)}
-              />
+              <div className={styles.themeInputContainer}>
+                <input 
+                  id="themeInput"
+                  type="text" 
+                  className={styles.inputFieldTheme} 
+                  placeholder="Ex: Legumes bombados na academia, Capivaras cyberpunk..." 
+                  value={theme}
+                  onChange={(e) => setTheme(e.target.value)}
+                />
+                <button
+                  type="button"
+                  className={styles.themeMagicBtn}
+                  onClick={handleGenerateRandomTheme}
+                  title="Gerar Tema Aleatório Incrível"
+                >
+                  <Sparkles size={16} />
+                </button>
+              </div>
               <input 
                 type="number" 
                 min="1" 
                 max="20"
-                className={styles.inputField} 
+                className={styles.inputFieldQty} 
                 title="Quantidade de Imagens"
                 value={quantity}
                 onChange={(e) => setQuantity(Math.max(1, parseInt(e.target.value) || 1))}
