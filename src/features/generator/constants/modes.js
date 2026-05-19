@@ -419,7 +419,13 @@ export const MODES = {
       const envAmbiance = parseAmbiance(vals.context, vals.style_ambiance);
 
       const jsonPrompt = {
-        cinematography: camera,
+        scene_summary: vals.scene_summary || "A compelling cinematic moment designed for TikTok engagement.",
+        cinematography: {
+          style_aesthetic: "Always cinematic, photorealistic, professional film look, high detail",
+          camera_instructions: vals.cinematography || "Cinematic eye-level shot emphasizing the subject",
+          composition_framing: "Professional framing that emphasizes the subject clearly in the center",
+          ...camera
+        },
         subject: {
           primary: {
             type: characters.length > 0 ? "character" : "environment",
@@ -433,26 +439,50 @@ export const MODES = {
         },
         environment: {
           context: vals.context || "cinematic space",
-          ...envAmbiance
+          color_palette: vals.style_ambiance && !vals.style_ambiance.includes('<<<')
+            ? `Cohesive cinematic tones aligned with ${vals.style_ambiance}`
+            : "Natural, lifelike color representation, balanced contrast",
+          time_of_day: envAmbiance.time_of_day,
+          lighting_and_mood: {
+            ...envAmbiance.lighting,
+            mood: `Realistic cinematic lighting matching a ${envAmbiance.atmosphere.mood || 'neutral'} mood`
+          },
+          atmosphere: envAmbiance.atmosphere
         },
         motion: {
           temporal_logic: "continuous",
           physics: "realistic",
           speed_ramp: "constant"
         },
-        ...(dialogue.length > 0 ? {
-          audio: {
+        audio: {
+          sound_effects: dialogue.length > 0 ? "ASMR and matching sound effects for dialogue" : "SFX: Ambient sounds fitting the scene, no subtitles",
+          rules: "Always add audio. Never include subtitles or on-screen text overlays.",
+          ...(dialogue.length > 0 ? {
             dialogue,
             language: "pt-BR",
             lip_sync: "perfect"
-          }
-        } : {}),
-        negative_prompts: VIDEO_NEGATIVE_PROMPTS
+          } : {})
+        },
+        negative_prompts: [
+          "subtitles", "text", "watermark", "distortions", "unrealistic proportions", "flickering lighting",
+          ...VIDEO_NEGATIVE_PROMPTS,
+          "extra characters not in the brief"
+        ]
       };
 
       return JSON.stringify(jsonPrompt, null, 2);
     },
     fields: [
+      {
+        id: 'scene_summary',
+        label: 'Resumo da Cena (Momento Cinematográfico)',
+        hint: 'Descreva a cena em uma frase clara para roteirização',
+        placeholder: 'Ex: Um astronauta caindo em um portal de neon na chuva',
+        type: 'text',
+        suggestions: [
+          { label: 'Exemplo Comédia', value: 'Um astronauta trapalhão escorrega e cai de costas em um portal de neon psicodélico e colorido.' }
+        ]
+      },
       { 
         id: 'characters_definition', 
         label: 'Definição dos Personagens', 
@@ -463,11 +493,11 @@ export const MODES = {
           { label: 'Exemplo Frutas', value: '[morango][personagem vermelho com cara de morango][voz doce, aguda e amigável]\n[abacaxi][personagem amarelo com cara de abacaxi][voz calma, levemente encorpada e relaxada]\n[uva][personagem roxo com cara de uva][voz muito aguda, agitada e estridente]' }
         ] 
       },
-      { id: 'cinematography', label: 'Cinematografia', hint: 'Ângulo e movimento da câmera', placeholder: 'Ex: Medium shot', type: 'text', suggestions: [{ label: 'Plano Aberto', value: 'Wide Shot' }, { label: 'Close-up', value: 'Close-up' }, { label: 'Visão em 1ª Pessoa', value: 'POV Shot' }, { label: 'Vista Aérea', value: 'Aerial View' }, { label: 'Câmera em Movimento', value: 'Tracking Shot' }, { label: 'Câmera na Mão', value: 'Handheld Camera' }, { label: 'Contra-mergulho', value: 'Low Angle' }, { label: 'Mergulho', value: 'High Angle' }, { label: 'Zoom Lento', value: 'Slow Zoom' }, { label: 'Órbita 360°', value: '360-degree Orbit' }, { label: 'Time-lapse', value: 'Time-lapse' }, { label: 'Câmera Lenta', value: 'Slow Motion' }, { label: 'Macro Extremo', value: 'Extreme Macro' }, { label: 'Plano Sequência', value: 'One-shot Sequence' }, { label: 'Foco Alternado', value: 'Rack Focus' }, { label: 'Plano Holandês', value: 'Dutch Angle' }] },
-      { id: 'subject', label: 'Sujeito/Personagem', hint: 'Quem ou o que aparece na cena', placeholder: 'Ex: Um astronauta', type: 'text', suggestions: [{ label: 'Um robô', value: 'A robot' }, { label: 'Uma mulher', value: 'A woman' }, { label: 'Um dragão', value: 'A dragon' }, { label: 'Um samurai', value: 'A samurai' }, { label: 'Um astronauta', value: 'An astronaut' }, { label: 'Um mago', value: 'A wizard' }, { label: 'Uma fênix', value: 'A phoenix' }, { label: 'Um gato cibernético', value: 'A cybernetic cat' }, { label: 'Um carro voador', value: 'A flying car' }, { label: 'Uma criatura mística', value: 'A mystical creature' }, { label: 'Um ferreiro', value: 'A blacksmith' }, { label: 'Uma bailarina', value: 'A ballerina' }, { label: 'Um alienígena', value: 'An alien being' }, { label: 'Um navio pirata', value: 'A pirate ship' }, { label: 'Uma inteligência artificial', value: 'A digital AI avatar' }, { label: 'Um explorador', value: 'A brave explorer' }] },
-      { id: 'action', label: 'Ação', hint: 'O que o sujeito está fazendo', placeholder: 'Ex: caminhando', type: 'text', suggestions: [{ label: 'correndo', value: 'running' }, { label: 'dançando', value: 'dancing' }, { label: 'flutuando', value: 'floating' }, { label: 'lutando', value: 'fighting' }, { label: 'explorando ruínas', value: 'exploring ruins' }, { label: 'meditando', value: 'meditating' }, { label: 'desaparecendo', value: 'fading away' }, { label: 'transformando-se', value: 'transforming' }, { label: 'explodindo em luz', value: 'exploding into light' }, { label: 'cozinhando', value: 'cooking with fire' }, { label: 'consertando algo', value: 'repairing a machine' }, { label: 'saltando dimensões', value: 'jumping through dimensions' }, { label: 'tocando um instrumento', value: 'playing a glowing instrument' }, { label: 'manipulando energia', value: 'manipulating raw energy' }, { label: 'derretendo', value: 'melting like liquid metal' }, { label: 'atravessando portais', value: 'walking through a portal' }] },
-      { id: 'context', label: 'Contexto/Cenário', hint: 'Onde a cena se passa', placeholder: 'Ex: em uma floresta', type: 'text', suggestions: [{ label: 'em Marte', value: 'on Mars' }, { label: 'cidade cyberpunk', value: 'in a cyberpunk city' }, { label: 'embaixo d\'água', value: 'underwater' }, { label: 'floresta mágica', value: 'in a magical forest' }, { label: 'estação espacial', value: 'in a space station' }, { label: 'castelo medieval', value: 'in a medieval castle' }, { label: 'metrópole flutuante', value: 'in a floating metropolis' }, { label: 'laboratório secreto', value: 'in a secret lab' }, { label: 'dentro de um vulcão', value: 'inside a volcanic landscape' }, { label: 'biblioteca infinita', value: 'in an infinite library' }, { label: 'deserto de cristal', value: 'in a crystal desert' }, { label: 'ruas de Tóquio', value: 'on the streets of neon Tokyo' }, { label: 'jardim flutuante', value: 'in a hanging garden in the sky' }, { label: 'reino de engrenagens', value: 'inside a clockwork kingdom' }, { label: 'caverna de gelo', value: 'in a glowing ice cave' }, { label: 'templo antigo', value: 'in a forgotten ancient temple' }] },
-      { id: 'style_ambiance', label: 'Estilo & Ambiance', hint: 'Iluminação, cores e clima', placeholder: 'Ex: Iluminação cinematográfica', type: 'textarea', suggestions: [{ label: 'Cinematográfico', value: 'Cinematic' }, { label: 'Atmosférico', value: 'Moody' }, { label: 'Neon Noir', value: 'Neon Noir' }, { label: 'Hora Dourada', value: 'Golden Hour' }, { label: 'Fantasia Sombria', value: 'Dark Fantasy' }, { label: 'Minimalista', value: 'Minimalist' }, { label: 'Retrô Anos 80', value: 'Retro 80s aesthetic' }, { label: 'Surrealista', value: 'Surrealist' }, { label: 'Épico e Grandioso', value: 'Epic and grand' }, { label: 'Cyberpunk Vibrante', value: 'Vibrant Cyberpunk' }, { label: 'Eterno e Etéreo', value: 'Ethereal and timeless' }, { label: 'Hiper-realista', value: 'Hyper-realistic' }, { label: 'Estilo Noir', value: 'Film Noir aesthetic' }, { label: 'Sonhador/Onírico', value: 'Dreamy and soft focus' }, { label: 'Industrial Sombrio', value: 'Gritty industrial' }, { label: 'Psicodélico', value: 'Psychedelic and colorful' }] },
+      { id: 'cinematography', label: 'Cinematografia & Câmera', hint: 'Ângulo e movimento da câmera', placeholder: 'Ex: Medium shot', type: 'text', suggestions: [{ label: 'Plano Aberto', value: 'Wide Shot' }, { label: 'Close-up', value: 'Close-up' }, { label: 'Visão em 1ª Pessoa', value: 'POV Shot' }, { label: 'Vista Aérea', value: 'Aerial View' }, { label: 'Câmera em Movimento', value: 'Tracking Shot' }, { label: 'Câmera na Mão', value: 'Handheld Camera' }, { label: 'Contra-mergulho', value: 'Low Angle' }, { label: 'Mergulho', value: 'High Angle' }, { label: 'Zoom Lento', value: 'Slow Zoom' }, { label: 'Órbita 360°', value: '360-degree Orbit' }, { label: 'Time-lapse', value: 'Time-lapse' }, { label: 'Câmera Lenta', value: 'Slow Motion' }, { label: 'Macro Extremo', value: 'Extreme Macro' }, { label: 'Plano Sequência', value: 'One-shot Sequence' }, { label: 'Foco Alternado', value: 'Rack Focus' }, { label: 'Plano Holandês', value: 'Dutch Angle' }] },
+      { id: 'subject', label: 'Sujeito Principal (Detalhes Físicos e Roupas)', hint: 'Quem ou o que aparece na cena', placeholder: 'Ex: Um astronauta', type: 'text', suggestions: [{ label: 'Um robô', value: 'A robot' }, { label: 'Uma mulher', value: 'A woman' }, { label: 'Um dragão', value: 'A dragon' }, { label: 'Um samurai', value: 'A samurai' }, { label: 'Um astronauta', value: 'An astronaut' }, { label: 'Um mago', value: 'A wizard' }, { label: 'Uma fênix', value: 'A phoenix' }, { label: 'Um gato cibernético', value: 'A cybernetic cat' }, { label: 'Um carro voador', value: 'A flying car' }, { label: 'Uma criatura mística', value: 'A mystical creature' }, { label: 'Um ferreiro', value: 'A blacksmith' }, { label: 'Uma bailarina', value: 'A ballerina' }, { label: 'Um alienígena', value: 'An alien being' }, { label: 'Um navio pirata', value: 'A pirate ship' }, { label: 'Uma inteligência artificial', value: 'A digital AI avatar' }, { label: 'Um explorador', value: 'A brave explorer' }] },
+      { id: 'action', label: 'Ação & Movimento Realista', hint: 'O que o sujeito está fazendo', placeholder: 'Ex: caminhando', type: 'text', suggestions: [{ label: 'correndo', value: 'running' }, { label: 'dançando', value: 'dancing' }, { label: 'flutuando', value: 'floating' }, { label: 'lutando', value: 'fighting' }, { label: 'explorando ruínas', value: 'exploring ruins' }, { label: 'meditando', value: 'meditating' }, { label: 'desaparecendo', value: 'fading away' }, { label: 'transformando-se', value: 'transforming' }, { label: 'explodindo em luz', value: 'exploding into light' }, { label: 'cozinhando', value: 'cooking with fire' }, { label: 'consertando algo', value: 'repairing a machine' }, { label: 'saltando dimensões', value: 'jumping through dimensions' }, { label: 'tocando um instrumento', value: 'playing a glowing instrument' }, { label: 'manipulando energia', value: 'manipulating raw energy' }, { label: 'derretendo', value: 'melting like liquid metal' }, { label: 'atravessando portais', value: 'walking through a portal' }] },
+      { id: 'context', label: 'Cenário & Fundo (Ambiente Expandido)', hint: 'Onde a cena se passa', placeholder: 'Ex: em uma floresta', type: 'text', suggestions: [{ label: 'em Marte', value: 'on Mars' }, { label: 'cidade cyberpunk', value: 'in a cyberpunk city' }, { label: 'embaixo d\'água', value: 'underwater' }, { label: 'floresta mágica', value: 'in a magical forest' }, { label: 'estação espacial', value: 'in a space station' }, { label: 'castelo medieval', value: 'in a medieval castle' }, { label: 'metrópole flutuante', value: 'in a floating metropolis' }, { label: 'laboratório secreto', value: 'in a secret lab' }, { label: 'dentro de um vulcão', value: 'inside a volcanic landscape' }, { label: 'biblioteca infinita', value: 'in an infinite library' }, { label: 'deserte de cristal', value: 'in a crystal desert' }, { label: 'ruas de Tóquio', value: 'on the streets of neon Tokyo' }, { label: 'jardim flutuante', value: 'in a hanging garden in the sky' }, { label: 'reino de engrenagens', value: 'inside a clockwork kingdom' }, { label: 'caverna de gelo', value: 'in a glowing ice cave' }, { label: 'templo antigo', value: 'in a forgotten ancient temple' }] },
+      { id: 'style_ambiance', label: 'Estilo, Cores & Iluminação', hint: 'Iluminação, cores e clima', placeholder: 'Ex: Iluminação cinematográfica', type: 'textarea', suggestions: [{ label: 'Cinematográfico', value: 'Cinematic' }, { label: 'Atmosférico', value: 'Moody' }, { label: 'Neon Noir', value: 'Neon Noir' }, { label: 'Hora Dourada', value: 'Golden Hour' }, { label: 'Fantasia Sombria', value: 'Dark Fantasy' }, { label: 'Minimalista', value: 'Minimalist' }, { label: 'Retrô Anos 80', value: 'Retro 80s aesthetic' }, { label: 'Surrealista', value: 'Surrealist' }, { label: 'Épico e Grandioso', value: 'Epic and grand' }, { label: 'Cyberpunk Vibrante', value: 'Vibrant Cyberpunk' }, { label: 'Eterno e Etéreo', value: 'Ethereal and timeless' }, { label: 'Hiper-realista', value: 'Hyper-realistic' }, { label: 'Estilo Noir', value: 'Film Noir aesthetic' }, { label: 'Sonhador/Onírico', value: 'Dreamy and soft focus' }, { label: 'Industrial Sombrio', value: 'Gritty industrial' }, { label: 'Psicodélico', value: 'Psychedelic and colorful' }] },
       { 
         id: 'dialogue', 
         label: 'Falas dos Personagens (Dublagem)', 
@@ -479,6 +509,22 @@ export const MODES = {
           { label: 'Comédia Rápida', value: '[morango] (rindo): [hahaha abacaxi, você parece uma coroa!]\n[abacaxi] (irritado): [ei morango, respeite minha realeza vegetal!]' },
           { label: 'Sem Fala', value: '' }
         ] 
+      },
+      {
+        id: 'help_info',
+        label: '🚀 Guia de Criação de Prompts (Vídeo Novo)',
+        type: 'info',
+        content: `🎬 DIREÇÃO CINEMATOGRÁFICA (11 REGRAS):
+• RESUMO DA CENA: Explique o momento principal em uma única frase simples para roteirização clara.
+• SUJEITO & AÇÃO: Detalhe a fisionomia, roupas e ações realistas. Movimentos rápidos e expressivos retêm mais atenção no feed do TikTok/Reels.
+• CINEMATOGRAFIA: Especifique movimentos de câmera como "Órbita 360°", "Dolly Zoom" ou "Snap Zoom" para dinamizar a cena.
+• ILUMINAÇÃO & CORES: Adicione tons e estilos de iluminação coerentes (ex: "Golden hour", "Neon cyberpunk") para criar uma atmosfera premium.
+• ÁUDIO: Sempre descreva efeitos sonoros imersivos (SFX/ASMR) nos prompts. Lembre-se: sem legendas ou textos na tela.
+
+📝 GUIA RÁPIDO DOS CAMPOS:
+• Personagens: Se tiver dublagem, defina a aparência e o tom de voz do personagem neste campo.
+• Dublagem: Use o formato "[personagem] (emoção): [fala]" (ex: [morango] (feliz): [olá!]). O sistema criará lip-sync automático no Veo 3.1.
+• Campos Vazios: O sistema insere valores padrão inteligentes para garantir que seu vídeo nunca fique estático.`
       }
     ]
   },
@@ -493,7 +539,11 @@ export const MODES = {
       const characters = enrichCharacters(parseCharacters(vals.characters_definition), dialogue);
 
       const jsonPrompt = {
+        scene_summary: vals.scene_summary || "An animated cinematic transition maintaining visual fidelity from the static frame.",
         cinematography: {
+          style_aesthetic: "Cinematic photorealistic animation style maintaining original image quality",
+          camera_instructions: vals.camera_motion || "Camera panning gently around the subject to establish depth",
+          composition_framing: "Professional composition that maintains subject centrality during animation",
           ...camera,
           framing: "maintain_from_image"
         },
@@ -506,7 +556,14 @@ export const MODES = {
           ...(characters.length > 0 ? { characters } : {})
         },
         environment: {
-          lighting: "maintain_from_image",
+          context: "maintain from image",
+          color_palette: "maintain from image, cohesive cinematic tones",
+          lighting_and_mood: {
+            key_light: "maintain_from_image",
+            fill_light: "maintain_from_image",
+            rim_light: "maintain_from_image",
+            mood: "Cinematic continuity of light and mood from the static frame"
+          },
           atmosphere: {
             weather: "maintain_from_image",
             mood: "cinematic_continuity"
@@ -517,19 +574,34 @@ export const MODES = {
           physics: "realistic_fluid"
         },
         audio: {
-          sound_effects: vals.sound_effects || "no audio",
+          sound_effects: vals.sound_effects || "SFX: Ambient sounds and ASMR, no subtitles",
+          rules: "Always add audio. Never include subtitles or on-screen text overlays.",
           ...(dialogue.length > 0 ? {
             dialogue,
             language: "pt-BR",
             lip_sync: "perfect"
           } : {})
         },
-        negative_prompts: VIDEO_NEGATIVE_PROMPTS
+        negative_prompts: [
+          "subtitles", "text", "watermark", "distortions", "unrealistic proportions", "flickering lighting",
+          ...VIDEO_NEGATIVE_PROMPTS,
+          "extra characters not in the brief"
+        ]
       };
 
       return JSON.stringify(jsonPrompt, null, 2);
     },
     fields: [
+      {
+        id: 'scene_summary',
+        label: 'Resumo da Animação (Momento Cinematográfico)',
+        hint: 'Descreva a animação em uma frase clara para roteirização',
+        placeholder: 'Ex: O cabelo da guerreira voa ao vento enquanto as folhas caem ao redor',
+        type: 'text',
+        suggestions: [
+          { label: 'Exemplo Vento', value: 'O cabelo longo do guerreiro e suas vestes balançam suavemente com um vento forte da montanha.' }
+        ]
+      },
       { 
         id: 'characters_definition', 
         label: 'Definição dos Personagens', 
@@ -542,7 +614,7 @@ export const MODES = {
       },
       { 
         id: 'camera_motion', 
-        label: 'Movimento de Câmera', 
+        label: 'Movimento de Câmera & Enquadramento', 
         hint: 'Direção e tipo de movimento', 
         placeholder: 'Ex: Zoom suave', 
         type: 'text', 
@@ -597,7 +669,7 @@ export const MODES = {
       },
       { 
         id: 'action', 
-        label: 'Ação Adicional', 
+        label: 'Ação Adicional (O que se move na imagem)', 
         hint: 'O que deve se mover na imagem', 
         placeholder: 'Ex: nuvens se movem', 
         type: 'textarea', 
@@ -631,6 +703,21 @@ export const MODES = {
           { label: 'Comédia Rápida', value: '[morango] (rindo): [hahaha abacaxi, você parece uma coroa!]\n[abacaxi] (irritado): [ei morango, respeite minha realeza vegetal!]' },
           { label: 'Sem Fala', value: '' }
         ] 
+      },
+      {
+        id: 'help_info',
+        label: '🚀 Guia de Animação de Imagens (Video from Image)',
+        type: 'info',
+        content: `🌟 TÉCNICAS DE ANIMAÇÃO VIRAIS:
+• CONTINUIDADE VISUAL: O Veo 3.1 mantém 100% da fidelidade do sujeito e cenário originais da sua imagem estática.
+• AÇÃO ADICIONAL: Descreva exatamente o que deve se mover (ex: "cabelo ao vento", "roupas balançando", "olhos piscando" ou "neve caindo").
+• MOVIMENTO DE CÂMERA: Escolha movimentos suaves como "Panorâmica" ou "Órbita Circular" para dar profundidade e efeito de paralaxe 3D realistas.
+• EFEITOS SONOROS (SFX): Efeitos sonoros imersivos (ASMR de passos, chuva ou vento crepitante) geram até 40% mais retenção nas redes.
+
+📝 GUIA RÁPIDO DOS CAMPOS:
+• Personagens: Defina a consistência do seu personagem se for dublá-lo.
+• Dublagem: Siga o formato padrão "[personagem] (emoção): [fala]" se a imagem original possuir um rosto ou sujeito capaz de falar.
+• Campos Vazios: Caso não preencha a ação, o sistema animará a cena com fluxo natural suave automático.`
       }
     ]
   },
@@ -691,7 +778,21 @@ export const MODES = {
       { id: 'action', label: 'Ação', hint: 'O que está acontecendo', placeholder: 'Ex: posando', type: 'text', suggestions: [{ label: 'olhando para a câmera', value: 'staring at camera' }, { label: 'dissolvendo em fumaça', value: 'dissolving into smoke' }, { label: 'levitando sobre um lago', value: 'levitating above a lake' }, { label: 'lançando feitiço', value: 'casting a glowing spell' }, { label: 'consertando um relógio', value: 'repairing a golden clock' }, { label: 'andando num mercado neon', value: 'wandering through a neon market' }, { label: 'tocando violino', value: 'playing a transparent violin' }, { label: 'mesclando com código', value: 'merging with digital code' }, { label: 'descansando em flores de vidro', value: 'resting in a field of glass flowers' }] },
       { id: 'context', label: 'Local', hint: 'Cenário da fotografia', placeholder: 'Ex: estúdio', type: 'text', suggestions: [{ label: 'Espaço Abstrato', value: 'Abstract Space' }, { label: 'Catedral Abandonada', value: 'Abandoned Cathedral' }, { label: 'Telhado Cyberpunk na chuva', value: 'Cyberpunk rooftop at rain' }, { label: 'Caverna Subaquática', value: 'Bioluminescent underwater cave' }, { label: 'Ilhas Flutuantes', value: 'Floating islands in the clouds' }, { label: 'Biblioteca de Luz', value: 'Library made of light' }, { label: 'Ruínas Antigas em Marte', value: 'Ancient ruins on a desert planet' }, { label: 'Laboratório Vitoriano', value: 'Victorian laboratory' }, { label: 'Sala de Espelhos', value: 'Enchanted mirror room' }] },
       { id: 'composition', label: 'Composição', hint: 'Organização visual (ex: Macro)', placeholder: 'Ex: Close-up', type: 'text', suggestions: [{ label: 'Foto Macro', value: 'Macro Shot' }, { label: 'Regra dos Terços', value: 'Rule of Thirds' }, { label: 'Simétrico', value: 'Symmetrical' }, { label: 'Vista de Pássaro', value: 'Bird\'s Eye View' }, { label: 'Vista de Formiga', value: 'Worm\'s Eye View' }, { label: 'Ângulo Holandês', value: 'Dutch Angle' }, { label: 'Close-up Extremo', value: 'Extreme Close-up' }, { label: 'Silhueta na Lua', value: 'Silhouette against the moon' }, { label: 'Exposição Longa', value: 'Long exposure motion blur' }, { label: 'Plano Cinematográfico', value: 'Cinematic Wide Shot' }] },
-      { id: 'style', label: 'Estilo', hint: 'Visual artístico ou técnico', placeholder: 'Ex: Fotografia de revista', type: 'textarea', suggestions: [{ label: 'Realista', value: 'Ultra-realistic photography, high detail, lifelike textures' }, { label: 'Fotográfico Profissional', value: 'Professional studio photography, 8k resolution, sharp focus' }, { label: 'Ultra Detalhado', value: 'Hyper-detailed, intricate textures, extreme realism' }, { label: 'Estilo Os Simpsons', value: 'The Simpsons cartoon style' }, { label: 'Estilo Disney', value: 'Disney animation style' }, { label: 'Rick and Morty', value: 'Rick and Morty style' }, { label: 'Hora de Aventura', value: 'Adventure Time style' }, { label: 'Estilo Futurama', value: 'Futurama art style' }, { label: 'Game of Thrones', value: 'Game of Thrones aesthetic' }, { label: 'Studio Ghibli', value: 'Studio Ghibli style' }, { label: 'Estilo Cyberpunk', value: 'Cyberpunk aesthetic' }, { label: 'South Park', value: 'South Park style' }, { label: 'Dragon Ball Z', value: 'Dragon Ball Z style' }, { label: 'Marvel Comics', value: 'Marvel Comics style' }, { label: 'Estilo GTA V', value: 'GTA V style' }, { label: 'National Geographic', value: 'National Geographic photography' }, { label: 'Filme Kodak Portra 400', value: 'Kodak Portra 400 film look' }, { label: 'Hiper-realista 8k', value: 'Hyper-realistic 8k octane render' }, { label: 'Estilo H.R. Giger', value: 'Biomechanical H.R. Giger style' }, { label: 'Arte Surrealista', value: 'Surrealist digital art' }, { label: 'Vaporwave', value: 'Vaporwave aesthetics' }, { label: 'Glitch Art', value: 'Glitch art' }, { label: 'Dupla Exposição', value: 'Double exposure' }, { label: 'Pintura a Óleo', value: 'Impressionist oil painting' }, { label: 'Luz Cinematográfica', value: 'Anamorphic lens flare' }, { label: 'Iluminação de Retrato', value: 'Studio portrait lighting' }, { label: 'Macro Detalhado', value: 'Macro photography details' }, { label: 'Pintura a Óleo', value: 'Oil Painting' }, { label: 'Render 3D', value: '3D Render' }, { label: 'Esboço a Lápis', value: 'Pencil Sketch' }] }
+      { id: 'style', label: 'Estilo', hint: 'Visual artístico ou técnico', placeholder: 'Ex: Fotografia de revista', type: 'textarea', suggestions: [{ label: 'Realista', value: 'Ultra-realistic photography, high detail, lifelike textures' }, { label: 'Fotográfico Profissional', value: 'Professional studio photography, 8k resolution, sharp focus' }, { label: 'Ultra Detalhado', value: 'Hyper-detailed, intricate textures, extreme realism' }, { label: 'Estilo Os Simpsons', value: 'The Simpsons cartoon style' }, { label: 'Estilo Disney', value: 'Disney animation style' }, { label: 'Rick and Morty', value: 'Rick and Morty style' }, { label: 'Hora de Aventura', value: 'Adventure Time style' }, { label: 'Estilo Futurama', value: 'Futurama art style' }, { label: 'Game of Thrones', value: 'Game of Thrones aesthetic' }, { label: 'Studio Ghibli', value: 'Studio Ghibli style' }, { label: 'Estilo Cyberpunk', value: 'Cyberpunk aesthetic' }, { label: 'South Park', value: 'South Park style' }, { label: 'Dragon Ball Z', value: 'Dragon Ball Z style' }, { label: 'Marvel Comics', value: 'Marvel Comics style' }, { label: 'Estilo GTA V', value: 'GTA V style' }, { label: 'National Geographic', value: 'National Geographic photography' }, { label: 'Filme Kodak Portra 400', value: 'Kodak Portra 400 film look' }, { label: 'Hiper-realista 8k', value: 'Hyper-realistic 8k octane render' }, { label: 'Estilo H.R. Giger', value: 'Biomechanical H.R. Giger style' }, { label: 'Arte Surrealista', value: 'Surrealist digital art' }, { label: 'Vaporwave', value: 'Vaporwave aesthetics' }, { label: 'Glitch Art', value: 'Glitch art' }, { label: 'Dupla Exposição', value: 'Double exposure' }, { label: 'Pintura a Óleo', value: 'Impressionist oil painting' }, { label: 'Luz Cinematográfica', value: 'Anamorphic lens flare' }, { label: 'Iluminação de Retrato', value: 'Studio portrait lighting' }, { label: 'Macro Detalhado', value: 'Macro photography details' }, { label: 'Pintura a Óleo', value: 'Oil Painting' }, { label: 'Render 3D', value: '3D Render' }, { label: 'Esboço a Lápis', value: 'Pencil Sketch' }] },
+      {
+        id: 'help_info',
+        label: '🚀 Dicas de Criação de Imagens (Nano Banana 2)',
+        type: 'info',
+        content: `⚡ ENGENHARIA DE PROMPTS VIRAIS:
+• SUJEITO & AÇÃO: Detalhe quem é o sujeito e o que ele está fazendo (ex: "Guerreiro Cyberpunk empunhando espada").
+• COMPOSIÇÃO: Explore regras fotográficas clássicas como "Regra dos Terços", "Foto Macro", "Silhueta" ou "Vista Aérea".
+• ESTILO VISUAL: Combine sugestões ricas (ex: "hyper-realistic photography", "Studio Ghibli style", "3D Pixar style") para obter resultados profissionais.
+• CONSISTÊNCIA DE PERSONAGEM: Preencha a definição de personagem com o formato "[nome][descrição][pose]" para manter rostos idênticos em todas as fotos da sua série.
+
+📝 GUIA RÁPIDO DOS CAMPOS:
+• Local/Contexto: Detalhe o fundo da foto com iluminação para criar sombras e reflexos realistas.
+• Surpreenda-me: Use o botão de varinha para preencher campos vazios aleatoriamente com ideias criativas de alta conversão.`
+      }
     ]
   },
   'photo-transform': {
@@ -802,6 +903,18 @@ export const MODES = {
           { label: 'biblioteca aconchegante', value: 'a cozy library' },
           { label: 'espaço sideral', value: 'outer space background' }
         ]
+      },
+      {
+        id: 'help_info',
+        label: '🚀 Guia de Transformação de Imagens',
+        type: 'info',
+        content: `🔄 TRANSFORMAÇÃO INTELIGENTE:
+• TRANSFORMAÇÃO/ESTILO: Mude completamente o estilo visual da sua foto mantendo as linhas estruturais (ex: transforme uma foto real em desenho dos Simpsons, estilo Disney 3D, ou anime).
+• NOVO CENÁRIO/AÇÃO: Mude radicalmente o fundo sem alterar o seu personagem original (ex: coloque uma pessoa que estava no quarto em uma praia futurista, estação espacial ou montanha de neve).
+• COMPATIBILIDADE DE TRAÇOS: A IA preserva as linhas e poses principais da imagem original enquanto aplica o novo preenchimento estético de forma integrada.
+
+📝 DICA DE RESTAURAÇÃO:
+• Use os prompts rápidos ou selecione "Foto Vintage" para colorir, recuperar detalhes e aumentar a nitidez de fotografias antigas ou danificadas.`
       }
     ]
   },
