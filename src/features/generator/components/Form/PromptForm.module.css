@@ -259,3 +259,194 @@
   transform: translateY(-2px);
   box-shadow: 0 4px 15px rgba(236, 72, 153, 0.25);
 }
+
+/* Characters Table Glassmorphic & Ultra Premium Styles */
+.charactersTableContainer {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 16px;
+  padding: 1.25rem;
+  margin-top: 0.5rem;
+  box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.02);
+  overflow-x: auto;
+}
+
+.charTable {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1rem;
+  font-size: 0.85rem;
+  color: #fff;
+  min-width: 650px;
+}
+
+.charTable th {
+  text-align: left;
+  padding: 0.75rem 0.5rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.6);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+}
+
+.charTable td {
+  padding: 0.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  vertical-align: middle;
+}
+
+.charInput, .charSelect {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #fff;
+  border-radius: 8px;
+  padding: 0.4rem 0.6rem;
+  font-family: inherit;
+  font-size: 0.8rem;
+  transition: all 0.2s ease;
+  width: 100%;
+}
+
+.charInput:focus, .charSelect:focus {
+  outline: none;
+  background: rgba(255, 255, 255, 0.08);
+  border-color: #3d5afe;
+  box-shadow: 0 0 0 2px rgba(61, 90, 254, 0.2);
+}
+
+.charSelect option {
+  background: #12131a;
+  color: #fff;
+}
+
+.removeCharBtn {
+  background: rgba(255, 82, 82, 0.1);
+  border: 1px solid rgba(255, 82, 82, 0.2);
+  color: #ff5252;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.removeCharBtn:hover {
+  background: rgba(255, 82, 82, 0.25);
+  border-color: #ff5252;
+  transform: scale(1.1);
+  box-shadow: 0 0 8px rgba(255, 82, 82, 0.4);
+}
+
+.addCharBtn {
+  background: linear-gradient(135deg, rgba(61, 90, 254, 0.1), rgba(0, 229, 255, 0.1));
+  border: 1px solid rgba(61, 90, 254, 0.3);
+  color: #00e5ff;
+  border-radius: 10px;
+  padding: 0.5rem 1rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.addCharBtn:hover {
+  background: linear-gradient(135deg, rgba(61, 90, 254, 0.2), rgba(0, 229, 255, 0.2));
+  border-color: #00e5ff;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 229, 255, 0.25);
+}
+
+.emptyTable {
+  text-align: center;
+  padding: 2rem !important;
+  color: rgba(255, 255, 255, 0.35);
+  font-style: italic;
+}
+
+/* Dialogue & Subject Shortcuts styling */
+.dialogueShortcuts {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-bottom: 0.25rem;
+  margin-top: 0.25rem;
+  animation: fadeIn 0.3s ease;
+}
+
+.shortcutLabel {
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.shortcutChips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.shortcutChip {
+  background: rgba(61, 90, 254, 0.08);
+  border: 1px solid rgba(61, 90, 254, 0.2);
+  color: #8c9eff;
+  border-radius: 6px;
+  padding: 0.25rem 0.6rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  font-family: inherit;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.shortcutChip:hover {
+  background: rgba(61, 90, 254, 0.2);
+  border-color: #3d5afe;
+  color: #fff;
+  transform: translateY(-1px) scale(1.02);
+  box-shadow: 0 2px 8px rgba(61, 90, 254, 0.3);
+}
+
+.shortcutChip:active {
+  transform: translateY(0) scale(0.98);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(2px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.shortcutGroup {
+  display: inline-flex;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  padding: 0.15rem;
+  gap: 0.15rem;
+  align-items: center;
+}
+
+.shortcutChipSecondary {
+  background: rgba(0, 229, 255, 0.05) !important;
+  border-color: rgba(0, 229, 255, 0.12) !important;
+  color: #00e5ff !important;
+}
+
+.shortcutChipSecondary:hover {
+  background: rgba(0, 229, 255, 0.15) !important;
+  border-color: #00e5ff !important;
+  color: #fff !important;
+  box-shadow: 0 2px 8px rgba(0, 229, 255, 0.3) !important;
+}

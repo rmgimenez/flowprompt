@@ -67,7 +67,14 @@ export const useGenerator = (initialMode = 'video-new') => {
     
     const displayValues = {};
     currentMode.fields.forEach(field => {
-      displayValues[field.id] = formValues[field.id]?.trim() || `<<< ${field.label} >>>`;
+      const val = formValues[field.id];
+      if (typeof val === 'string') {
+        displayValues[field.id] = val.trim() || `<<< ${field.label} >>>`;
+      } else if (field.type === 'characters-table') {
+        displayValues[field.id] = Array.isArray(val) ? val : [];
+      } else {
+        displayValues[field.id] = `<<< ${field.label} >>>`;
+      }
     });
     
     return currentMode.formula(displayValues);

@@ -361,17 +361,320 @@ const PromptForm = ({ currentModeId, fields, values, onUpdate, onAddSuggestion, 
             <div className={styles.infoField}>
               <p>{field.content}</p>
             </div>
+          ) : field.type === 'characters-table' ? (
+            <div className={styles.charactersTableContainer}>
+              <table className={styles.charTable}>
+                <thead>
+                  <tr>
+                    <th>Nome</th>
+                    <th>Aparência (Inglês)</th>
+                    <th>Vestimenta (Inglês)</th>
+                    <th>Movimento</th>
+                    <th>Voz / Tom (Inglês)</th>
+                    <th style={{ width: '40px' }}></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {(values[field.id] && Array.isArray(values[field.id]) ? values[field.id] : []).map((char, index) => (
+                    <tr key={index}>
+                      <td>
+                        <input
+                          type="text"
+                          className={styles.charInput}
+                          placeholder="Ex: worker"
+                          value={char.name || ''}
+                          onChange={(e) => {
+                            const newChars = [...values[field.id]];
+                            newChars[index] = { ...newChars[index], name: e.target.value };
+                            onUpdate(field.id, newChars);
+                          }}
+                        />
+                      </td>
+                      <td>
+                        <input
+                          type="text"
+                          className={styles.charInput}
+                          placeholder="Ex: young man..."
+                          value={char.appearance || ''}
+                          onChange={(e) => {
+                            const newChars = [...values[field.id]];
+                            newChars[index] = { ...newChars[index], appearance: e.target.value };
+                            onUpdate(field.id, newChars);
+                          }}
+                          list="appearance-suggestions"
+                        />
+                      </td>
+                      <td>
+                        <input
+                          type="text"
+                          className={styles.charInput}
+                          placeholder="Ex: linen kilt..."
+                          value={char.clothing || ''}
+                          onChange={(e) => {
+                            const newChars = [...values[field.id]];
+                            newChars[index] = { ...newChars[index], clothing: e.target.value };
+                            onUpdate(field.id, newChars);
+                          }}
+                          list="clothing-suggestions"
+                        />
+                      </td>
+                      <td>
+                        <select
+                          className={styles.charSelect}
+                          value={char.motion || 'composed_natural'}
+                          onChange={(e) => {
+                            const newChars = [...values[field.id]];
+                            newChars[index] = { ...newChars[index], motion: e.target.value };
+                            onUpdate(field.id, newChars);
+                          }}
+                        >
+                          <option value="composed_natural">Natural Composto</option>
+                          <option value="high_energy_expressive">TikTok (Muito Expressivo)</option>
+                        </select>
+                      </td>
+                      <td>
+                        <input
+                          type="text"
+                          className={styles.charInput}
+                          placeholder="Ex: comedic voice..."
+                          value={char.voice || ''}
+                          onChange={(e) => {
+                            const newChars = [...values[field.id]];
+                            newChars[index] = { ...newChars[index], voice: e.target.value };
+                            onUpdate(field.id, newChars);
+                          }}
+                          list="voice-suggestions"
+                        />
+                      </td>
+                      <td>
+                        <button
+                          type="button"
+                          className={styles.removeCharBtn}
+                          onClick={() => {
+                            const newChars = values[field.id].filter((_, i) => i !== index);
+                            onUpdate(field.id, newChars);
+                          }}
+                          title="Remover personagem"
+                        >
+                          &times;
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                  {(values[field.id] && Array.isArray(values[field.id]) ? values[field.id] : []).length === 0 && (
+                    <tr>
+                      <td colSpan="6" className={styles.emptyTable}>
+                        Nenhum personagem adicionado. Use as sugestões abaixo ou clique em "Adicionar Personagem".
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+              <button
+                type="button"
+                className={styles.addCharBtn}
+                onClick={() => {
+                  const currentList = Array.isArray(values[field.id]) ? values[field.id] : [];
+                  const newChars = [
+                    ...currentList,
+                    { name: '', appearance: '', clothing: '', motion: 'composed_natural', voice: '' }
+                  ];
+                  onUpdate(field.id, newChars);
+                }}
+              >
+                ＋ Adicionar Personagem
+              </button>
+
+              <datalist id="appearance-suggestions">
+                <option value="charismatic young Egyptian worker, sun-tanned skin" />
+                <option value="serious pharaoh guard, striped nemes headdress" />
+                <option value="cute red fruit character with strawberry face" />
+                <option value="relaxed yellow fruit character with pineapple crown" />
+                <option value="cyberpunk street racer, glowing neon tattoos" />
+                <option value="wise elderly wizard with a long silver beard" />
+                <option value="charismatic teenage boy wearing headphones" />
+                <option value="adorable robot with big glowing blue digital eyes" />
+              </datalist>
+              
+              <datalist id="clothing-suggestions">
+                <option value="historically inspired simple white linen kilt" />
+                <option value="ornate traditional royal guard armor" />
+                <option value="tiny green leaf collar" />
+                <option value="sunglasses and colorful tropical Hawaiian shirt" />
+                <option value="oversized glowing cyberpunk leather hoodie" />
+                <option value="elegant velvet royal wizard robes" />
+                <option value="futuristic metallic sleek plating" />
+                <option value="casual modern streetwear jacket and jeans" />
+              </datalist>
+
+              <datalist id="voice-suggestions">
+                <option value="energetic comedic TikTok vlog voice" />
+                <option value="deep angry authority voice" />
+                <option value="sweet high-pitched cartoon voice" />
+                <option value="calm deep laidback voice" />
+                <option value="excited young expressive voice" />
+                <option value="raspy whispery mysterious voice" />
+                <option value="glowing high-tech robotic digital voice" />
+              </datalist>
+            </div>
           ) : field.type === 'textarea' ? (
-            <textarea
-              id={field.id}
-              className={styles.textarea}
-              placeholder={field.placeholder}
-              value={values[field.id] || ''}
-              onChange={(e) => onUpdate(field.id, e.target.value)}
-              rows={3}
-            />
+            <>
+              {field.id === 'dialogue' && Array.isArray(values['characters_definition']) && values['characters_definition'].length > 0 && (
+                <div className={styles.dialogueShortcuts}>
+                  <span className={styles.shortcutLabel}>Atalhos rápidos de Fala:</span>
+                  <div className={styles.shortcutChips}>
+                    {values['characters_definition'].filter(c => c.name).map((char) => (
+                      <button
+                        key={char.name}
+                        type="button"
+                        className={styles.shortcutChip}
+                        onClick={() => {
+                          const textarea = document.getElementById('dialogue');
+                          if (!textarea) return;
+                          const text = values['dialogue'] || '';
+                          const start = textarea.selectionStart || 0;
+                          const end = textarea.selectionEnd || 0;
+                          const insertStr = `[${char.name}] (excited): []`;
+                          const newText = text.substring(0, start) + insertStr + text.substring(end);
+                          onUpdate('dialogue', newText);
+                          
+                          setTimeout(() => {
+                            textarea.focus();
+                            const newCursorPos = start + insertStr.length - 1;
+                            textarea.setSelectionRange(newCursorPos, newCursorPos);
+                          }, 50);
+                        }}
+                        title={`Inserir fala de [${char.name}] no cursor`}
+                      >
+                        💬 {char.name}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+              {field.id !== 'dialogue' && Array.isArray(values['characters_definition']) && values['characters_definition'].length > 0 && (
+                <div className={styles.dialogueShortcuts}>
+                  <span className={styles.shortcutLabel}>Inserir Personagem:</span>
+                  <div className={styles.shortcutChips}>
+                    {values['characters_definition'].filter(c => c.name).map((char) => (
+                      <span key={char.name} className={styles.shortcutGroup}>
+                        <button
+                          type="button"
+                          className={styles.shortcutChip}
+                          onClick={() => {
+                            const input = document.getElementById(field.id);
+                            if (!input) return;
+                            const text = values[field.id] || '';
+                            const start = input.selectionStart || 0;
+                            const end = input.selectionEnd || 0;
+                            const insertStr = char.name;
+                            const newText = text.substring(0, start) + insertStr + text.substring(end);
+                            onUpdate(field.id, newText);
+                            setTimeout(() => {
+                              input.focus();
+                              const newPos = start + insertStr.length;
+                              input.setSelectionRange(newPos, newPos);
+                            }, 50);
+                          }}
+                          title={`Inserir nome [${char.name}] no cursor`}
+                        >
+                          👤 {char.name}
+                        </button>
+                        <button
+                          type="button"
+                          className={`${styles.shortcutChip} ${styles.shortcutChipSecondary}`}
+                          onClick={() => {
+                            const input = document.getElementById(field.id);
+                            if (!input) return;
+                            const text = values[field.id] || '';
+                            const start = input.selectionStart || 0;
+                            const end = input.selectionEnd || 0;
+                            const desc = `${char.appearance || ''}${char.clothing ? `, wearing ${char.clothing}` : ''}`;
+                            const insertStr = desc;
+                            const newText = text.substring(0, start) + insertStr + text.substring(end);
+                            onUpdate(field.id, newText);
+                            setTimeout(() => {
+                              input.focus();
+                              const newPos = start + insertStr.length;
+                              input.setSelectionRange(newPos, newPos);
+                            }, 50);
+                          }}
+                          title={`Inserir descrição completa de [${char.name}] no cursor`}
+                        >
+                          📝 Descrição
+                        </button>
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+              <textarea
+                id={field.id}
+                className={styles.textarea}
+                placeholder={field.placeholder}
+                value={values[field.id] || ''}
+                onChange={(e) => onUpdate(field.id, e.target.value)}
+                rows={3}
+              />
+            </>
           ) : (
             <>
+              {Array.isArray(values['characters_definition']) && values['characters_definition'].length > 0 && (
+                <div className={styles.dialogueShortcuts}>
+                  <span className={styles.shortcutLabel}>Inserir Personagem:</span>
+                  <div className={styles.shortcutChips}>
+                    {values['characters_definition'].filter(c => c.name).map((char) => (
+                      <span key={char.name} className={styles.shortcutGroup}>
+                        <button
+                          type="button"
+                          className={styles.shortcutChip}
+                          onClick={() => {
+                            const input = document.getElementById(field.id);
+                            if (!input) return;
+                            const text = values[field.id] || '';
+                            const start = input.selectionStart || 0;
+                            const end = input.selectionEnd || 0;
+                            const insertStr = char.name;
+                            const newText = text.substring(0, start) + insertStr + text.substring(end);
+                            onUpdate(field.id, newText);
+                            setTimeout(() => {
+                              input.focus();
+                              const newPos = start + insertStr.length;
+                              input.setSelectionRange(newPos, newPos);
+                            }, 50);
+                          }}
+                          title={`Inserir nome [${char.name}] no cursor`}
+                        >
+                          👤 {char.name}
+                        </button>
+                        <button
+                          type="button"
+                          className={`${styles.shortcutChip} ${styles.shortcutChipSecondary}`}
+                          onClick={() => {
+                            const input = document.getElementById(field.id);
+                            if (!input) return;
+                            const text = values[field.id] || '';
+                            const start = input.selectionStart || 0;
+                            const end = input.selectionEnd || 0;
+                            const desc = `${char.appearance || ''}${char.clothing ? `, wearing ${char.clothing}` : ''}`;
+                            const insertStr = desc;
+                            const newText = text.substring(0, start) + insertStr + text.substring(end);
+                            onUpdate(field.id, newText);
+                            setTimeout(() => {
+                              input.focus();
+                              const newPos = start + insertStr.length;
+                              input.setSelectionRange(newPos, newPos);
+                            }, 50);
+                          }}
+                          title={`Inserir descrição completa de [${char.name}] no cursor`}
+                        >
+                          📝 Descrição
+                        </button>
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
               <input
                 id={field.id}
                 type="text"
@@ -397,11 +700,17 @@ const PromptForm = ({ currentModeId, fields, values, onUpdate, onAddSuggestion, 
             <div className={styles.suggestions}>
               {(displaySuggestions[field.id] || field.suggestions).map((sug) => (
                 <button
-                  key={sug.value}
+                  key={sug.label}
                   type="button"
                   className={styles.chip}
-                  onClick={() => onAddSuggestion(field.id, sug.value)}
-                  title={sug.value}
+                  onClick={() => {
+                    if (field.type === 'characters-table') {
+                      onUpdate(field.id, sug.value);
+                    } else {
+                      onAddSuggestion(field.id, sug.value);
+                    }
+                  }}
+                  title={typeof sug.value === 'string' ? sug.value : JSON.stringify(sug.value)}
                 >
                   {sug.label}
                 </button>

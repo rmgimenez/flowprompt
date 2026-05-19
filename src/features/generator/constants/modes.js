@@ -7,7 +7,7 @@ const VIDEO_NEGATIVE_PROMPTS = [
 ];
 
 const parseCamera = (text) => {
-  if (!text || text.includes('<<<')) {
+  if (typeof text !== 'string' || !text || text.includes('<<<')) {
     return {
       camera_type: 'tripod',
       movement: { type: 'static', speed: 'medium', easing: 'ease_in_out' },
@@ -109,9 +109,20 @@ const parseCamera = (text) => {
   };
 };
 
-const parseCharacters = (charStr) => {
-  if (!charStr || charStr.includes('<<<') || charStr.trim() === '') return [];
-  const lines = charStr.split('\n').filter(l => l.trim() !== '');
+const parseCharacters = (charVal) => {
+  if (!charVal) return [];
+  
+  if (Array.isArray(charVal)) {
+    return charVal.map(char => ({
+      name: (char.name || '').trim(),
+      description: `${(char.appearance || '').trim()}${char.clothing ? `, wearing ${(char.clothing || '').trim()}` : ''}`,
+      voice_attributes: (char.voice || char.voice_attributes || '').trim(),
+      motion_signature: char.motion || char.motion_signature || 'composed_natural'
+    }));
+  }
+  
+  if (typeof charVal !== 'string' || charVal.includes('<<<') || charVal.trim() === '') return [];
+  const lines = charVal.split('\n').filter(l => l.trim() !== '');
   const chars = [];
   lines.forEach(line => {
     const matches = [...line.matchAll(/\[([^\]]+)\]/g)].map(m => m[1]);
@@ -119,7 +130,8 @@ const parseCharacters = (charStr) => {
       chars.push({
         name: matches[0].trim(),
         description: matches[1].trim(),
-        voice_attributes: matches[2] ? matches[2].trim() : ''
+        voice_attributes: matches[2] ? matches[2].trim() : '',
+        motion_signature: 'composed_natural'
       });
     }
   });
@@ -127,7 +139,7 @@ const parseCharacters = (charStr) => {
 };
 
 const parseDialogue = (dialStr) => {
-  if (!dialStr || dialStr.includes('<<<') || dialStr.trim() === '') return [];
+  if (typeof dialStr !== 'string' || !dialStr || dialStr.includes('<<<') || dialStr.trim() === '') return [];
   const lines = dialStr.split('\n').filter(l => l.trim() !== '');
   const dialogue = [];
   let currentTime = 0.0;
@@ -205,9 +217,9 @@ const enrichCharacters = (characters, dialogue) => {
       description: char.description,
       voice_attributes: char.voice_attributes,
       visual_consistency_id: `char_seed_${charNameLower.replace(/[^a-z0-9]/g, '')}_v31`,
-      motion_signature: char.description.toLowerCase().includes('agitad') || char.voice_attributes.toLowerCase().includes('agitad') 
+      motion_signature: char.motion_signature || (char.description.toLowerCase().includes('agitad') || char.voice_attributes.toLowerCase().includes('agitad') 
         ? "high_energy_expressive" 
-        : "composed_natural",
+        : "composed_natural"),
       ...(expression_timeline.length > 0 ? { expression_timeline } : {})
     };
   });
@@ -460,7 +472,12 @@ export const MODES = {
           ...(dialogue.length > 0 ? {
             dialogue,
             language: "pt-BR",
-            lip_sync: "perfect"
+            lip_sync: "perfect",
+            voice_acting_direction: {
+              accent: "natural Brazilian Portuguese (pt-BR) accent with authentic pronunciation, zero robotic formalisms",
+              delivery_style: "energetic, comedic, charismatic, and expressive like a modern TikTok/Reels influencer vlog",
+              comedic_timing: "modern comedic influencer timing, utilizing subtle awkward pauses, realistic conversational breaths, and meme-style pacing"
+            }
           } : {})
         },
         negative_prompts: [
@@ -485,12 +502,24 @@ export const MODES = {
       },
       { 
         id: 'characters_definition', 
-        label: 'Definição dos Personagens', 
-        hint: 'Formato: [nome][descrição][tom de voz]', 
-        placeholder: 'Ex: [morango][personagem morango][feminino]', 
-        type: 'textarea', 
+        label: 'Criação dos Personagens', 
+        hint: 'Crie personagens estruturados com opções rápidas de montagem', 
+        type: 'characters-table',
         suggestions: [
-          { label: 'Exemplo Frutas', value: '[morango][personagem vermelho com cara de morango][voz doce, aguda e amigável]\n[abacaxi][personagem amarelo com cara de abacaxi][voz calma, levemente encorpada e relaxada]\n[uva][personagem roxo com cara de uva][voz muito aguda, agitada e estridente]' }
+          { 
+            label: 'Exemplo Egito (Vlog)', 
+            value: [
+              { name: 'worker', appearance: 'charismatic young Egyptian worker, sun-tanned skin', clothing: 'historically inspired simple white linen kilt', motion: 'high_energy_expressive', voice: 'energetic comedic TikTok vlog voice' },
+              { name: 'guard', appearance: 'serious pharaoh guard in background, striped nemes headdress', clothing: 'ornate traditional guard armor', motion: 'composed_natural', voice: 'deep angry authority voice' }
+            ]
+          },
+          { 
+            label: 'Exemplo Frutas Animadas', 
+            value: [
+              { name: 'morango', appearance: 'cute red fruit character with strawberry face', clothing: 'tiny white leaf collar', motion: 'high_energy_expressive', voice: 'sweet high-pitched voice' },
+              { name: 'abacaxi', appearance: 'relaxed yellow fruit character with pineapple crown', clothing: 'sunglasses and tropical shirt', motion: 'composed_natural', voice: 'calm deep laidback voice' }
+            ] 
+          }
         ] 
       },
       { id: 'cinematography', label: 'Cinematografia & Câmera', hint: 'Ângulo e movimento da câmera', placeholder: 'Ex: Medium shot', type: 'text', suggestions: [{ label: 'Plano Aberto', value: 'Wide Shot' }, { label: 'Close-up', value: 'Close-up' }, { label: 'Visão em 1ª Pessoa', value: 'POV Shot' }, { label: 'Vista Aérea', value: 'Aerial View' }, { label: 'Câmera em Movimento', value: 'Tracking Shot' }, { label: 'Câmera na Mão', value: 'Handheld Camera' }, { label: 'Câmera Selfie na Mão', value: 'Handheld Selfie Camera' }, { label: 'Contra-mergulho', value: 'Low Angle' }, { label: 'Mergulho', value: 'High Angle' }, { label: 'Zoom Lento', value: 'Slow Zoom' }, { label: 'Órbita 360°', value: '360-degree Orbit' }, { label: 'Time-lapse', value: 'Time-lapse' }, { label: 'Câmera Lenta', value: 'Slow Motion' }, { label: 'Macro Extremo', value: 'Extreme Macro' }, { label: 'Plano Sequência', value: 'One-shot Sequence' }, { label: 'Foco Alternado', value: 'Rack Focus' }, { label: 'Plano Holandês', value: 'Dutch Angle' }] },
@@ -505,6 +534,10 @@ export const MODES = {
         placeholder: 'Ex: [morango] (feliz): [oi, eu sou a morango!]', 
         type: 'textarea', 
         suggestions: [
+          { 
+            label: 'TikTok Viral (Vlog/Meme)', 
+            value: '[worker] (excited): [Fala galera! Mais um dia aqui levantando a pirâmide do faraó! Olha o tamanho disso, meu parceiro!]\n[guard] (angry): [Volte ao trabalho agora!]\n[worker] (sarcastic): [Os caras falaram que fica pronto em só vinte anos... confia.]' 
+          },
           { label: 'Diálogo Expressivo', value: '[morango] (feliz): [olá abacaxi, você viu o sol hoje?!]\n[abacaxi] (calmo): [sim morango, ele está radiante e quente!]\n[uva] (sarcástica): [radiante? está um forno isso aqui!]' },
           { label: 'Comédia Rápida', value: '[morango] (rindo): [hahaha abacaxi, você parece uma coroa!]\n[abacaxi] (irritado): [ei morango, respeite minha realeza vegetal!]' },
           { label: 'Sem Fala', value: '' }
@@ -516,14 +549,9 @@ export const MODES = {
         type: 'info',
         content: `🎬 DIREÇÃO CINEMATOGRÁFICA (11 REGRAS):
 • RESUMO DA CENA: Explique o momento principal em uma única frase simples para roteirização clara.
-• SUJEITO & AÇÃO: Detalhe a fisionomia, roupas e ações realistas. Movimentos rápidos e expressivos retêm mais atenção no feed do TikTok/Reels.
-• CINEMATOGRAFIA: Especifique movimentos de câmera como "Órbita 360°", "Dolly Zoom" ou "Snap Zoom" para dinamizar a cena.
+• CRIADOR DE PERSONAGENS: Use a tabela compacta para definir nome, corpo, roupa, estilo de voz e movimento com o máximo de fidelidade visual.
 • ILUMINAÇÃO & CORES: Adicione tons e estilos de iluminação coerentes (ex: "Golden hour", "Neon cyberpunk") para criar uma atmosfera premium.
-• ÁUDIO: Sempre descreva efeitos sonoros imersivos (SFX/ASMR) nos prompts. Lembre-se: sem legendas ou textos na tela.
-
-📝 GUIA RÁPIDO DOS CAMPOS:
-• Personagens: Se tiver dublagem, defina a aparência e o tom de voz do personagem neste campo.
-• Dublagem: Use o formato "[personagem] (emoção): [fala]" (ex: [morango] (feliz): [olá!]). O sistema criará lip-sync automático no Veo 3.1.
+• DUBLAGEM & ATUAÇÃO: Digite as falas no formato "[personagem] (emoção): [fala]" (ex: [worker] (excited): [Fala galera!]). Use gírias e português coloquial para obter a dublagem viral enérgica e cômica do TikTok!
 • Campos Vazios: O sistema insere valores padrão inteligentes para garantir que seu vídeo nunca fique estático.`
       }
     ]
@@ -579,7 +607,12 @@ export const MODES = {
           ...(dialogue.length > 0 ? {
             dialogue,
             language: "pt-BR",
-            lip_sync: "perfect"
+            lip_sync: "perfect",
+            voice_acting_direction: {
+              accent: "natural Brazilian Portuguese (pt-BR) accent with authentic pronunciation, zero robotic formalisms",
+              delivery_style: "energetic, comedic, charismatic, and expressive like a modern TikTok/Reels influencer vlog",
+              comedic_timing: "modern comedic influencer timing, utilizing subtle awkward pauses, realistic conversational breaths, and meme-style pacing"
+            }
           } : {})
         },
         negative_prompts: [
@@ -604,12 +637,17 @@ export const MODES = {
       },
       { 
         id: 'characters_definition', 
-        label: 'Definição dos Personagens', 
-        hint: 'Formato: [nome][descrição][tom de voz]', 
-        placeholder: 'Ex: [morango][personagem morango][feminino]', 
-        type: 'textarea', 
+        label: 'Criação dos Personagens', 
+        hint: 'Crie personagens estruturados com opções rápidas de montagem', 
+        type: 'characters-table',
         suggestions: [
-          { label: 'Exemplo Frutas', value: '[morango][personagem vermelho com cara de morango][voz doce, aguda e amigável]\n[abacaxi][personagem amarelo com cara de abacaxi][voz calma, levemente encorpada e relaxada]\n[uva][personagem roxo com cara de uva][voz muito aguda, agitada e estridente]' }
+          { 
+            label: 'Exemplo Frutas Animadas', 
+            value: [
+              { name: 'morango', appearance: 'cute red fruit character with strawberry face', clothing: 'tiny white leaf collar', motion: 'high_energy_expressive', voice: 'sweet high-pitched voice' },
+              { name: 'abacaxi', appearance: 'relaxed yellow fruit character with pineapple crown', clothing: 'sunglasses and tropical shirt', motion: 'composed_natural', voice: 'calm deep laidback voice' }
+            ] 
+          }
         ] 
       },
       { 
@@ -700,6 +738,10 @@ export const MODES = {
         placeholder: 'Ex: [morango] (feliz): [oi, eu sou a morango!]', 
         type: 'textarea', 
         suggestions: [
+          { 
+            label: 'TikTok Viral (Vlog/Meme)', 
+            value: '[morango] (excited): [Fala galera! Olha só quem resolveu aparecer no feed hoje!]\n[abacaxi] (calmo): [Fala baixo, mano...]\n[morango] (sarcastic): [Se ele tá tímido no vídeo... imagina na vida real, confia.]' 
+          },
           { label: 'Diálogo Expressivo', value: '[morango] (feliz): [olá abacaxi, você viu o sol hoje?!]\n[abacaxi] (calmo): [sim morango, ele está radiante e quente!]\n[uva] (sarcástica): [radiante? está um forno isso aqui!]' },
           { label: 'Comédia Rápida', value: '[morango] (rindo): [hahaha abacaxi, você parece uma coroa!]\n[abacaxi] (irritado): [ei morango, respeite minha realeza vegetal!]' },
           { label: 'Sem Fala', value: '' }
@@ -711,14 +753,9 @@ export const MODES = {
         type: 'info',
         content: `🌟 TÉCNICAS DE ANIMAÇÃO VIRAIS:
 • CONTINUIDADE VISUAL: O Veo 3.1 mantém 100% da fidelidade do sujeito e cenário originais da sua imagem estática.
-• AÇÃO ADICIONAL: Descreva exatamente o que deve se mover (ex: "cabelo ao vento", "roupas balançando", "olhos piscando" ou "neve caindo").
-• MOVIMENTO DE CÂMERA: Escolha movimentos suaves como "Panorâmica" ou "Órbita Circular" para dar profundidade e efeito de paralaxe 3D realistas.
-• EFEITOS SONOROS (SFX): Efeitos sonoros imersivos (ASMR de passos, chuva ou vento crepitante) geram até 40% mais retenção nas redes.
-
-📝 GUIA RÁPIDO DOS CAMPOS:
-• Personagens: Defina a consistência do seu personagem se for dublá-lo.
-• Dublagem: Siga o formato padrão "[personagem] (emoção): [fala]" se a imagem original possuir um rosto ou sujeito capaz de falar.
-• Campos Vazios: Caso não preencha a ação, o sistema animará a cena com fluxo natural suave automático.`
+• CRIADOR DE PERSONAGENS: Defina as características na tabela interativa para garantir fidelidade visual e vocal ao dublar rostos.
+• DUBLAGEM & ATUAÇÃO: Siga o formato padrão "[personagem] (emoção): [fala]". Escreva falas descontraídas e repletas de gírias para uma dublagem natural do TikTok.
+• EFEITOS SONOROS (SFX): Efeitos sonoros imersivos (ASMR de passos, chuva ou vento crepitante) geram até 40% mais retenção nas redes.`
       }
     ]
   },
@@ -767,12 +804,17 @@ export const MODES = {
     fields: [
       { 
         id: 'characters_definition', 
-        label: 'Definição dos Personagens (Consistência)', 
-        hint: 'Formato: [nome][descrição][pose ou expressão]', 
-        placeholder: 'Ex: [morango][personagem morango][sorridente e olhando para a câmera]', 
-        type: 'textarea', 
+        label: 'Criação dos Personagens', 
+        hint: 'Crie personagens estruturados com opções rápidas de montagem', 
+        type: 'characters-table',
         suggestions: [
-          { label: 'Exemplo Frutas', value: '[morango][personagem vermelho com cara de morango][sorridente e olhando para a câmera]\n[abacaxi][personagem amarelo com cara de abacaxi][pose heroica e confiante]\n[uva][personagem roxo com cara de uva][braços cruzados com expressão sarcástica]' }
+          { 
+            label: 'Exemplo Frutas Animadas', 
+            value: [
+              { name: 'morango', appearance: 'cute red fruit character with strawberry face', clothing: 'tiny white leaf collar', motion: 'high_energy_expressive', voice: 'sweet high-pitched voice' },
+              { name: 'abacaxi', appearance: 'relaxed yellow fruit character with pineapple crown', clothing: 'sunglasses and tropical shirt', motion: 'composed_natural', voice: 'calm deep laidback voice' }
+            ] 
+          }
         ] 
       },
       { id: 'subject', label: 'Sujeito Principal', hint: 'O elemento principal da imagem', placeholder: 'Ex: Guerreiro Cyberpunk', type: 'text', suggestions: [{ label: 'Guerreiro Cyberpunk', value: 'Cyberpunk Warrior' }, { label: 'Espírito da Floresta', value: 'Forest Spirit' }, { label: 'Carro Vintage', value: 'Vintage Car' }, { label: 'Coruja Robótica', value: 'Robotic Owl' }, { label: 'Xamã Místico', value: 'Mystical Shaman' }, { label: 'Arranha-céu Futurista', value: 'Futuristic Skyscraper' }, { label: 'Água-viva Bioluminescente', value: 'Bioluminescent Jellyfish' }, { label: 'Gato Samurai', value: 'Samurai Cat' }, { label: 'Explorador Vitoriano', value: 'Victorian Explorer' }, { label: 'Botânico Alienígena', value: 'Alien Botanist' }, { label: 'Relojoeiro Steampunk', value: 'Steampunk Clockmaker' }, { label: 'Dragão Cósmico', value: 'Cosmic Dragon' }] },
@@ -982,7 +1024,12 @@ export const MODES = {
           ...(dialogue.length > 0 ? {
             dialogue,
             language: "pt-BR",
-            lip_sync: "perfect"
+            lip_sync: "perfect",
+            voice_acting_direction: {
+              accent: "natural Brazilian Portuguese (pt-BR) accent with authentic pronunciation, zero robotic formalisms",
+              delivery_style: "energetic, comedic, charismatic, and expressive like a modern TikTok/Reels influencer vlog",
+              comedic_timing: "modern comedic influencer timing, utilizing subtle awkward pauses, realistic conversational breaths, and meme-style pacing"
+            }
           } : {})
         },
         negative_prompts: VIDEO_NEGATIVE_PROMPTS
@@ -993,12 +1040,17 @@ export const MODES = {
     fields: [
       { 
         id: 'characters_definition', 
-        label: 'Definição dos Personagens (Consistência)', 
-        hint: 'Mantenha igual em toda a sua série de vídeos', 
-        placeholder: 'Ex: [morango][personagem morango][voz doce]', 
-        type: 'textarea', 
+        label: 'Criação dos Personagens', 
+        hint: 'Crie personagens estruturados com opções rápidas de montagem', 
+        type: 'characters-table',
         suggestions: [
-          { label: 'Exemplo Frutas', value: '[morango][personagem vermelho com cara de morango][voz doce, aguda e amigável]\n[abacaxi][personagem amarelo com cara de abacaxi][voz calma, levemente encorpada e relaxada]\n[uva][personagem roxo com cara de uva][voz muito aguda, agitada e estridente]' }
+          { 
+            label: 'Exemplo Frutas Animadas', 
+            value: [
+              { name: 'morango', appearance: 'cute red fruit character with strawberry face', clothing: 'tiny white leaf collar', motion: 'high_energy_expressive', voice: 'sweet high-pitched voice' },
+              { name: 'abacaxi', appearance: 'relaxed yellow fruit character with pineapple crown', clothing: 'sunglasses and tropical shirt', motion: 'composed_natural', voice: 'calm deep laidback voice' }
+            ] 
+          }
         ] 
       },
       { 
@@ -1093,14 +1145,19 @@ export const MODES = {
       },
       { 
         id: 'dialogue', 
-        label: 'Falas (Dublagem pt-BR)', 
+        label: 'Falas dos Personagens (Dublagem)', 
         hint: 'Use o formato [personagem] (emoção): [fala]', 
-        placeholder: 'Ex: [uva] (assustada): [olha só isso!]', 
-        type: 'textarea',
+        placeholder: 'Ex: [morango] (feliz): [oi, eu sou a morango!]', 
+        type: 'textarea', 
         suggestions: [
+          { 
+            label: 'TikTok Viral (Vlog/Meme)', 
+            value: '[morango] (excited): [Fala galera! Olha só quem resolveu aparecer no feed hoje!]\n[abacaxi] (calmo): [Fala baixo, mano...]\n[morango] (sarcastic): [Se ele tá tímido no vídeo... imagina na vida real, confia.]' 
+          },
           { label: 'Diálogo Expressivo', value: '[morango] (feliz): [olá abacaxi, você viu o sol hoje?!]\n[abacaxi] (calmo): [sim morango, ele está radiante e quente!]\n[uva] (sarcástica): [radiante? está um forno isso aqui!]' },
-          { label: 'Comédia Rápida', value: '[morango] (rindo): [hahaha abacaxi, você parece uma coroa!]\n[abacaxi] (irritado): [ei morango, respeite minha realeza vegetal!]' }
-        ]
+          { label: 'Comédia Rápida', value: '[morango] (rindo): [hahaha abacaxi, você parece uma coroa!]\n[abacaxi] (irritado): [ei morango, respeite minha realeza vegetal!]' },
+          { label: 'Sem Fala', value: '' }
+        ] 
       },
       {
         id: 'help_info',
@@ -1108,8 +1165,9 @@ export const MODES = {
         type: 'info',
         content: `🔥 ESTRATÉGIAS VIRAIS:
 • REGRA DOS 2 SEGUNDOS: O "Gancho Inicial" deve ter movimento. Comece com uma risada, um pulo ou a câmera se aproximando rápido.
-• MOMENTOS MÁGICOS: Vídeos onde objetos se movem sozinhos geram muita curiosidade. Descreva o trajeto completo no campo "Momento Mágico".
-• QUALIDADE NANO BANANA: Sempre use os tokens de "Qualidade Visual". Isso faz a IA usar mais processamento para detalhes.
+• CRIADOR DE PERSONAGENS: Defina as características na tabela interativa para garantir fidelidade visual e vocal.
+• DUBLAGEM & ATUAÇÃO: Digite as falas no formato "[personagem] (emoção): [fala]". Escreva falas descontraídas e repletas de gírias para uma dublagem natural do TikTok.
+• EFEITOS SONOROS (SFX): Efeitos sonoros imersivos (ASMR de passos, chuva ou vento crepitante) geram até 40% mais retenção nas redes.
 
 📝 GUIA RÁPIDO DOS CAMPOS:
 • Personagens: Mantenha este campo idêntico em todos os vídeos para que seu público reconheça sua "marca".
