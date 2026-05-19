@@ -3,11 +3,34 @@
  */
 
 export async function fillFormWithAI(userInstructions, fields, currentModeTitle) {
+  const isProduction = import.meta.env.PROD;
   const apiKey = import.meta.env.VITE_OPENROUTER_API_KEY;
   const model = import.meta.env.VITE_OPENROUTER_MODEL || 'deepseek/deepseek-v4-flash';
 
-  if (!apiKey || apiKey.trim() === '') {
-    throw new Error('API_KEY_MISSING');
+  // If in production or if no VITE api key is found, call our secure serverless endpoint
+  if (isProduction || !apiKey || apiKey.trim() === '') {
+    const response = await fetch('/api/fill', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        userInstructions,
+        fields,
+        currentModeTitle
+      })
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      if (errorData?.error === 'API_KEY_MISSING') {
+        throw new Error('API_KEY_MISSING');
+      }
+      throw new Error(errorData?.error || `Erro na API segura: ${response.status}`);
+    }
+
+    const data = await response.json();
+    return data;
   }
 
   // Filter out informational or static instructions card fields
