@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import Sidebar from './features/generator/components/Sidebar/Sidebar';
-import { Menu, Wand2 } from 'lucide-react';
+import { Menu, Wand2, Sparkles } from 'lucide-react';
 import MainLayout from './layouts/MainLayout';
 import PromptForm from './features/generator/components/Form/PromptForm';
+import AIModal from './features/generator/components/Form/AIModal';
 import PromptPreview from './features/generator/components/Preview/PromptPreview';
 import About from './features/generator/components/About/About';
 import ImageStacker from './features/generator/components/ImageStacker/ImageStacker';
@@ -16,6 +17,7 @@ import { Analytics } from '@vercel/analytics/react';
 
 function App() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isAIModalOpen, setIsAIModalOpen] = useState(false);
   const {
     currentMode,
     currentModeId,
@@ -159,6 +161,36 @@ function App() {
         content={renderContent()}
       />
       <Analytics />
+
+      {!currentMode.isCustom && !currentMode.isAbout && (
+        <>
+          <AIModal
+            isOpen={isAIModalOpen}
+            onClose={() => setIsAIModalOpen(false)}
+            fields={currentMode.fields}
+            currentModeTitle={currentMode.title}
+            onSuccess={(data) => {
+              if (data && typeof data === 'object') {
+                Object.entries(data).forEach(([key, val]) => {
+                  if (currentMode.fields.some(f => f.id === key)) {
+                    updateField(key, val);
+                  }
+                });
+              }
+            }}
+          />
+
+          <button
+            type="button"
+            className="ai-fab-btn"
+            onClick={() => setIsAIModalOpen(true)}
+            title="Preencher com Inteligência Artificial"
+          >
+            <Sparkles size={18} />
+            <span>Preencher com IA</span>
+          </button>
+        </>
+      )}
     </>
   );
 }

@@ -1411,7 +1411,7 @@ Cada uma das ${quantity} imagens deve ter seu próprio bloco de código contendo
 
       <button
         type="button"
-        className={styles.aiFabBtn}
+        className="ai-fab-btn"
         onClick={() => setIsAIModalOpen(true)}
         title="Preencher com Inteligência Artificial"
       >
