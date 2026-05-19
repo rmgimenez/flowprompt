@@ -171,6 +171,7 @@ function App() {
             currentModeTitle={currentMode.title}
             onSuccess={(data) => {
               if (data && typeof data === 'object') {
+                clearFields();
                 Object.entries(data).forEach(([key, val]) => {
                   if (currentMode.fields.some(f => f.id === key)) {
                     updateField(key, val);

@@ -1390,6 +1390,17 @@ Cada uma das ${quantity} imagens deve ter seu próprio bloco de código contendo
         currentModeTitle="Configuração da Coleção TikTok"
         onSuccess={(data) => {
           if (data && typeof data === 'object') {
+            // Wipes previous form state clean
+            setTheme('');
+            setQuantity(5);
+            setSelectedStyle('normal');
+            setSelectedVibe('normal');
+            setSelectedColors('normal');
+            setSelectedTarget('normal');
+            setPortugueseText(true);
+            setNotes('');
+            setActivePresetId(null);
+
             if (data.theme !== undefined) setTheme(data.theme);
             if (data.quantity !== undefined) setQuantity(Math.max(1, parseInt(data.quantity) || 5));
             if (data.selectedStyle !== undefined) setSelectedStyle(data.selectedStyle);

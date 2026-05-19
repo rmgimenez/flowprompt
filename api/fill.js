@@ -32,10 +32,20 @@ export default async function handler(req, res) {
       if (f.hint) schemaStr += `\n  Dica/Contexto: "${f.hint}"`;
       if (f.placeholder) schemaStr += `\n  Exemplo: "${f.placeholder}"`;
       if (f.suggestions && Array.isArray(f.suggestions)) {
-        schemaStr += `\n  Opções aceitas (você DEVE escolher rigorosamente e apenas um destes valores exatos): ${f.suggestions.map(s => `"${s.value}"`).join(', ')}`;
+        if (f.type === 'select') {
+          schemaStr += `\n  Opções aceitas (você DEVE escolher rigorosamente e apenas um destes valores exatos): ${f.suggestions.map(s => `"${s.value}"`).join(', ')}`;
+        } else {
+          const sugValues = f.suggestions.map(s => {
+            if (typeof s.value === 'object') {
+              return JSON.stringify(s.value);
+            }
+            return `"${s.value}"`;
+          }).join(', ');
+          schemaStr += `\n  Sugestões de exemplo (opcionais, apenas para inspiração. NÃO copie estes valores exatos; priorize criar valores novos, altamente personalizados e criativos com base estritamente no pedido do usuário): ${sugValues}`;
+        }
       }
       if (f.type === 'characters-table') {
-        schemaStr += `\n  Estrutura esperada: Array de objetos com as propriedades:
+        schemaStr += `\n  Estrutura esperada: Array JSON de objetos (ATENÇÃO: retorne como um Array JSON nativo contendo objetos, NÃO serialize como String) com as propriedades:
     - name: Nome do personagem (curto, minúsculo, ex: 'morango')
     - appearance: Aparência visual detalhada em Inglês (ex: 'cute red fruit character with strawberry face')
     - clothing: Vestimenta em Inglês (ex: 'tiny white leaf collar')
@@ -61,7 +71,8 @@ REGRAS DE PREENCHIMENTO:
 3. Se o campo for de estilo, câmera ou composição, use as terminologias técnicas ideais em inglês para maximizar a qualidade visual (ex: close-up shot, depth of field, sharp focus, 8k resolution, cinematic lighting).
 4. Para o campo 'characters_definition' (se disponível), extraia ou invente personagens criativos descritos pelo usuário. Preencha TODAS as propriedades de cada personagem em inglês, conforme a estrutura esperada.
 5. Se houver um campo de diálogo ('dialogue'), escreva falas divertidas no formato "[personagem] (expressão): [Fala]" correspondente aos personagens do 'characters_definition'.
-6. Importante: valores de texto/descrição para campos como 'subject', 'action', 'context', 'style', 'clothing', 'appearance', 'voice' devem ser preenchidos preferencialmente em INGLÊS para melhor desempenho nas IAs de imagem/vídeo, a menos que o usuário peça especificamente em português ou que o contexto faça mais sentido em português (como diálogos).`;
+6. Importante: valores de texto/descrição para campos como 'subject', 'action', 'context', 'style', 'clothing', 'appearance', 'voice' devem ser preenchidos preferencialmente em INGLÊS para melhor desempenho nas IAs de imagem/vídeo, a menos que o usuário peça especificamente em português ou que o contexto faça mais sentido em português (como diálogos).
+7. ATENÇÃO A PEDIDOS DE SILÊNCIO/MUDO: Se o usuário pedir explicitamente para o vídeo ser sem som, sem falas, silencioso ou mudo, você DEVE deixar o campo 'dialogue' completamente vazio ("") e direcionar toda a ação física do sujeito ('action') e movimentos dos personagens para ações corporais puramente visuais (ex: 'dancing happily', 'running fast', 'gesturing') em vez de conversar ou falar.`;
 
     const openRouterResponse = await fetch('https://openrouter.ai/api/v1/chat/completions', {
       method: 'POST',

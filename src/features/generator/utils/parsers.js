@@ -119,8 +119,20 @@ export const parseCamera = (text) => {
 export const parseCharacters = (charVal) => {
   if (!charVal) return [];
   
-  if (Array.isArray(charVal)) {
-    return charVal.map(char => ({
+  let parsedVal = charVal;
+  if (typeof charVal === 'string') {
+    const trimmed = charVal.trim();
+    if (trimmed.startsWith('[') || trimmed.startsWith('{')) {
+      try {
+        parsedVal = JSON.parse(trimmed);
+      } catch (e) {
+        // Fallback to manual line parsing
+      }
+    }
+  }
+  
+  if (Array.isArray(parsedVal)) {
+    return parsedVal.map(char => ({
       name: (char.name || '').trim(),
       description: `${(char.appearance || '').trim()}${char.clothing ? `, wearing ${(char.clothing || '').trim()}` : ''}`,
       voice_attributes: (char.voice || char.voice_attributes || '').trim(),
