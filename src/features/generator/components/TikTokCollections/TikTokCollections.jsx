@@ -5,6 +5,7 @@ import {
   HelpCircle
 } from 'lucide-react';
 import styles from './TikTokCollections.module.css';
+import AIModal from '../Form/AIModal';
 
 // Estilos de Alta Conversão (Nano Banana 2 Formulas - Total de 56 estilos)
 const STYLE_PRESETS = [
@@ -867,6 +868,17 @@ const THEME_TWISTS = [
   'com um toque dramático de trailer de cinema'
 ];
 
+const TIKTOK_FIELDS = [
+  { id: 'theme', label: 'Tema Principal do Post', type: 'text', placeholder: 'Ex: Legumes bombados na academia, Capivaras cyberpunk...' },
+  { id: 'quantity', label: 'Quantidade de Imagens', type: 'number', placeholder: 'Quantidade (1-20)...' },
+  { id: 'selectedStyle', label: 'Estilo Principal (Fórmula Nano)', type: 'select', suggestions: STYLE_PRESETS.map(p => ({ label: p.label, value: p.id })) },
+  { id: 'selectedTarget', label: 'Público-Alvo (Cópia/Roteiro)', type: 'select', suggestions: TARGET_PRESETS.map(p => ({ label: p.label, value: p.id })) },
+  { id: 'selectedVibe', label: 'Tom / Vibe do Post', type: 'select', suggestions: VIBE_PRESETS.map(p => ({ label: p.label, value: p.id })) },
+  { id: 'selectedColors', label: 'Paleta de Cores (Diretriz Visual)', type: 'select', suggestions: COLOR_PRESETS.map(p => ({ label: p.label, value: p.id })) },
+  { id: 'portugueseText', label: 'Forçar Texto das Imagens em Português', type: 'checkbox' },
+  { id: 'notes', label: 'Observações ou Refinamentos Específicos', type: 'textarea', placeholder: 'Observações específicas, temas de cada slide...' }
+];
+
 export const TikTokCollections = () => {
   const [theme, setTheme] = useState('');
   const [quantity, setQuantity] = useState(5);
@@ -879,6 +891,7 @@ export const TikTokCollections = () => {
   const [generatedPrompt, setGeneratedPrompt] = useState('');
   const [portugueseText, setPortugueseText] = useState(true);
   const [activePresetId, setActivePresetId] = useState(null);
+  const [isAIModalOpen, setIsAIModalOpen] = useState(false);
 
   // Sincroniza o preset selecionado com os campos individuais. Se o usuário mudar manualmente algum campo, limpa o preset ativo.
   useEffect(() => {
@@ -1368,6 +1381,43 @@ Cada uma das ${quantity} imagens deve ter seu próprio bloco de código contendo
           </div>
         </GlassCard>
       </div>
+
+      {/* AI Modal & FAB button for TikTok Collections screen */}
+      <AIModal
+        isOpen={isAIModalOpen}
+        onClose={() => setIsAIModalOpen(false)}
+        fields={TIKTOK_FIELDS}
+        currentModeTitle="Configuração da Coleção TikTok"
+        onSuccess={(data) => {
+          if (data && typeof data === 'object') {
+            if (data.theme !== undefined) setTheme(data.theme);
+            if (data.quantity !== undefined) setQuantity(Math.max(1, parseInt(data.quantity) || 5));
+            if (data.selectedStyle !== undefined) setSelectedStyle(data.selectedStyle);
+            if (data.selectedTarget !== undefined) setSelectedTarget(data.selectedTarget);
+            if (data.selectedVibe !== undefined) setSelectedVibe(data.selectedVibe);
+            if (data.selectedColors !== undefined) setSelectedColors(data.selectedColors);
+            if (data.portugueseText !== undefined) {
+              setPortugueseText(
+                data.portugueseText === 'Sim' || 
+                data.portugueseText === 'yes' || 
+                data.portugueseText === true || 
+                data.portugueseText === 'true'
+              );
+            }
+            if (data.notes !== undefined) setNotes(data.notes);
+          }
+        }}
+      />
+
+      <button
+        type="button"
+        className={styles.aiFabBtn}
+        onClick={() => setIsAIModalOpen(true)}
+        title="Preencher com Inteligência Artificial"
+      >
+        <Sparkles size={18} />
+        <span>Preencher com IA</span>
+      </button>
     </div>
   );
 };

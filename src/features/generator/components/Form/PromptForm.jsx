@@ -2,6 +2,8 @@ import React, { useMemo, useState, useEffect } from 'react';
 import styles from './PromptForm.module.css';
 import { Wand2, Eraser, MessageSquare, Volume2, VolumeX, Sparkles, Check, History, Settings, Camera, User, HelpCircle } from 'lucide-react';
 import { clsx } from 'clsx';
+import { MODES } from '../../constants/modes';
+import AIModal from './AIModal';
 
 const VIRAL_PROMPTS = {
   'video-from-frames': {
@@ -356,6 +358,7 @@ const PromptForm = ({ currentModeId, fields, values, onUpdate, onAddSuggestion, 
   const [copiedSilent, setCopiedSilent] = useState(false);
   const [copiedRestore, setCopiedRestore] = useState(false);
   const [activeTab, setActiveTab] = useState('principal');
+  const [isAIModalOpen, setIsAIModalOpen] = useState(false);
 
   // Load Presets based on exact mode ID or fallback to general type
   const availablePresets = useMemo(() => {
@@ -1015,6 +1018,33 @@ const PromptForm = ({ currentModeId, fields, values, onUpdate, onAddSuggestion, 
           </div>
         </div>
       )}
+
+      {/* AI Modal & Floating Action Button */}
+      <AIModal
+        isOpen={isAIModalOpen}
+        onClose={() => setIsAIModalOpen(false)}
+        fields={fields}
+        currentModeTitle={MODES[currentModeId]?.title || 'Formulário'}
+        onSuccess={(data) => {
+          if (data && typeof data === 'object') {
+            Object.entries(data).forEach(([key, val]) => {
+              if (fields.some(f => f.id === key)) {
+                onUpdate(key, val);
+              }
+            });
+          }
+        }}
+      />
+
+      <button
+        type="button"
+        className={styles.aiFabBtn}
+        onClick={() => setIsAIModalOpen(true)}
+        title="Preencher com Inteligência Artificial"
+      >
+        <Sparkles size={18} />
+        <span>Preencher com IA</span>
+      </button>
     </form>
   );
 };
