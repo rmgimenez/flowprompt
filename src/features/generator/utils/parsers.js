@@ -11,7 +11,8 @@ export const parseCamera = (text) => {
     return {
       camera_type: 'tripod',
       movement: { type: 'static', speed: 'medium', easing: 'ease_in_out' },
-      framing: 'wide'
+      framing: 'wide',
+      veo_version: '3.1'
     };
   }
 
@@ -103,9 +104,15 @@ export const parseCamera = (text) => {
 
   return {
     camera_type,
-    movement: { type, speed, easing: 'ease_in_out' },
+    movement: { 
+      type, 
+      speed, 
+      easing: 'ease_in_out',
+      veo_31_temporal_consistency: 'high_fidelity_flow' 
+    },
     lens,
-    framing
+    framing,
+    veo_version: '3.1'
   };
 };
 
@@ -290,9 +297,9 @@ export const parseImageStyle = (text) => {
   if (!text || text.includes('<<<') || text.trim() === '') {
     return {
       medium: 'photograph',
-      rendering_engine: 'none',
+      rendering_engine: 'nano_banana_2_engine',
       color_grading: 'natural',
-      golden_tokens: ['hyper-realistic', '8k', 'sharp focus']
+      golden_tokens: ['hyper-realistic', 'high-fidelity textures', 'sharp focus', 'nano banana 2 style']
     };
   }
 
@@ -312,14 +319,14 @@ export const parseImageStyle = (text) => {
     medium = 'watercolor';
   }
 
-  // Rendering Engine
-  let rendering_engine = 'none';
+  // Rendering Engine & Fidelity Model (Nano Banana v2 optimized)
+  let rendering_engine = 'nano_banana_2_engine';
   if (lowerText.includes('unreal')) {
-    rendering_engine = 'unreal_engine_5';
+    rendering_engine = 'unreal_engine_5_banana_hybrid';
   } else if (lowerText.includes('octane')) {
-    rendering_engine = 'octane_render';
+    rendering_engine = 'octane_render_banana_hybrid';
   } else if (lowerText.includes('blender') || lowerText.includes('cycles')) {
-    rendering_engine = 'blender_cycles';
+    rendering_engine = 'blender_cycles_banana_hybrid';
   }
 
   // Color Grading
@@ -336,14 +343,24 @@ export const parseImageStyle = (text) => {
     color_grading = 'pastel_tones';
   }
 
-  // Golden Tokens
-  const golden_tokens = text.split(',').map(s => s.trim()).filter(s => s !== '' && !s.includes('<<<'));
+  // Golden Tokens optimized specifically for high conversion on social media (TikTok/Insta) with Nano Banana 2
+  const user_tokens = text.split(',').map(s => s.trim()).filter(s => s !== '' && !s.includes('<<<'));
+  const golden_tokens = [...user_tokens];
+
+  // Auto-inject high aesthetic banana v2 fidelity keywords
+  if (lowerText.includes('tiktok') || lowerText.includes('viral') || lowerText.includes('9:16') || lowerText.includes('reels')) {
+    golden_tokens.push('hyper-detailed', 'vibrant detailed color grading', 'scroll-stopping visual contrast', 'perfect studio illumination');
+  } else if (lowerText.includes('insta') || lowerText.includes('feed') || lowerText.includes('aesthetic') || lowerText.includes('square')) {
+    golden_tokens.push('grainy analog film look', 'aesthetic soft color grading', 'curated editorial lifestyle', 'subtle cinematic shadows');
+  } else {
+    golden_tokens.push('nano banana 2 high fidelity', 'micro-textures rendered', 'cinematic atmosphere');
+  }
 
   return {
     medium,
     rendering_engine,
     color_grading,
-    golden_tokens: golden_tokens.length > 0 ? golden_tokens : ['high-resolution', 'professional-grade', 'intricate textures']
+    golden_tokens: golden_tokens.length > 0 ? golden_tokens : ['high-resolution', 'professional-grade', 'intricate textures', 'nano banana v2 optimization']
   };
 };
 

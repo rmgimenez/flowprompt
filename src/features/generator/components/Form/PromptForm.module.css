@@ -450,3 +450,109 @@
   color: #fff !important;
   box-shadow: 0 2px 8px rgba(0, 229, 255, 0.3) !important;
 }
+
+/* Presets Container & Buttons Styles (Glassmorphism & Micro-animations) */
+.presetsContainer {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 14px;
+  padding: 0.75rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.03);
+}
+
+.presetsLabel {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.45);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.presetsGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.presetBtn {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.7);
+  padding: 0.4rem 0.8rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.78rem;
+  font-weight: 600;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.presetBtn:hover {
+  background: linear-gradient(135deg, rgba(61, 90, 254, 0.15), rgba(0, 229, 255, 0.15));
+  border-color: rgba(0, 229, 255, 0.4);
+  color: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 229, 255, 0.15);
+}
+
+.presetEmoji {
+  font-size: 0.9rem;
+}
+
+.presetName {
+  white-space: nowrap;
+}
+
+/* Tabs UI Sleek Glassmorphism & Transitions */
+.tabsContainer {
+  display: flex;
+  gap: 0.25rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 0.3rem;
+  margin-bottom: 0.5rem;
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.02);
+}
+
+.tabBtn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.45);
+  padding: 0.6rem 0.5rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.8rem;
+  font-weight: 700;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.tabBtn:hover {
+  color: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.activeTab {
+  background: linear-gradient(135deg, rgba(61, 90, 254, 0.15), rgba(61, 90, 254, 0.25));
+  border: 1px solid rgba(61, 90, 254, 0.3) !important;
+  color: #8c9eff !important;
+  box-shadow: 0 4px 15px rgba(61, 90, 254, 0.15);
+}
+
+.tabIcon {
+  opacity: 0.8;
+}
