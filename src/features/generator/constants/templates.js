@@ -214,16 +214,11 @@ export const TEMPLATES = {
       emoji: '💪',
       desc: 'Imagem inspiradora sem texto — apenas o visual motivacional.',
       fields: {
-        subject:
-          'random motivational scene: person reaching mountain summit at golden hour OR lone tree on a hill at sunrise OR waves crashing against cliffs at dawn OR athlete silhouetted against sun',
-        action:
-          'contemplating the vast horizon with a sense of achievement and inner peace, breathing deeply',
-        context:
-          'dramatic natural landscape at golden hour, warm sunlight piercing through clouds, breathtaking scenic view',
-        composition:
-          'cinematic wide shot, rule of thirds, leading lines towards the horizon, natural framing',
-        style:
-          'ultra-realistic inspirational photography, warm golden tones, cinematic color grading, soft atmospheric haze, high detail, no text or typography whatsoever, no letters or words, pure visual storytelling, 8k, sharp focus',
+        subject: 'alpinista solitário no topo de uma montanha nevada sob o nascer do sol',
+        action: 'contemplando o horizonte com sentimento de conquista',
+        context: 'paisagem natural dramática na hora de ouro, luz solar entre nuvens',
+        composition: 'plano aberto cinematográfico, regra dos terços, luz de silhueta',
+        style: 'ultra-realistic photography, warm golden tones, cinematic color grading, 8k, sharp focus'
       },
     },
     {
@@ -231,15 +226,11 @@ export const TEMPLATES = {
       emoji: '📖',
       desc: 'Imagem com frase motivacional aleatória de um livro, nome do livro e autor.',
       fields: {
-        subject:
-          'random person in a contemplative pose reading or reflecting, OR a cozy library vignette with warm lighting, OR an open book on a natural landscape',
-        action: 'sitting calmly while absorbing wisdom, soft natural movement',
-        context:
-          'warm inviting atmosphere, cozy reading nook with soft lamp light OR peaceful natural setting at golden hour OR vintage library with wooden shelves',
-        composition:
-          'intimate close-up to medium shot, shallow depth of field, emphasis on both the scenery and the overlaid quote text',
-        style:
-          'Generate a different random motivational quote each time. The image MUST include: (1) a famous inspirational quote from a real book, displayed in elegant typography over the image, (2) the book title below the quote in smaller text, (3) the author name at the bottom. Randomly select a different quote, book, and author from classic literature every generation. Do not repeat quotes. Examples of books to draw from: "O Pequeno Príncipe" (Saint-Exupéry), "Dom Quixote" (Cervantes), "Grandes Esperanças" (Dickens), "O Alquimista" (Coelho), "A República" (Platão), "Meditações" (Marco Aurélio), "O Poder do Hábito", "1984" (Orwell), "A Arte da Guerra" (Sun Tzu), "O Mundo de Sofia", "Sapiens" (Harari). Quote must be in Portuguese (Brazilian). Elegant serif typography, warm vintage tones, premium book cover aesthetic, soft lighting, high detail, 8k',
+        subject: 'garoto solitário com cabelo dourado olhando para uma única rosa brilhante',
+        action: 'contemplando a rosa sob uma cúpula de vidro',
+        context: 'pequeno asteroide flutuando no espaço sideral estrelado, luz azul suave',
+        composition: 'plano aberto, composição simétrica, profundidade de campo rasa',
+        style: 'Ghibli-inspired warm illustration style, elegant golden serif typography overlay displaying quote by Antoine de Saint-Exupéry, 8k'
       },
     },
   ],
@@ -463,3 +454,146 @@ export const TEMPLATES = {
     },
   ],
 };
+
+export const MOTIVATIONAL_SCENES = [
+  {
+    subject: 'a solitary mountaineer standing at the very peak of a colossal snow-covered mountain',
+    action: 'raising their arms in victory under a massive sky, planting a flag',
+    context: 'stunning sunrise with golden and crimson hues, sea of clouds below, breathtaking scale',
+    composition: 'cinematic wide establishing shot, low-angle looking up, extreme sense of scale',
+    style: 'ultra-realistic epic landscape photography, warm golden hour sun rays, sharp focus, 8k'
+  },
+  {
+    subject: 'a magnificent, ancient oak tree with sprawling green leaves',
+    action: 'standing strong and proud on top of a misty green hill as dawn breaks',
+    context: 'ethereal morning mist rolling over green valleys, soft pastel orange and purple sunrise',
+    composition: 'symmetrical composition, wide shot, rule of thirds, mist creating depth',
+    style: 'fine art nature photography, soft moody lighting, pastel color grading, sharp details, 8k'
+  },
+  {
+    subject: 'colossal rugged cliffs standing tall against the ocean',
+    action: 'powerful emerald waves crashing violently against the rock formations, spraying white water',
+    context: 'dramatic sunrise piercing through stormy clouds, golden light reflecting on the turbulent sea',
+    composition: 'dynamic leading lines, low-angle dramatic shot, shutter speed capturing frozen water droplets',
+    style: 'National Geographic landscape photography, high contrast, dramatic natural lighting, 8k'
+  },
+  {
+    subject: 'a majestic single palm tree reflecting in a crystal-clear oasis pool',
+    action: 'standing resiliently amidst the sweeping sand dunes under a giant starry sky',
+    context: 'vast desert under a swirling glowing Milky Way galaxy, celestial night sky, soft ambient starlight',
+    composition: 'wide shot, beautiful reflection in the water, rule of thirds, deep depth of field',
+    style: 'astrophotography, hyper-detailed starry sky, cool blue and purple tones, crystal sharp focus, 8k'
+  },
+  {
+    subject: 'a beautiful forest path lined with towering ancient redwood trees',
+    action: 'leading into the misty unknown, path covered in soft autumn leaves',
+    context: 'volumetric sunbeams piercing through the dense morning fog and tree canopy, mystical forest',
+    composition: 'one-point perspective, eye-level tracking shot feel, deep leading lines',
+    style: 'cinematic landscape photography, magical forest atmosphere, soft god rays, rich earthy colors, 8k'
+  },
+  {
+    subject: 'silhouette of a determined female athlete running along a scenic coastal ridge',
+    action: 'running with perfect form, sweat glistening in the sunlight',
+    context: 'breathtaking ocean background at sunset, bright golden light outlining her silhouette, high energy',
+    composition: 'side-profile medium shot, rule of thirds, high speed action shot with slight motion blur on background',
+    style: 'inspirational sports photography, high contrast golden lighting, dynamic energy, sharp focus, 8k'
+  },
+  {
+    subject: 'a majestic golden eagle with fully spread wings',
+    action: 'gliding effortlessly high above a deep canyon carved by a winding river',
+    context: 'warm golden sunlight illuminating its feathers, vast mountain range stretching into the horizon',
+    composition: 'telephoto lens shot, rule of thirds, capturing the eagle from a slightly high angle looking down',
+    style: 'wildlife action photography, sharp feather textures, warm sunlight, shallow depth of field, 8k'
+  },
+  {
+    subject: 'a small wooden rowboat floating peacefully',
+    action: 'resting on glass-like water that perfectly mirrors the colossal mountains around it',
+    context: 'serene alpine lake at dawn, soft pink and light blue sky, absolute silence and peace',
+    composition: 'minimalist symmetrical shot, central framing, perfect reflection',
+    style: 'minimalist landscape photography, serene pastel tones, soft light, high detail, 8k'
+  }
+];
+
+export const BOOK_QUOTES = [
+  {
+    quote: "O essencial é invisível aos olhos.",
+    book: "O Pequeno Príncipe",
+    author: "Antoine de Saint-Exupéry",
+    subject: "a small elegant silhouette of a boy looking up at a giant glowing single rose under a glass dome",
+    action: "contemplating the rose with infinite care and wonder",
+    context: "a small grassy asteroid floating in a starry cosmic space, soft blue starlight",
+    composition: "dreamy wide shot, symmetrical framing, soft bokeh",
+    style: "Ghibli-inspired warm illustration style, soft digital painting, glowing particle effects, elegant golden serif typography overlay displaying the text \"O essencial é invisível aos olhos.\" by Antoine de Saint-Exupéry, 8k"
+  },
+  {
+    quote: "Mudar o mundo, meu amigo, não é loucura, nem utopia, mas sim justiça.",
+    book: "Dom Quixote",
+    author: "Miguel de Cervantes",
+    subject: "a lone silhouette of a knight on horseback looking at a row of giant wind turbines on a hill",
+    action: "raising a lance towards the sunset sky in a heroic stance",
+    context: "dramatic sunset with bright orange and red clouds, high wind blowing through the grass",
+    composition: "epic wide shot, silhouette against the sun, rule of thirds",
+    style: "cinematic photographic style, high contrast, warm sunset lighting, elegant golden serif typography overlay displaying the text \"Mudar o mundo, meu amigo, não é loucura, nem utopia, mas sim justiça.\" by Miguel de Cervantes, 8k"
+  },
+  {
+    quote: "Quando você quer alguma coisa, todo o Universo conspira para que você realize seu desejo.",
+    book: "O Alquimista",
+    author: "Paulo Coelho",
+    subject: "a traveler with a backpack standing under a breathtaking swirling Milky Way",
+    action: "looking up at the cosmos in awe, holding a small glowing compass",
+    context: "vast desert dunes at night, thousands of stars reflecting gold and blue light",
+    composition: "extreme wide shot, small traveler emphasizing the vastness of the universe",
+    style: "astrophotography art, deep blue and purple hues, magical realism, elegant golden serif typography overlay displaying the text \"Quando você quer alguma coisa, todo o Universo conspira para que você realize seu desejo.\" by Paulo Coelho, 8k"
+  },
+  {
+    quote: "A felicidade de sua vida depende da qualidade de seus pensamentos.",
+    book: "Meditações",
+    author: "Marco Aurélio",
+    subject: "a classic marble bust of a philosopher placed on a dark wooden study desk",
+    action: "resting peacefully next to a burning candle and a quill",
+    context: "cozy warm library at night, soft candle light casting long shadows, rows of old leather-bound books in soft focus",
+    composition: "close-up macro shot, shallow depth of field, dramatic chiaroscuro candle lighting",
+    style: "dark academia photography style, vintage warm tones, cozy light, elegant golden serif typography overlay displaying the text \"A felicidade de sua vida depende da qualidade de seus pensamentos.\" by Marco Aurélio, 8k"
+  },
+  {
+    quote: "A suprema arte da guerra é derrotar o inimigo sem lutar.",
+    book: "A Arte da Guerra",
+    author: "Sun Tzu",
+    subject: "a serene stone temple gate surrounded by cherry blossom trees",
+    action: "cherry blossom petals falling slowly and drifting in the wind",
+    context: "misty mountains in the background at dawn, soft pink and grey tones",
+    composition: "wide shot, symmetrical framing, foggy atmosphere",
+    style: "traditional ink wash painting aesthetic mixed with photography, peaceful mood, elegant golden serif typography overlay displaying the text \"A suprema arte da guerra é derrotar o inimigo sem lutar.\" by Sun Tzu, 8k"
+  },
+  {
+    quote: "Tu te tornas eternamente responsável por aquilo que cativas.",
+    book: "O Pequeno Príncipe",
+    author: "Antoine de Saint-Exupéry",
+    subject: "a cute little red fox sitting peacefully next to a young boy with golden hair",
+    action: "both sitting on a hill, looking at a beautiful sunrise together",
+    context: "soft green hills at dawn, morning mist, warm gentle sun rays",
+    composition: "medium shot, rule of thirds, warm side-lighting",
+    style: "warm emotional cinematic photography, soft focus, pastel tones, elegant golden serif typography overlay displaying the text \"Tu te tornas eternamente responsável por aquilo que cativas.\" by Antoine de Saint-Exupéry, 8k"
+  },
+  {
+    quote: "A única forma de chegar ao impossível é acreditar que é possível.",
+    book: "Alice no País das Maravilhas",
+    author: "Lewis Carroll",
+    subject: "a mystical wooden door standing alone in the middle of a glowing green forest",
+    action: "slightly open, emitting a beam of bright golden magical light",
+    context: "enchanted forest at twilight, bioluminescent mushrooms, magical fireflies",
+    composition: "central framing, medium shot, high contrast lighting",
+    style: "fantasy digital art, magical glowing atmosphere, rich colors, elegant golden serif typography overlay displaying the text \"A única forma de chegar ao impossível é acreditar que é possível.\" by Lewis Carroll, 8k"
+  },
+  {
+    quote: "O correr da vida embrulha tudo. A vida é assim: esquenta e esfria, aperta e daí afrouxa...",
+    book: "Grande Sertão: Veredas",
+    author: "João Guimarães Rosa",
+    subject: "a rustic wooden fence path leading through the vast Brazilian sertão",
+    action: "winding through dry golden vegetation under a blazing sun",
+    context: "vast blue sky with light wispy clouds, a single beautiful mandacaru cactus in the foreground",
+    composition: "wide leading lines shot, rule of thirds, high detail",
+    style: "fine art landscape photography, dry high-contrast light, vivid warm colors, elegant golden serif typography overlay displaying the text \"O correr da vida embrulha tudo. A vida é assim: esquenta e esfria, aperta e daí afrouxa...\" by João Guimarães Rosa, 8k"
+  }
+];
+

@@ -1,5 +1,6 @@
 import { useState, useMemo, useEffect, useCallback } from 'react';
 import { MODES } from '../constants/modes';
+import { MOTIVATIONAL_SCENES, BOOK_QUOTES } from '../constants/templates';
 
 const HISTORY_LIMIT = 20;
 
@@ -140,13 +141,32 @@ export const useGenerator = (initialMode = 'video-new') => {
 
   const applyPreset = useCallback((preset) => {
     if (!preset || !preset.fields) return;
+    
+    let fieldsToApply = { ...preset.fields };
+
+    // Intercept motivational templates to dynamically randomize values
+    if (preset.name === 'Motivacional (Apenas Imagem)') {
+      const randomIndex = Math.floor(Math.random() * MOTIVATIONAL_SCENES.length);
+      fieldsToApply = MOTIVATIONAL_SCENES[randomIndex];
+    } else if (preset.name === 'Citação de Livro Motivacional') {
+      const randomIndex = Math.floor(Math.random() * BOOK_QUOTES.length);
+      const chosenQuote = BOOK_QUOTES[randomIndex];
+      fieldsToApply = {
+        subject: chosenQuote.subject,
+        action: chosenQuote.action,
+        context: chosenQuote.context,
+        composition: chosenQuote.composition,
+        style: chosenQuote.style
+      };
+    }
+
     const newValues = {};
     if (currentMode.fields) {
       currentMode.fields.forEach(field => {
         newValues[field.id] = field.type === 'characters-table' ? [] : '';
       });
     }
-    Object.entries(preset.fields).forEach(([key, val]) => {
+    Object.entries(fieldsToApply).forEach(([key, val]) => {
       newValues[key] = val;
     });
     setFormValues(newValues);
