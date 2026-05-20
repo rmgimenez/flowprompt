@@ -3,6 +3,7 @@ import styles from './PromptForm.module.css';
 import { Wand2, Eraser, MessageSquare, Volume2, VolumeX, Sparkles, Check, History, Settings, Camera, User, HelpCircle, Activity } from 'lucide-react';
 import { clsx } from 'clsx';
 import TemplateSelector from './TemplateSelector';
+import SearchableSelect from '../../../../components/ui/SearchableSelect';
 
 const VIRAL_PROMPTS = {
   'video-from-frames': {
@@ -513,18 +514,20 @@ const PromptForm = ({ currentModeId, fields, values, onUpdate, onAddSuggestion, 
                         />
                       </td>
                       <td>
-                        <select
-                          className={styles.charSelect}
+                        <SearchableSelect
+                          options={[
+                            { label: 'Natural Composto', value: 'composed_natural' },
+                            { label: 'TikTok (Muito Expressivo)', value: 'high_energy_expressive' }
+                          ]}
                           value={char.motion || 'composed_natural'}
-                          onChange={(e) => {
+                          onChange={(val) => {
                             const newChars = [...values[field.id]];
-                            newChars[index] = { ...newChars[index], motion: e.target.value };
+                            newChars[index] = { ...newChars[index], motion: val };
                             onUpdate(field.id, newChars);
                           }}
-                        >
-                          <option value="composed_natural">Natural Composto</option>
-                          <option value="high_energy_expressive">TikTok (Muito Expressivo)</option>
-                        </select>
+                          placeholder="Movimento"
+                          className={styles.charSelect}
+                        />
                       </td>
                       <td>
                         <input

@@ -12,6 +12,7 @@ import { TrendsRadar } from './TrendsRadar';
 import { HookOptimizer } from './HookOptimizer';
 import { ViralScore } from './ViralScore';
 import { AnalyticsTracker } from './AnalyticsTracker';
+import SearchableSelect from '../../../../components/ui/SearchableSelect';
 import {
   STYLE_PRESETS,
   VIBE_PRESETS,
@@ -21,8 +22,7 @@ import {
   THEME_SUBJECTS,
   THEME_ACTIONS,
   THEME_TWISTS,
-  TIKTOK_FIELDS,
-  groupByCategory
+  TIKTOK_FIELDS
 } from './constants';
 import { generateTikTokPrompt } from './utils';
 
@@ -220,42 +220,24 @@ export const TikTokCollections = () => {
           <div className={styles.selectorsGrid}>
             <div className={styles.controlGroup}>
               <label htmlFor="styleSelect">Estilo Principal (Fórmula Nano)</label>
-              <select 
-                id="styleSelect"
-                className={styles.selectField}
+              <SearchableSelect
+                options={STYLE_PRESETS.map(p => ({ label: p.label, value: p.id, category: p.category, emoji: p.emoji, desc: p.desc }))}
                 value={selectedStyle}
-                onChange={(e) => setSelectedStyle(e.target.value)}
-              >
-                {Object.entries(groupByCategory(STYLE_PRESETS)).map(([category, items]) => (
-                  <optgroup key={category} label={category} className={styles.optGroup}>
-                    {items.map(preset => (
-                      <option key={preset.id} value={preset.id} title={preset.desc}>
-                        {preset.emoji ? `${preset.emoji} ` : ''}{preset.label}
-                      </option>
-                    ))}
-                  </optgroup>
-                ))}
-              </select>
+                onChange={setSelectedStyle}
+                placeholder="Selecione um estilo..."
+                className={styles.selectField}
+              />
             </div>
 
             <div className={styles.controlGroup}>
               <label htmlFor="colorSelect">Paleta de Cores (Diretriz Visual)</label>
-              <select 
-                id="colorSelect"
-                className={styles.selectField}
+              <SearchableSelect
+                options={COLOR_PRESETS.map(p => ({ label: p.label, value: p.id, category: p.category, desc: p.value }))}
                 value={selectedColors}
-                onChange={(e) => setSelectedColors(e.target.value)}
-              >
-                {Object.entries(groupByCategory(COLOR_PRESETS)).map(([category, items]) => (
-                  <optgroup key={category} label={category} className={styles.optGroup}>
-                    {items.map(preset => (
-                      <option key={preset.id} value={preset.id} title={preset.value}>
-                        {preset.label}
-                      </option>
-                    ))}
-                  </optgroup>
-                ))}
-              </select>
+                onChange={setSelectedColors}
+                placeholder="Selecione uma paleta..."
+                className={styles.selectField}
+              />
             </div>
           </div>
 
@@ -263,42 +245,24 @@ export const TikTokCollections = () => {
           <div className={styles.selectorsGrid}>
             <div className={styles.controlGroup}>
               <label htmlFor="vibeSelect">Tom / Vibe do Post</label>
-              <select 
-                id="vibeSelect"
-                className={styles.selectField}
+              <SearchableSelect
+                options={VIBE_PRESETS.map(p => ({ label: p.label, value: p.id, category: p.category, desc: p.desc }))}
                 value={selectedVibe}
-                onChange={(e) => setSelectedVibe(e.target.value)}
-              >
-                {Object.entries(groupByCategory(VIBE_PRESETS)).map(([category, items]) => (
-                  <optgroup key={category} label={category} className={styles.optGroup}>
-                    {items.map(preset => (
-                      <option key={preset.id} value={preset.id} title={preset.desc}>
-                        {preset.label}
-                      </option>
-                    ))}
-                  </optgroup>
-                ))}
-              </select>
+                onChange={setSelectedVibe}
+                placeholder="Selecione um tom..."
+                className={styles.selectField}
+              />
             </div>
 
             <div className={styles.controlGroup}>
               <label htmlFor="targetSelect">Público-Alvo (Cópia/Roteiro)</label>
-              <select 
-                id="targetSelect"
-                className={styles.selectField}
+              <SearchableSelect
+                options={TARGET_PRESETS.map(p => ({ label: p.label, value: p.id, category: p.category, emoji: p.emoji, desc: p.desc }))}
                 value={selectedTarget}
-                onChange={(e) => setSelectedTarget(e.target.value)}
-              >
-                {Object.entries(groupByCategory(TARGET_PRESETS)).map(([category, items]) => (
-                  <optgroup key={category} label={category} className={styles.optGroup}>
-                    {items.map(preset => (
-                      <option key={preset.id} value={preset.id} title={preset.desc}>
-                        {preset.emoji ? `${preset.emoji} ` : ''}{preset.label}
-                      </option>
-                    ))}
-                  </optgroup>
-                ))}
-              </select>
+                onChange={setSelectedTarget}
+                placeholder="Selecione um público..."
+                className={styles.selectField}
+              />
             </div>
           </div>
 
