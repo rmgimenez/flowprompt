@@ -127,7 +127,7 @@ const Sidebar = ({
   onClose
 }) => {
   const [activeTab, setActiveTab] = useState('modes');
-  const [collapsedCategories, setCollapsedCategories] = useState({});
+  const [collapsedCategories, setCollapsedCategories] = useState({ video: true, photo: true });
 
   const toggleCategory = (categoryId) => {
     setCollapsedCategories(prev => ({
