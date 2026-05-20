@@ -174,8 +174,10 @@ export const TikTokCollections = () => {
                   title={`Clique para aplicar as configurações recomendadas para ${preset.label}`}
                 >
                   <span className={styles.presetCardEmoji}>{preset.emoji}</span>
-                  <span className={styles.presetCardLabel}>{preset.label}</span>
-                  <span className={styles.presetCardDesc}>{preset.desc}</span>
+                  <div className={styles.presetCardContent}>
+                    <span className={styles.presetCardLabel}>{preset.label}</span>
+                    <span className={styles.presetCardDesc}>{preset.desc}</span>
+                  </div>
                 </button>
               ))}
             </div>
@@ -375,6 +377,9 @@ export const TikTokCollections = () => {
               Idéia Aleatória
             </button>
           </div>
+
+          {/* Guia Prático & Dicas de Alta Conversão */}
+          <TikTokGuide />
         </GlassCard>
       </div>
 
@@ -427,9 +432,6 @@ export const TikTokCollections = () => {
           </div>
         </GlassCard>
       </div>
-
-      {/* Guia Prático & Dicas de Alta Conversão */}
-      <TikTokGuide />
 
       {/* AI Modal & FAB button for TikTok Collections screen */}
       <AIModal
