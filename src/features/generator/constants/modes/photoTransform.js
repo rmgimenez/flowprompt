@@ -1,6 +1,7 @@
 import { 
   parseImageStyle, 
-  parseAmbiance 
+  parseAmbiance,
+  sanitizeValues
 } from '../../utils/parsers';
 
 export const photoTransform = {
@@ -9,17 +10,18 @@ export const photoTransform = {
   desc: 'Aplique novos estilos ou modifique cenas.',
   helpText: 'Mude o estilo ou o cenário de uma foto existente de forma criativa. Mantenha a essência do sujeito principal enquanto descreve as mudanças radicais de ambiente ou estética.',
   formula: (vals) => {
-    const styleInfo = parseImageStyle(vals.relationship);
-    const envAmbiance = parseAmbiance(vals.new_scenario, vals.relationship);
+    const cleanVals = sanitizeValues(vals);
+    const styleInfo = parseImageStyle(cleanVals.relationship);
+    const envAmbiance = parseAmbiance(cleanVals.new_scenario, cleanVals.relationship);
 
     const jsonPrompt = {
       transformation: {
         reference_mode: "structural_composition_fidelity",
-        relationship_to_source: vals.relationship || "reimagine aesthetic and atmosphere",
-        target_scenario: vals.new_scenario || "same scenery with new style"
+        relationship_to_source: cleanVals.relationship || "reimagine aesthetic and atmosphere",
+        target_scenario: cleanVals.new_scenario || "same scenery with new style"
       },
       environment: {
-        context: vals.new_scenario || "reimagined context",
+        context: cleanVals.new_scenario || "reimagined context",
         ...envAmbiance
       },
       style_and_quality: styleInfo,

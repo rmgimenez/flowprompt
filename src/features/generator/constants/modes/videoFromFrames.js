@@ -3,6 +3,7 @@ import {
   parseDialogue, 
   parseCharacters, 
   enrichCharacters, 
+  sanitizeValues,
   VIDEO_NEGATIVE_PROMPTS 
 } from '../../utils/parsers';
 
@@ -12,14 +13,15 @@ export const videoFromFrames = {
   desc: 'Transforme dois frames em um vídeo de alta retenção com física e dublagem.',
   helpText: 'Foque nos primeiros 2 segundos (O Gancho) e na trajetória dos objetos para evitar glitches e maximizar o engajamento.',
   formula: (vals) => {
-    const camera = parseCamera(vals.camera_motion);
-    const dialogue = parseDialogue(vals.dialogue);
-    const characters = enrichCharacters(parseCharacters(vals.characters_definition), dialogue);
+    const cleanVals = sanitizeValues(vals);
+    const camera = parseCamera(cleanVals.camera_motion);
+    const dialogue = parseDialogue(cleanVals.dialogue);
+    const characters = enrichCharacters(parseCharacters(cleanVals.characters_definition), dialogue);
 
-    const aspectRatio = vals.aspect_ratio || "9:16 (Vertical)";
-    const durationText = vals.video_duration || "6 segundos";
+    const aspectRatio = cleanVals.aspect_ratio || "9:16 (Vertical)";
+    const durationText = cleanVals.video_duration || "6 segundos";
     const durationNum = parseInt(durationText) || 6;
-    const timelineMode = vals.timeline_mode || "Multi-shot Dinâmico";
+    const timelineMode = cleanVals.timeline_mode || "Multi-shot Dinâmico";
 
     // Character manifest formatting
     let charManifest = "";
@@ -37,6 +39,11 @@ export const videoFromFrames = {
     const voiceDirection = dialogue.length > 0
       ? `\n- **Voice & Dubbing Specs:** All character speech must be in natural Brazilian Portuguese (pt-BR) with flawless lip-sync. Voice acting should be highly expressive, charismatic, and energetic, matching comedic influencer delivery. Use realistic breaths and modern pacing.`
       : "";
+
+    const hasAudio = cleanVals.sound_effects !== 'no audio';
+    const sfxValText = (cleanVals.sound_effects && cleanVals.sound_effects !== 'no audio')
+      ? cleanVals.sound_effects
+      : "Atmospheric ambient sounds matching the action";
 
     let timelineScript = "";
 
@@ -61,11 +68,19 @@ export const videoFromFrames = {
             ? " Conclude the animation by seamlessly blending into the exact visual pose and state of the second guided frame."
             : "";
 
+          const sfxBlock = hasAudio
+            ? `* **Foreground Layer (Dialogue & SFX):** Flawless, expressive pt-BR speech by '${line.character}' with '${line.emotion_tone}' tone. SFX: Action-synced sound effects matching: ${sfxValText}.
+  * **Midground Layer (Music):** Supporting non-intrusive musical score or background pads, zero intrusive beats, avoiding speech masking (e.g., minimal reflective piano underscore).
+  * **Background Layer (Ambience):** Background environmental bed matching the scene atmosphere.
+  * **Mixing & Ducking:** Complete separation of dialogue, music, and SFX. Music and Ambience are ducked to -12dB during speech to prevent masking. No animal onomatopoeias in speech.`
+            : `* Disabled - No audio generation requested. Completely silent video track.`;
+
           return `[${start} - ${end}]
 - **Camera Cut:** ${idx === 0 ? "Initial framing from first image, then transition to: " : ""}${selectedCut} focusing on '${line.character}'.
 - **Action/Expression:** ${startBridge}'${line.character}' displays a '${line.emotion_tone}' expression while ${actionText}.${endBridge}
 - **Dialogue Speech:** '${line.character}' says in a direct quote: "${line.speech}"
-- **Sound Effects (SFX) & Ambiance:** ${vals.sound_effects && vals.sound_effects !== 'no audio' ? vals.sound_effects : "SFX: Atmospheric ambient sounds matching the action"}. ${idx === 0 ? "Perfect audio ducking for speaking voice." : ""}`;
+- **Soundscape & Audio Hierarchy (Veo 3.1 Design):**
+  ${sfxBlock}`;
         }).join('\n\n');
       } else {
         // Single continuous shot mode
@@ -75,19 +90,35 @@ export const videoFromFrames = {
           return `  * At [${timestamp}], '${line.character}' (feeling ${line.emotion_tone}) says in a direct quote: "${line.speech}"`;
         }).join('\n');
 
+        const sfxBlock = hasAudio
+          ? `* **Foreground Layer (Dialogue & SFX):** Clear, staggered speech in pt-BR with expressive voice acting matching character emotions. SFX: Continuous action-synced sound effects (e.g. footsteps, object handling) matching: ${sfxValText}.
+  * **Midground Layer (Music):** Soft supporting atmospheric musical texture, zero heavy beats, no vocal masks.
+  * **Background Layer (Ambience):** Steady environmental background noise bed.
+  * **Mixing & Ducking:** All background layers (Music & Ambience) are ducked to -12dB when characters speak. No crosstalk.`
+          : `* Disabled - No audio generation requested. Completely silent video track.`;
+
         timelineScript = `[00:00 - ${totalDurationFormatted}]
-- **Camera Motion:** Continuous shot starting from the first frame's camera perspective, slowly interpolating to the second frame's perspective, using: ${vals.camera_motion || "gentle panning"}.
-- **Action/Expression:** Begin exactly from the first frame's pose, performing: ${vals.initial_hook || "natural fluid movement"}. Interpolate and smoothly guide all motion trajectories to align perfectly with the second frame's end state.
+- **Camera Motion:** Continuous shot starting from the first frame's camera perspective, slowly interpolating to the second frame's perspective, using: ${cleanVals.camera_motion || "gentle panning"}.
+- **Action/Expression:** Begin exactly from the first frame's pose, performing: ${cleanVals.initial_hook || "natural fluid movement"}. Interpolate and smoothly guide all motion trajectories to align perfectly with the second frame's end state.
 - **Production Script (Dialogue Sequence):**
 ${dialogueLinesText}
-- **Sound Effects (SFX) & Ambiance:** ${vals.sound_effects && vals.sound_effects !== 'no audio' ? vals.sound_effects : "SFX: Balanced background environmental soundscape with clear speech"}.`;
+- **Soundscape & Audio Hierarchy (Veo 3.1 Design):**
+  ${sfxBlock}`;
       }
     } else {
       const totalDurationFormatted = `00:0${durationNum}:0`;
+      const sfxBlock = hasAudio
+        ? `* **Foreground Layer (SFX):** High-fidelity action-synced sound effects (SFX) matching: ${sfxValText}. High kinetic audio precision.
+  * **Midground Layer (Music):** Thematic cinematic musical bed matching the scene mood.
+  * **Background Layer (Ambience):** Immersive environmental ambiance.
+  * **Mixing & Ducking:** Balanced cinematic audio mix with strong foreground sound effects and supportive background atmosphere.`
+        : `* Disabled - No audio generation requested. Completely silent video track.`;
+
       timelineScript = `[00:00 - ${totalDurationFormatted}]
-- **Camera Motion:** Continuous shot starting from the first frame's camera perspective, slowly interpolating to the second frame's perspective, using: ${vals.camera_motion || "gentle panning"}.
-- **Action & Movement:** Smoothly animate starting exactly from the first image pose, performing: ${vals.initial_hook || "natural fluid movement"}. Smoothly guide the motion of the subjects and objects to end precisely in the second image pose.
-- **Sound Effects (SFX) & Ambiance:** ${vals.sound_effects && vals.sound_effects !== 'no audio' ? vals.sound_effects : "SFX: High-fidelity ambient sounds"}.`;
+- **Camera Motion:** Continuous shot starting from the first frame's camera perspective, slowly interpolating to the second frame's perspective, using: ${cleanVals.camera_motion || "gentle panning"}.
+- **Action & Movement:** Smoothly animate starting exactly from the first image pose, performing: ${cleanVals.initial_hook || "natural fluid movement"}. Smoothly guide the motion of the subjects and objects to end precisely in the second image pose.
+- **Soundscape & Audio Hierarchy (Veo 3.1 Design):**
+  ${sfxBlock}`;
     }
 
     const negativeText = [

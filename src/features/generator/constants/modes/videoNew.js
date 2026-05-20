@@ -4,6 +4,7 @@ import {
   parseCharacters, 
   enrichCharacters, 
   parseAmbiance, 
+  sanitizeValues,
   VIDEO_NEGATIVE_PROMPTS 
 } from '../../utils/parsers';
 
@@ -13,26 +14,32 @@ export const videoNew = {
   desc: 'Gere vídeos cinematográficos a partir de descrições textuais.',
   helpText: 'Para obter os melhores resultados, seja específico sobre o movimento da câmera e a iluminação. Use termos como "cinematic", "slow motion" ou "handheld" para definir o ritmo e a emoção da cena.',
   formula: (vals) => {
-    const camera = parseCamera(vals.cinematography);
-    const dialogue = parseDialogue(vals.dialogue);
-    const characters = enrichCharacters(parseCharacters(vals.characters_definition), dialogue);
-    const envAmbiance = parseAmbiance(vals.context, vals.style_ambiance);
+    const cleanVals = sanitizeValues(vals);
+    const rawSubject = cleanVals.subject;
+    const rawAction = cleanVals.action;
+    const rawContext = cleanVals.context;
+    const rawSceneSummary = cleanVals.scene_summary;
 
-    const aspectRatio = vals.aspect_ratio || "9:16 (Vertical)";
-    const durationText = vals.video_duration || "6 segundos";
+    const camera = parseCamera(cleanVals.cinematography);
+    const dialogue = parseDialogue(cleanVals.dialogue);
+    const characters = enrichCharacters(parseCharacters(cleanVals.characters_definition), dialogue);
+    const envAmbiance = parseAmbiance(rawContext, cleanVals.style_ambiance);
+
+    const aspectRatio = cleanVals.aspect_ratio || "9:16 (Vertical)";
+    const durationText = cleanVals.video_duration || "6 segundos";
     const durationNum = parseInt(durationText) || 6;
-    const timelineMode = vals.timeline_mode || "Multi-shot Dinâmico";
+    const timelineMode = cleanVals.timeline_mode || "Multi-shot Dinâmico";
 
-    const styleAmbianceText = vals.style_ambiance && !vals.style_ambiance.includes('<<<')
-      ? vals.style_ambiance
+    const styleAmbianceText = cleanVals.style_ambiance && !cleanVals.style_ambiance.includes('<<<')
+      ? cleanVals.style_ambiance
       : "Cinematic, photorealistic, professional film look";
 
-    const cameraText = vals.cinematography && !vals.cinematography.includes('<<<')
-      ? vals.cinematography
+    const cameraText = cleanVals.cinematography && !cleanVals.cinematography.includes('<<<')
+      ? cleanVals.cinematography
       : "Cinematic camera movement";
 
-    const sceneSummaryText = vals.scene_summary && !vals.scene_summary.includes('<<<')
-      ? vals.scene_summary
+    const sceneSummaryText = rawSceneSummary && !rawSceneSummary.includes('<<<')
+      ? rawSceneSummary
       : "A compelling cinematic moment designed for TikTok engagement.";
 
     // Character manifest formatting
@@ -45,7 +52,7 @@ export const videoNew = {
         return bio;
       }).join('\n');
     } else {
-      charManifest = "- **Main Focus**: " + (vals.subject || "The main visual subject of the scene");
+      charManifest = "- **Main Focus**: " + (rawSubject || "The main visual subject of the scene");
     }
 
     const voiceDirection = dialogue.length > 0
@@ -71,7 +78,11 @@ export const videoNew = {
 - **Camera Cut:** ${selectedCut} focusing on '${line.character}'.
 - **Action/Expression:** '${line.character}' displays a '${line.emotion_tone}' expression while ${actionText}.
 - **Dialogue Speech:** '${line.character}' says in a direct quote: "${line.speech}"
-- **Sound Effects (SFX) & Ambiance:** SFX: Ambient hum and sounds fitting the action. ${idx === 0 ? "Perfect audio ducking for speaking voice." : ""}`;
+- **Soundscape & Audio Hierarchy (Veo 3.1 Design):**
+  * **Foreground Layer (Dialogue & SFX):** Clear, expressive pt-BR speech by '${line.character}' with '${line.emotion_tone}' tone. No overlap. SFX: Action-synced primary sound effect matching '${rawAction || 'the scene actions'}' (max 1 primary beat).
+  * **Midground Layer (Music):** Supporting non-intrusive musical score or background pads, zero intrusive beats, avoiding speech masking (e.g., minimal reflective piano underscore).
+  * **Background Layer (Ambience):** Background environmental bed matching '${rawContext || 'the scene atmosphere'}'.
+  * **Mixing & Ducking:** Complete separation of dialogue, music, and SFX. Music and Ambience are ducked to -12dB during speech to prevent masking. No animal onomatopoeias in speech.`;
         }).join('\n\n');
       } else {
         // Single continuous shot mode
@@ -83,18 +94,26 @@ export const videoNew = {
 
         timelineScript = `[00:00 - ${totalDurationFormatted}]
 - **Camera Cut:** Single continuous shot using ${cameraText}. Maintain framing and visual volume without any sudden camera cuts.
-- **Action/Expression:** ${vals.subject || "Subjects"} performing ${vals.action || "realistic continuous movement"} inside the scene.
+- **Action/Expression:** ${rawSubject || "Subjects"} performing ${rawAction || "realistic continuous movement"} inside the scene.
 - **Production Script (Dialogue Sequence):**
 ${dialogueLinesText}
-- **Sound Effects (SFX) & Ambiance:** SFX: Balanced background environmental soundscape with clear speech.`;
+- **Soundscape & Audio Hierarchy (Veo 3.1 Design):**
+  * **Foreground Layer (Dialogue & SFX):** Clear, staggered speech in pt-BR with expressive voice acting matching character emotions. SFX: Continuous action-synced sound effects (e.g. footsteps, object handling) matching the visuals.
+  * **Midground Layer (Music):** Soft supporting atmospheric musical texture, zero heavy beats, no vocal masks.
+  * **Background Layer (Ambience):** Steady environmental background noise bed matching '${rawContext || 'the scene atmosphere'}'.
+  * **Mixing & Ducking:** All background layers (Music & Ambience) are ducked to -12dB when characters speak. No crosstalk.`;
       }
     } else {
       const totalDurationFormatted = `00:0${durationNum}:0`;
       timelineScript = `[00:00 - ${totalDurationFormatted}]
 - **Camera Cut:** Continuous cinematic camera work. ${cameraText}.
-- **Action & Movement:** The subject (${vals.subject || "main focus"}) performs the following action: ${vals.action || "natural organic motion"}. Consistent physics, continuous flow, dynamic pacing.
-- **Environment Context:** ${vals.context || "cinematic scene environment"}.
-- **Sound Effects (SFX) & Ambiance:** SFX: Immersive high-fidelity sound effects fitting the visual action.`;
+- **Action & Movement:** The subject (${rawSubject || "main focus"}) performs the following action: ${rawAction || "natural organic motion"}. Consistent physics, continuous flow, dynamic pacing.
+- **Environment Context:** ${rawContext || "cinematic scene environment"}.
+- **Soundscape & Audio Hierarchy (Veo 3.1 Design):**
+  * **Foreground Layer (SFX):** High-fidelity action-synced sound effects (SFX) matching '${rawAction || 'the visual movement'}'. High kinetic audio precision.
+  * **Midground Layer (Music):** Thematic cinematic musical bed matching the scene mood.
+  * **Background Layer (Ambience):** Immersive environmental ambiance matching '${rawContext || 'the environment'}'.
+  * **Mixing & Ducking:** Balanced cinematic audio mix with strong foreground sound effects and supportive background atmosphere.`;
     }
 
     const negativeText = [

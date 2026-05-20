@@ -116,6 +116,108 @@ export const parseCamera = (text) => {
   };
 };
 
+// Trademarks (IP) and Physical Safety word filters to prevent Gemini policy violations
+export const sanitizeSafetyTerms = (text) => {
+  if (typeof text !== 'string') return text;
+  let clean = text;
+
+  // 1. Physical safety & weapons replacements (English & Portuguese)
+  const safetyReplacements = [
+    { regex: /\blaser\s*pointers?\b/gi, replacement: 'glowing red ball' },
+    { regex: /\blaser\s*dots?\b/gi, replacement: 'tiny glowing red light' },
+    { regex: /\blaser\s*beams?\b/gi, replacement: 'glowing light ray' },
+    { regex: /\blasers?\b/gi, replacement: 'glowing light' },
+    { regex: /\bponteiro[s]?\s*(de\s*)?laser\b/gi, replacement: 'ponto de luz brilhante' },
+    { regex: /\bcaneta[s]?\s*laser\b/gi, replacement: 'lanterna de luz colorida' },
+    { regex: /\bfeixe[s]?\s*(de\s*)?laser\b/gi, replacement: 'feixe de luz brilhante' },
+    { regex: /\bponto[s]?\s*(de\s*)?laser\b/gi, replacement: 'ponto luminoso colorido' },
+    
+    { regex: /\b(guns?|firearms?|pistols?|revolvers?|rifles?)\b/gi, replacement: 'toy bubble blaster' },
+    { regex: /\barma[s]?\s*(de\s*fogo)?\b/gi, replacement: 'varinha de faíscas' },
+    { regex: /\bpistola[s]?\b/gi, replacement: 'disparador de bolhas' },
+    { regex: /\brev[óo]lver[es]?\b/gi, replacement: 'dispositivo de efeitos' },
+    { regex: /\brifle[s]?\b/gi, replacement: 'lançador de brinquedo' },
+
+    { regex: /\b(knives|knife|daggers?)\b/gi, replacement: 'wooden spatula' },
+    { regex: /\bfaca[s]?\b/gi, replacement: 'espátula de madeira' },
+    { regex: /\bpunhal(es)?\b/gi, replacement: 'utensílio de madeira' },
+    { regex: /\bdaga[s]?\b/gi, replacement: 'varinha mágica' },
+
+    { regex: /\bswords?\b/gi, replacement: 'wooden training staff' },
+    { regex: /\bespada[s]?\b/gi, replacement: 'bastão de madeira' },
+
+    { regex: /\bblood\b/gi, replacement: 'cherry juice' },
+    { regex: /\bsangue\b/gi, replacement: 'suco de cereja vermelha' }
+  ];
+
+  safetyReplacements.forEach(({ regex, replacement }) => {
+    clean = clean.replace(regex, replacement);
+  });
+
+  // 2. Protected intellectual properties (IP): Disney, Nintendo, DreamWorks, etc.
+  const ipMap = {
+    'simba': 'Oliver (cute lion-like kitten)',
+    'mickey': 'Max (charismatic cartoon mouse)',
+    'pikachu': 'Pipo (cute yellow electric creature)',
+    'shrek': 'Grog (friendly green ogre)',
+    'frozen': 'snowy kingdom',
+    'elsa': 'snow queen',
+    'anna': 'brave princess',
+    'olaf': 'talking snowman',
+    'spiderman': 'spider hero',
+    'spider-man': 'spider hero',
+    'batman': 'dark knight hero',
+    'superman': 'steel hero',
+    'ironman': 'armored hero',
+    'iron man': 'armored hero',
+    'pokemon': 'pocket monsters',
+    'pok[eé]mon': 'pocket monsters',
+    'disney': 'classic 3D animation style',
+    'pixar': '3D studio animation style',
+    'harry potter': 'young wizard boy',
+    'voldemort': 'dark wizard',
+    'mario': 'red-hatted plumber',
+    'luigi': 'green-hatted plumber',
+    'yoda': 'wise green master',
+    'darth vader': 'dark armored warlord',
+    'star wars': 'galactic space saga',
+    'marvel': 'superhero comic world',
+    'minion': 'funny yellow capsule creature',
+    'minions': 'funny yellow capsule creatures',
+    'peppa pig': 'happy little pink cartoon piglet',
+    'pepa pig': 'happy little pink cartoon piglet',
+    'barbie': 'fashion doll girl',
+    'lego': 'interlocking toy bricks',
+    'minecraft': 'sandbox blocky voxel world',
+    'sonic': 'blue fast-running hedgehog'
+  };
+
+  Object.entries(ipMap).forEach(([protectedName, safeAlternative]) => {
+    const regex = new RegExp(`\\b${protectedName}\\b`, 'gi');
+    clean = clean.replace(regex, safeAlternative);
+  });
+
+  return clean;
+};
+
+// Deep recursive sanitizer to clean objects, arrays, and strings before compilation
+export const sanitizeValues = (vals) => {
+  if (typeof vals === 'string') {
+    return sanitizeSafetyTerms(vals);
+  }
+  if (Array.isArray(vals)) {
+    return vals.map(item => sanitizeValues(item));
+  }
+  if (typeof vals === 'object' && vals !== null) {
+    const cleanObj = {};
+    for (const [key, value] of Object.entries(vals)) {
+      cleanObj[key] = sanitizeValues(value);
+    }
+    return cleanObj;
+  }
+  return vals;
+};
+
 export const parseCharacters = (charVal) => {
   if (!charVal) return [];
   
@@ -133,9 +235,9 @@ export const parseCharacters = (charVal) => {
   
   if (Array.isArray(parsedVal)) {
     return parsedVal.map(char => ({
-      name: (char.name || '').trim(),
-      description: `${(char.appearance || '').trim()}${char.clothing ? `, wearing ${(char.clothing || '').trim()}` : ''}`,
-      voice_attributes: (char.voice || char.voice_attributes || '').trim(),
+      name: sanitizeSafetyTerms((char.name || '').trim()),
+      description: sanitizeSafetyTerms(`${(char.appearance || '').trim()}${char.clothing ? `, wearing ${(char.clothing || '').trim()}` : ''}`),
+      voice_attributes: sanitizeSafetyTerms((char.voice || char.voice_attributes || '').trim()),
       motion_signature: char.motion || char.motion_signature || 'composed_natural'
     }));
   }
@@ -147,9 +249,9 @@ export const parseCharacters = (charVal) => {
     const matches = [...line.matchAll(/\[([^\]]+)\]/g)].map(m => m[1]);
     if (matches.length >= 2) {
       chars.push({
-        name: matches[0].trim(),
-        description: matches[1].trim(),
-        voice_attributes: matches[2] ? matches[2].trim() : '',
+        name: sanitizeSafetyTerms(matches[0].trim()),
+        description: sanitizeSafetyTerms(matches[1].trim()),
+        voice_attributes: matches[2] ? sanitizeSafetyTerms(matches[2].trim()) : '',
         motion_signature: 'composed_natural'
       });
     }
@@ -205,6 +307,10 @@ export const parseDialogue = (dialStr) => {
     if (isAnimalOnomatopoeia(speechPart)) {
       return;
     }
+
+    // Sanitize safety and trademark words
+    charPart = sanitizeSafetyTerms(charPart);
+    speechPart = sanitizeSafetyTerms(speechPart);
 
     // Extract emotion in parentheses from charPart
     let emotion = 'natural';

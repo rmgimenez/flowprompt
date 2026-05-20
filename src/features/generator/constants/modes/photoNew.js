@@ -2,7 +2,8 @@ import {
   parseImageComposition, 
   parseImageStyle, 
   parseCharacters, 
-  parseAmbiance 
+  parseAmbiance,
+  sanitizeValues
 } from '../../utils/parsers';
 
 export const photoNew = {
@@ -11,10 +12,11 @@ export const photoNew = {
   desc: 'Gere imagens estáticas com riqueza de detalhes.',
   helpText: 'Crie imagens incríveis focando no sujeito e na composição. Experimente diferentes estilos artísticos, de realismo fotográfico a ilustrações conceituais, para encontrar o visual perfeito.',
   formula: (vals) => {
-    const composition = parseImageComposition(vals.composition);
-    const styleInfo = parseImageStyle(vals.style);
-    const characters = parseCharacters(vals.characters_definition);
-    const envAmbiance = parseAmbiance(vals.context, vals.style);
+    const cleanVals = sanitizeValues(vals);
+    const composition = parseImageComposition(cleanVals.composition);
+    const styleInfo = parseImageStyle(cleanVals.style);
+    const characters = parseCharacters(cleanVals.characters_definition);
+    const envAmbiance = parseAmbiance(cleanVals.context, cleanVals.style);
 
     const processedCharacters = characters.map(char => ({
       name: char.name,
@@ -27,15 +29,15 @@ export const photoNew = {
       subject: {
         primary: {
           type: characters.length > 0 ? "character" : "environment",
-          description: vals.subject || "main focus scenery",
-          action: vals.action || "posing naturally",
+          description: cleanVals.subject || "main focus scenery",
+          action: cleanVals.action || "posing naturally",
           attributes: styleInfo.golden_tokens.slice(0, 3)
         },
         ...(processedCharacters.length > 0 ? { characters: processedCharacters } : {})
       },
       composition,
       environment: {
-        context: vals.context || "studio environment",
+        context: cleanVals.context || "studio environment",
         ...envAmbiance
       },
       style_and_quality: styleInfo,
