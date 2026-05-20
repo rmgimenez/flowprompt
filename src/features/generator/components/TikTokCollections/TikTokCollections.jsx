@@ -162,40 +162,58 @@ export const TikTokCollections = () => {
             </div>
           </div>
 
-          {/* Tema e Quantidade */}
+          {/* Tema Principal */}
           <div className={styles.controlGroup}>
             <label htmlFor="themeInput">
               Tema Principal do Post
               <span>* Obrigatório</span>
             </label>
-            <div className={styles.basicInputsRow}>
-              <div className={styles.themeInputContainer}>
-                <input 
-                  id="themeInput"
-                  type="text" 
-                  className={styles.inputFieldTheme} 
-                  placeholder="Ex: Legumes bombados na academia, Capivaras cyberpunk..." 
-                  value={theme}
-                  onChange={(e) => setTheme(e.target.value)}
-                />
-                <button
-                  type="button"
-                  className={styles.themeMagicBtn}
-                  onClick={handleGenerateRandomTheme}
-                  title="Gerar Tema Aleatório Incrível"
-                >
-                  <Sparkles size={16} />
-                </button>
-              </div>
+            <div className={styles.themeInputContainer}>
               <input 
-                type="number" 
-                min="1" 
-                max="20"
-                className={styles.inputFieldQty} 
-                title="Quantidade de Imagens"
-                value={quantity}
-                onChange={(e) => setQuantity(Math.max(1, parseInt(e.target.value) || 1))}
+                id="themeInput"
+                type="text" 
+                className={styles.inputFieldTheme} 
+                placeholder="Ex: Legumes bombados na academia, Capivaras cyberpunk..." 
+                value={theme}
+                onChange={(e) => setTheme(e.target.value)}
               />
+              <button
+                type="button"
+                className={styles.themeMagicBtn}
+                onClick={handleGenerateRandomTheme}
+                title="Gerar Tema Aleatório Incrível"
+              >
+                <Sparkles size={16} />
+              </button>
+            </div>
+          </div>
+
+          {/* Quantidade de Imagens (Custom Stepper) */}
+          <div className={styles.controlGroup}>
+            <label>Quantidade de Slides (Sequência de Imagens)</label>
+            <div className={styles.quantityPicker}>
+              <button 
+                type="button" 
+                className={styles.qtyBtn} 
+                onClick={() => setQuantity(prev => Math.max(1, prev - 1))}
+                title="Diminuir slides"
+                disabled={quantity <= 1}
+              >
+                -
+              </button>
+              <div className={styles.qtyDisplay}>
+                <span className={styles.qtyVal}>{quantity}</span>
+                <span className={styles.qtyLabel}>{quantity === 1 ? 'imagem' : 'imagens'}</span>
+              </div>
+              <button 
+                type="button" 
+                className={styles.qtyBtn} 
+                onClick={() => setQuantity(prev => Math.min(20, prev + 1))}
+                title="Aumentar slides"
+                disabled={quantity >= 20}
+              >
+                +
+              </button>
             </div>
           </div>
 
@@ -343,42 +361,50 @@ export const TikTokCollections = () => {
 
       {/* Preview e Cópia do Prompt */}
       <div className={styles.workspaceColumn}>
-        <GlassCard className="p-6">
-          <div className={styles.previewHeader}>
-            <div>
-              <h3 className={styles.previewTitle}>
-                <Sparkles size={18} style={{ color: '#ec4899' }} />
-                Prompt Mestre para IA
-              </h3>
-              <span className={styles.previewSub}>Copie e cole este prompt no ChatGPT ou Claude</span>
+        <GlassCard className="p-0 overflow-hidden" style={{ background: 'rgba(10, 10, 18, 0.4)' }}>
+          <div className={styles.editorContainer}>
+            <div className={styles.editorHeader}>
+              <div className={styles.macControls}>
+                <span className={`${styles.macDot} ${styles.macDotRed}`}></span>
+                <span className={`${styles.macDot} ${styles.macDotYellow}`}></span>
+                <span className={`${styles.macDot} ${styles.macDotGreen}`}></span>
+              </div>
+              <div className={styles.editorTab}>
+                <Sparkles size={12} className={styles.tabIcon} style={{ color: '#ec4899' }} />
+                <span className={styles.tabName}>prompt_mestre.md</span>
+              </div>
+              <button 
+                className={`${styles.editorCopyBtn} ${copied ? styles.editorCopySuccess : ''}`}
+                onClick={handleCopy}
+                disabled={!theme.trim()}
+                title={theme.trim() ? "Copiar prompt completo" : "Preencha o tema para habilitar"}
+              >
+                {copied ? <Check size={14} /> : <Copy size={14} />}
+                <span>{copied ? 'Copiado!' : 'Copiar Prompt'}</span>
+              </button>
             </div>
-            <button 
-              className={`${styles.copyButton} ${copied ? styles.copySuccess : ''}`}
-              onClick={handleCopy}
-              disabled={!theme.trim()}
-              title={theme.trim() ? "Copiar prompt completo" : "Preencha o tema para habilitar"}
-            >
-              {copied ? <Check size={16} /> : <Copy size={16} />}
-              {copied ? 'Copiado!' : 'Copiar Prompt'}
-            </button>
+
+            {theme.trim() ? (
+              <pre className={styles.outputArea}>{generatedPrompt}</pre>
+            ) : (
+              <div className={styles.emptyState}>
+                <div className={styles.emptyStateIconContainer}>
+                  <Sparkles size={40} className={styles.emptyStateIcon} />
+                </div>
+                <p className={styles.emptyStateText}>
+                  Preencha o **Tema Principal** na coluna esquerda para visualizar o prompt gerado em tempo real.
+                </p>
+              </div>
+            )}
           </div>
 
-          {theme.trim() ? (
-            <pre className={styles.outputArea}>{generatedPrompt}</pre>
-          ) : (
-            <div className={styles.emptyState}>
-              <HelpCircle size={48} opacity={0.2} />
-              <p className={styles.emptyStateText}>
-                Preencha o **Tema Principal** na coluna esquerda para visualizar o prompt gerado em tempo real.
+          <div className="p-6 pt-0">
+            <div className={styles.infoBox}>
+              <Info size={16} className={styles.infoIcon} />
+              <p className={styles.infoText}>
+                <strong>Como usar:</strong> Cole o prompt copiado no seu chat de IA. Ele irá gerar a legenda do post e os JSONs individuais de cada imagem prontos em **artefatos separados**. Copie cada JSON gerado e use na <strong>Foto Nova (Nano Banana)</strong> aqui no FlowPrompt para gerar as imagens perfeitas!
               </p>
             </div>
-          )}
-
-          <div className={styles.infoBox}>
-            <Info size={16} className={styles.infoIcon} />
-            <p className={styles.infoText}>
-              <strong>Como usar:</strong> Cole o prompt copiado no seu chat de IA. Ele irá gerar a legenda do post e os JSONs individuais de cada imagem prontos em **artefatos separados**. Copie cada JSON gerado e use na <strong>Foto Nova (Nano Banana)</strong> aqui no FlowPrompt para gerar as imagens perfeitas!
-            </p>
           </div>
         </GlassCard>
       </div>

@@ -720,16 +720,16 @@ export const COLLECTION_PRESETS = [
     notes: 'Criar atmosfera de suspense contínuo. As imagens devem progredir narrativamente revelando detalhes a cada slide.'
   },
   {
-    id: 'clt',
-    emoji: '💼',
-    label: 'CLT Exausto',
-    desc: 'Humor corporativo real',
-    style: 'realista',
-    vibe: 'revoltado',
-    color: 'normal',
-    target: 'clt_exausto',
-    qty: 5,
-    notes: 'Estilo de fotografia realista crua e contrastante, com forte identificação e empatia com a rotina de trabalho.'
+    id: 'estoico_superacao',
+    emoji: '🧘',
+    label: 'Estoico & Superação',
+    desc: 'Jornada emocional completa',
+    style: 'motivacional',
+    vibe: 'filosófico',
+    color: 'frio',
+    target: 'motivacional_hardcore',
+    qty: 6,
+    notes: 'IMPORTANTE - DIRETRIZES DA JORNADA NARRATIVA (NÃO DEVE CONTER TEXTOS NAS IMAGENS):\n1. A sequência de imagens DEVE contar uma história de superação emocional em 6 slides:\n   - Slide 1: Tristeza profunda, dor, solidão extrema ou obstáculo intransponível (ex: figura solitária sob chuva ou neblina densa, cores frias e escuras).\n   - Slide 2 e 3: Reflexão estoica, aceitação calma, resiliência mental e sabedoria (ex: figura olhando para o horizonte com postura firme, meditando sob condições adversas, cores equilibradas).\n   - Slide 4 e 5: Volta por cima, esforço físico e mental, luta determinada e ação disciplinada (ex: subindo uma montanha íngreme sob sol escaldante, treinando com dedicação absoluta, quebrando barreiras de pedra).\n   - Slide 6: Triunfo final, superação total, vitória e paz de espírito inabalável (ex: figura no topo da montanha olhando para um nascer do sol dourado e majestoso, cores quentes, iluminado por trás).\n2. REQUISITO CRÍTICO DE IMAGEM: NENHUMA das imagens geradas deve conter qualquer tipo de texto, letras, palavras, letreiros, placas ou tipografia escrita. As imagens devem ser puramente visuais, limpas, metafóricas e de altíssima qualidade artística, funcionando perfeitamente como fundos para posterior sobreposição de frases.'
   },
   {
     id: 'motivacional',
