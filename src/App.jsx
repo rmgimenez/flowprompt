@@ -41,25 +41,6 @@ function App() {
   const renderContent = () => {
     return (
       <div className={`content-grid ${currentMode.isCustom ? 'custom-full-width' : ''}`}>
-        <header className="content-header">
-          <motion.h1 
-            key={`${currentModeId}-title`}
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="page-title"
-          >
-            {currentMode.title}
-          </motion.h1>
-          <motion.p 
-            key={`${currentModeId}-desc`}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="page-subtitle"
-          >
-            {currentMode.desc}
-          </motion.p>
-        </header>
-
         {currentMode.isCustom ? (
           <AnimatePresence mode="wait">
             <motion.div
