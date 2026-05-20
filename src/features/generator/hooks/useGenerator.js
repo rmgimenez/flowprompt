@@ -4,7 +4,7 @@ import { MOTIVATIONAL_SCENES, BOOK_QUOTES } from '../constants/templates';
 
 const HISTORY_LIMIT = 20;
 
-export const useGenerator = (initialMode = 'video-new') => {
+export const useGenerator = (initialMode = 'tiktok-collections') => {
   const [currentModeId, setCurrentModeId] = useState(initialMode);
   const [formValues, setFormValues] = useState({});
   

@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import { GlassCard } from '../../../../components/ui/GlassCard';
 import { 
-  Sparkles, Folders, Copy, Check, RotateCcw, Shuffle, Info, History, X, Trash2
+  Sparkles, Folders, Copy, Check, RotateCcw, Shuffle, Info, History, X, Trash2, BarChart3
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import styles from './TikTokCollections.module.css';
@@ -9,6 +9,10 @@ import AIModal from '../Form/AIModal';
 import { TikTokDrawer } from './TikTokDrawer';
 import { TikTokGuide } from './TikTokGuide';
 import { useTikTokHistory } from './useTikTokHistory';
+import { TrendsRadar } from './TrendsRadar';
+import { HookOptimizer } from './HookOptimizer';
+import { ViralScore } from './ViralScore';
+import { AnalyticsTracker } from './AnalyticsTracker';
 import {
   STYLE_PRESETS,
   VIBE_PRESETS,
@@ -39,8 +43,9 @@ export const TikTokCollections = () => {
   const [isHistoryModalOpen, setIsHistoryModalOpen] = useState(false);
   const [selectedHistoryItem, setSelectedHistoryItem] = useState(null);
   const [currentAIPrompt, setCurrentAIPrompt] = useState('');
+  const [isAnalyticsOpen, setIsAnalyticsOpen] = useState(false);
   
-  const { history, saveToHistory, deleteHistoryItem, clearHistory, loadFromHistory } = useTikTokHistory();
+  const { history, saveToHistory, updateAnalytics, clearHistory, deleteHistoryItem, loadFromHistory, getAnalyticsSummary } = useTikTokHistory();
 
   // Sincroniza o preset selecionado com os campos individuais. Se o usuário mudar manualmente algum campo, limpa o preset ativo.
   useEffect(() => {
@@ -158,6 +163,9 @@ export const TikTokCollections = () => {
             Configuração da Coleção TikTok
           </h3>
 
+          {/* Trends Radar — Temas em Alta */}
+          <TrendsRadar onSelectTheme={(trendTheme) => setTheme(trendTheme)} />
+
           {/* Presets de Alta Conversão */}
           <div className={styles.presetsSection}>
             <span className={styles.presetsSectionLabel}>
@@ -208,6 +216,9 @@ export const TikTokCollections = () => {
               </button>
             </div>
           </div>
+
+          {/* Ganchos Virais para o Slide 1 */}
+          <HookOptimizer theme={theme} />
 
           {/* Quantidade de Imagens (Custom Stepper) */}
           <div className={styles.controlGroup}>
@@ -378,6 +389,17 @@ export const TikTokCollections = () => {
             </button>
           </div>
 
+          {/* Viral Score — Potencial Viral */}
+          <ViralScore
+            theme={theme}
+            quantity={quantity}
+            selectedStyle={selectedStyle}
+            selectedVibe={selectedVibe}
+            selectedTarget={selectedTarget}
+            portugueseText={portugueseText}
+            notes={notes}
+          />
+
           {/* Guia Prático & Dicas de Alta Conversão */}
           <TikTokGuide />
         </GlassCard>
@@ -513,6 +535,16 @@ export const TikTokCollections = () => {
       >
         <History size={18} />
         <span>Histórico</span>
+      </button>
+
+      <button
+        type="button"
+        className={styles.analyticsFabBtn}
+        onClick={() => setIsAnalyticsOpen(true)}
+        title="Analytics de Desempenho"
+      >
+        <BarChart3 size={18} />
+        <span>Analytics</span>
       </button>
 
       {/* History Modal */}
@@ -739,6 +771,15 @@ export const TikTokCollections = () => {
           </div>
         )}
       </AnimatePresence>
+
+      {/* Analytics Tracker Modal */}
+      <AnalyticsTracker
+        isOpen={isAnalyticsOpen}
+        onClose={() => setIsAnalyticsOpen(false)}
+        history={history}
+        updateAnalytics={updateAnalytics}
+        getAnalyticsSummary={getAnalyticsSummary}
+      />
     </div>
   );
 };

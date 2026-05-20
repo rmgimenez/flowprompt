@@ -20,7 +20,7 @@ export const useTikTokHistory = () => {
 
   const saveToHistory = useCallback((data) => {
     const historyItem = {
-      id: Date.now().toString(),
+      id: crypto.randomUUID(),
       timestamp: new Date().toISOString(),
       theme: data.theme,
       quantity: data.quantity,
@@ -32,7 +32,8 @@ export const useTikTokHistory = () => {
       portugueseText: data.portugueseText,
       generatedPrompt: data.generatedPrompt,
       aiPrompt: data.aiPrompt || null,
-      isFromAI: !!data.aiPrompt
+      isFromAI: !!data.aiPrompt,
+      analytics: null
     };
 
     setHistory(prev => {
@@ -41,6 +42,20 @@ export const useTikTokHistory = () => {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(newHistory));
       } catch (error) {
         console.error('Erro ao salvar histórico:', error);
+      }
+      return newHistory;
+    });
+  }, []);
+
+  const updateAnalytics = useCallback((id, analyticsData) => {
+    setHistory(prev => {
+      const newHistory = prev.map(item =>
+        item.id === id ? { ...item, analytics: analyticsData } : item
+      );
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(newHistory));
+      } catch (error) {
+        console.error('Erro ao atualizar analytics:', error);
       }
       return newHistory;
     });
@@ -80,11 +95,37 @@ export const useTikTokHistory = () => {
     };
   }, []);
 
+  const getAnalyticsSummary = useCallback(() => {
+    const withAnalytics = history.filter(h => h.analytics);
+    if (withAnalytics.length === 0) return null;
+
+    const totalViews = withAnalytics.reduce((s, h) => s + (h.analytics.views || 0), 0);
+    const totalLikes = withAnalytics.reduce((s, h) => s + (h.analytics.likes || 0), 0);
+    const totalComments = withAnalytics.reduce((s, h) => s + (h.analytics.comments || 0), 0);
+    const totalShares = withAnalytics.reduce((s, h) => s + (h.analytics.shares || 0), 0);
+    const totalSaves = withAnalytics.reduce((s, h) => s + (h.analytics.saves || 0), 0);
+
+    const sorted = [...withAnalytics].sort((a, b) => (b.analytics?.views || 0) - (a.analytics?.views || 0));
+    const topPost = sorted[0];
+
+    return {
+      totalPosted: withAnalytics.length,
+      totalViews,
+      totalLikes,
+      totalComments,
+      totalShares,
+      totalSaves,
+      topPost
+    };
+  }, [history]);
+
   return {
     history,
     saveToHistory,
+    updateAnalytics,
     clearHistory,
     deleteHistoryItem,
-    loadFromHistory
+    loadFromHistory,
+    getAnalyticsSummary
   };
 };

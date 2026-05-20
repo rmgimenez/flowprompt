@@ -1,6 +1,9 @@
 import {
   VIBE_PRESETS,
-  TARGET_PRESETS
+  TARGET_PRESETS,
+  STYLE_PRESETS,
+  HOOK_TEMPLATES,
+  VIRAL_SCORE_CONFIG
 } from './constants';
 
 // ---------------------------------------------------------------------------
@@ -282,4 +285,122 @@ Para cada um dos ${quantity} slides, gere um prompt de imagem em **inglês** alt
 2. **Fórmula Fluida Obrigatória:** Todos os prompts de imagem DEVEM seguir as 5 etapas da fórmula na ordem especificada, mas devem ser estruturados como um **parágrafo de texto corrido e natural, sem nenhum colchete ou tag estrutural literal** (ou seja, NUNCA inclua as palavras "[Assunto]", "[Ação]" ou "[Estilo]" no prompt final).
 3. **Inglês nos Prompts de Imagem:** Os prompts das imagens (blocos \`\`\`prompt) DEVEM ser escritos em inglês.
 4. **Sem texto fora de blocos de código (CRÍTICO):** Para garantir que o usuário copie cada item facilmente com um clique, você **NÃO DEVE escrever texto livre fora dos blocos de código**. Absolutamente **TODOS** os itens (Título, Legenda e os Prompts de cada slide) **DEVEM vir encapsulados em seus respectivos blocos de código individuais (usando \`\`\`text para o Título e a Legenda, e \`\`\`prompt para os prompts de imagem)**. Não coloque saudações, introduções ou explicações fora dos blocos. Entregue diretamente os ${quantity + 2} blocos solicitados.${ptBrRules}`;
+};
+
+// ---------------------------------------------------------------------------
+// 🎣 generateHooks — Gera variações de gancho viral para o tema informado
+// ---------------------------------------------------------------------------
+export const generateHooks = (theme) => {
+  if (!theme || !theme.trim()) return [];
+  const trimmed = theme.trim();
+
+  return HOOK_TEMPLATES.map(group => {
+    const hooks = group.templates
+      .filter(t => t.includes('{theme}'))
+      .map(t => t.replace(/\{theme\}/g, trimmed));
+
+    const shuffled = [...hooks].sort(() => Math.random() - 0.5);
+    const selected = shuffled.slice(0, 2);
+
+    return {
+      category: group.category,
+      emoji: group.emoji,
+      hooks: selected
+    };
+  }).filter(g => g.hooks.length > 0);
+};
+
+// ---------------------------------------------------------------------------
+// 📊 calculateViralScore — Calcula pontuação de potencial viral (0-100)
+// ---------------------------------------------------------------------------
+export const calculateViralScore = ({ theme, quantity, selectedStyle, selectedVibe, selectedTarget, portugueseText, notes }) => {
+  const { weights, optimalQuantity, highRiskQuantity, synergyPairs } = VIRAL_SCORE_CONFIG;
+  let score = 0;
+  const breakdown = [];
+
+  // 1. Coerência Estilo + Vibe + Target (30pts)
+  let coherenceScore;
+  const matchedPairs = synergyPairs.filter(p =>
+    p.style === selectedStyle && p.vibe === selectedVibe && p.target === selectedTarget
+  );
+  if (matchedPairs.length > 0) {
+    const maxBonus = Math.max(...matchedPairs.map(p => p.bonus));
+    coherenceScore = Math.min(weights.styleVibeTargetCoherence, 15 + maxBonus);
+    breakdown.push({ factor: '✨ Sinergia Estilo + Vibe + Target', score: coherenceScore, max: weights.styleVibeTargetCoherence, detail: matchedPairs[0].label });
+  } else {
+    const styleObj = STYLE_PRESETS.find(s => s.id === selectedStyle);
+    const vibeObj = VIBE_PRESETS.find(v => v.id === selectedVibe);
+    const targetObj = TARGET_PRESETS.find(t => t.id === selectedTarget);
+    const sameCategory = styleObj?.category === vibeObj?.category || vibeObj?.category === targetObj?.category;
+    coherenceScore = sameCategory ? 18 : 10;
+    breakdown.push({ factor: '🎨 Coerência entre seleções', score: coherenceScore, max: weights.styleVibeTargetCoherence, detail: sameCategory ? 'Categorias alinhadas' : 'Categorias mistas' });
+  }
+
+  score += coherenceScore;
+
+  // 2. Quantidade ideal de slides (20pts)
+  let qtyScore;
+  if (quantity === optimalQuantity.ideal) {
+    qtyScore = weights.quantityOptimization;
+    breakdown.push({ factor: '📐 Quantidade de slides', score: qtyScore, max: weights.quantityOptimization, detail: `${quantity} slides — número ideal para retenção` });
+  } else if (quantity >= optimalQuantity.min && quantity <= optimalQuantity.max) {
+    qtyScore = 14;
+    breakdown.push({ factor: '📐 Quantidade de slides', score: qtyScore, max: weights.quantityOptimization, detail: `${quantity} slides na faixa recomendada (${optimalQuantity.min}-${optimalQuantity.max})` });
+  } else if (quantity >= highRiskQuantity.min && quantity <= highRiskQuantity.max) {
+    qtyScore = 6;
+    breakdown.push({ factor: '📐 Quantidade de slides', score: qtyScore, max: weights.quantityOptimization, detail: `${quantity} slide(s) — poucas imagens, menor retenção` });
+  } else {
+    qtyScore = 8;
+    breakdown.push({ factor: '📐 Quantidade de slides', score: qtyScore, max: weights.quantityOptimization, detail: `${quantity} slides — acima de 7 pode cansar` });
+  }
+
+  score += qtyScore;
+
+  // 3. Completude do Tema (25pts)
+  let themeScore = 0;
+  if (theme && theme.trim()) {
+    themeScore += 10;
+    const wordCount = theme.trim().split(/\s+/).length;
+    if (wordCount >= 4) themeScore += 8;
+    else if (wordCount >= 2) themeScore += 4;
+    if (notes && notes.trim()) themeScore += 7;
+  }
+  breakdown.push({ factor: '📝 Completude do tema', score: themeScore, max: weights.themeCompleteness, detail: theme?.trim() ? (notes?.trim() ? 'Tema + observações preenchidas' : 'Tema preenchido') : 'Tema não preenchido' });
+
+  score += themeScore;
+
+  // 4. Alinhamento com Tendências (15pts)
+  let trendScore = 7;
+  breakdown.push({ factor: '📡 Alinhamento com tendências', score: trendScore, max: weights.trendAlignment, detail: 'Use o Trends Radar para temas em alta' });
+
+  score += trendScore;
+
+  // 5. Texto em Português (10pts)
+  let ptScore = portugueseText ? weights.portugueseToggle : 3;
+  breakdown.push({ factor: '🇧🇷 Texto em português', score: ptScore, max: weights.portugueseToggle, detail: portugueseText ? 'PT-BR ativado — maior alcance nacional' : 'PT-BR desativado' });
+
+  score += ptScore;
+
+  let feedback;
+  let label;
+  if (score >= 85) {
+    label = '🚀 Potencial Viral Altíssimo';
+    feedback = 'Configuração quase perfeita! Este combo tem altíssimo potencial de viralização. Publique sem medo.';
+  } else if (score >= 70) {
+    label = '🔥 Alto Potencial Viral';
+    feedback = 'Boa configuração! Ajuste os pontos de melhoria para maximizar o alcance.';
+  } else if (score >= 50) {
+    label = '📈 Potencial Moderado';
+    feedback = 'Configuração razoável. Reveja as sugestões de melhoria para aumentar o impacto.';
+  } else {
+    label = '🔧 Precisa de Ajustes';
+    feedback = 'A configuração atual tem baixo potencial viral. Preencha o tema e ajuste as seleções.';
+  }
+
+  return {
+    score: Math.min(100, Math.max(0, score)),
+    label,
+    feedback,
+    breakdown
+  };
 };

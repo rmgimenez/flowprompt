@@ -859,6 +859,159 @@ export const THEME_TWISTS = [
   'com um toque dramático de trailer de cinema'
 ];
 
+// ---------------------------------------------------------------------------
+// 📡 TRENDING THEMES — Temas em alta no TikTok Brasil (atualização manual periódica)
+// ---------------------------------------------------------------------------
+export const TRENDING_THEMES = [
+  {
+    category: '🔥 Humor & Entretenimento',
+    emoji: '😂',
+    items: [
+      { label: 'Trabalhador CLT sobrevivendo na segunda-feira', theme: 'Trabalhador CLT lutando contra a segunda-feira' },
+      { label: 'Estagiário que não sabe onde fica o café', theme: 'Estagiário perdido tentando achar o café' },
+      { label: 'Casais discutindo no supermercado', theme: 'Casal brigando por causa de compras no mercado' },
+      { label: 'O amigo que nunca paga a conta', theme: 'Amigo caloteiro fugindo do garçom' },
+      { label: 'Mãe cobrando nota boa no boletim', theme: 'Mãe brava com boletim escolar do filho' }
+    ]
+  },
+  {
+    category: '💔 Relacionamentos & Dating',
+    emoji: '💕',
+    items: [
+      { label: 'Match do Tinder que sumiu', theme: 'Match do Tinder que desapareceu misteriosamente' },
+      { label: 'O date que deu tudo errado', theme: 'Date terrível que virou história engraçada' },
+      { label: 'Casais de idosos apaixonados', theme: 'Casal de idosos vivendo um romance adolescente' },
+      { label: 'Amizade colorida que virou amor', theme: 'Amigos que se apaixonaram sem querer' }
+    ]
+  },
+  {
+    category: '💪 Fitness & Autoestima',
+    emoji: '💪',
+    items: [
+      { label: 'Academia no primeiro dia vs 6 meses', theme: 'Transformação fitness: primeiro dia de academia vs 6 meses depois' },
+      { label: 'Pessoas treinando com preguiça', theme: 'Frequentador de academia fazendo exercício com toda preguiça do mundo' },
+      { label: 'A dieta que começa toda segunda', theme: 'Dieta da segunda-feira que nunca dura até quarta' },
+      { label: 'Instrutores de academia intensos', theme: 'Personal trainer extremamente intenso motivando alunos' }
+    ]
+  },
+  {
+    category: '👔 Carreira & Vida Adulta',
+    emoji: '💼',
+    items: [
+      { label: 'Reunião que podia ser e-mail', theme: 'Funcionários em reunião desnecessária que podia ser um e-mail' },
+      { label: 'Home office vs escritório', theme: 'Comparação épica entre home office de pijama e escritório formal' },
+      { label: 'Sexta-feira 17h no trabalho', theme: 'Escritório inteiro contando os segundos para bater 17h da sexta' },
+      { label: 'Jovem aprendiz perdido na empresa', theme: 'Jovem aprendiz tentando parecer ocupado sem saber o que fazer' }
+    ]
+  },
+  {
+    category: '🍔 Comida & Gastronomia',
+    emoji: '🍕',
+    items: [
+      { label: 'Pedido de ifood que nunca chega', theme: 'Cliente ansioso esperando ifood que demora horas' },
+      { label: 'Cozinheiros amadores no TikTok', theme: 'Pessoa tentando cozinhar receita gourmet e tudo dando errado' },
+      { label: 'Comida de mãe vs comida fitness', theme: 'Batalha épica entre comida caseira da mãe e refeição fitness' }
+    ]
+  },
+  {
+    category: '🎮 Cultura Geek & Games',
+    emoji: '🎮',
+    items: [
+      { label: 'Gamer tentando rankear no elo', theme: 'Jogador estressado tentando subir de elo no ranked' },
+      { label: 'Anime que mudou sua vida', theme: 'Fãs de anime discutindo qual série mudou suas vidas' },
+      { label: 'Comprando skin no jogo vs comida', theme: 'Gamer tendo que escolher entre skin nova e jantar' }
+    ]
+  }
+];
+
+// ---------------------------------------------------------------------------
+// 🎯 HOOK TEMPLATES — Padrões de gancho viral para o primeiro slide
+// ---------------------------------------------------------------------------
+export const HOOK_TEMPLATES = [
+  {
+    category: 'Curiosidade',
+    emoji: '🤔',
+    templates: [
+      'Parece mentira, mas {theme}',
+      'Você não vai acreditar no que acontece quando {theme}',
+      'O segredo que ninguém te conta sobre {theme}',
+      '{theme} — e o motivo vai te surpreender',
+      'Só 1% das pessoas sabe o que {theme} realmente significa'
+    ]
+  },
+  {
+    category: 'Identificação',
+    emoji: '💭',
+    templates: [
+      'Só quem é {theme} vai entender',
+      'Se você já passou por {theme}, você é forte',
+      'Todo mundo que já viveu {theme} sabe exatamente como é',
+      'TAG alguém que já passou por {theme}',
+      'Quem nunca passou por {theme} que atire a primeira pedra'
+    ]
+  },
+  {
+    category: 'Urgência / Medo de Perder',
+    emoji: '⏰',
+    templates: [
+      'PARE TUDO e veja isso: {theme}',
+      'Último aviso sobre {theme} antes que apaguem',
+      'Se você não viu {theme}, você está perdendo algo incrível',
+      'CORRE que {theme} é o novo trend do momento',
+      'Salva esse vídeo sobre {theme} antes que saia do ar'
+    ]
+  },
+  {
+    category: 'Lista / Tutorial',
+    emoji: '📋',
+    templates: [
+      '3 sinais de que {theme} está acontecendo com você',
+      'O guia definitivo de {theme} em 5 passos',
+      '{theme} em 4 imagens que mudam tudo',
+      'Aprenda {theme} em menos de 1 minuto',
+      '5 coisas que ninguém te conta sobre {theme}'
+    ]
+  },
+  {
+    category: 'Opinião Polêmica',
+    emoji: '🔥',
+    templates: [
+      'Vou falar algo polêmico: {theme}',
+      'Ninguém quer admitir, mas {theme} é a verdade',
+      'Podem me cancelar, mas {theme} é superestimado',
+      'Opinião impopular: {theme} é melhor do que todo mundo pensa',
+      'Debate: {theme} — os dois lados da história'
+    ]
+  }
+];
+
+// ---------------------------------------------------------------------------
+// 📊 VIRAL SCORE CONFIG — Pesos e regras para o cálculo do Viral Score
+// ---------------------------------------------------------------------------
+export const VIRAL_SCORE_CONFIG = {
+  weights: {
+    styleVibeTargetCoherence: 30,
+    quantityOptimization: 20,
+    themeCompleteness: 25,
+    trendAlignment: 15,
+    portugueseToggle: 10
+  },
+  optimalQuantity: { min: 4, max: 7, ideal: 5 },
+  highRiskQuantity: { min: 1, max: 2 },
+  synergyPairs: [
+    { style: 'pixar', vibe: 'cômico', target: 'geracao_z', label: 'Pixar + Humor + Gen-Z', bonus: 10 },
+    { style: 'tarantino', vibe: 'sombrio_misterio', target: 'storytelling', label: 'Tarantino + Mistério + Storytelling', bonus: 10 },
+    { style: 'ghibli', vibe: 'nostálgico', target: 'lifestyle', label: 'Ghibli + Nostalgia + Lifestyle', bonus: 8 },
+    { style: 'goldenhour', vibe: 'estético', target: 'lifestyle', label: 'Golden Hour + Estético + Lifestyle', bonus: 8 },
+    { style: 'cyberpunk2077', vibe: 'gamer', target: 'gamers', label: 'Cyberpunk + Gamer + Gamers', bonus: 8 },
+    { style: 'motivacional', vibe: 'inspirador', target: 'hardcore_motivation', label: 'Motivacional + Inspirador + Hardcore', bonus: 7 },
+    { style: 'anime', vibe: 'drama', target: 'geracao_z', label: 'Anime + Drama + Gen-Z', bonus: 7 },
+    { style: 'realista', vibe: 'cinematic', target: 'millennials', label: 'Realista + Cinemático + Millennials', bonus: 6 },
+    { style: 'pixelart', vibe: 'nostálgico', target: 'millennials', label: 'Pixel Art + Nostalgia + Millennials', bonus: 6 },
+    { style: 'macro', vibe: 'absurdo', target: 'geracao_z', label: 'Macro + Absurdo + Gen-Z', bonus: 5 }
+  ]
+};
+
 export const TIKTOK_FIELDS = [
   { id: 'theme', label: 'Tema Principal do Post', type: 'text', placeholder: 'Ex: Legumes bombados na academia, Capivaras cyberpunk...' },
   { id: 'quantity', label: 'Quantidade de Imagens', type: 'number', placeholder: 'Quantidade (1-20)...' },
