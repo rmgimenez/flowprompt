@@ -127,6 +127,21 @@ export const TEMPLATES = {
           '[chef] (excited): [Galera, olha essa textura! Perfeita pra viralizar no feed!]\n[chef] (proud): [Só mais uma pitadinha de sal... pronto!]',
       },
     },
+    {
+      name: 'Câmera Lenta Gravidade Zero',
+      emoji: '🌌',
+      desc: 'Simulação espacial ultra-fluida com ganchos de micro-gravidade e física de poeira estelar.',
+      fields: {
+        scene_summary: 'Astronauta flutuando em câmera lenta extrema dentro de uma estação espacial cheia de poeira de cristal brilhante.',
+        cinematography: 'Cinematic slow-motion 24fps, cinematic floating camera, high motion inertia, extremely smooth easing',
+        subject: 'brave explorer astronaut floating weightlessly',
+        action: 'reaching out to touch a floating orb of pure liquid stardust energy',
+        context: 'inside a high-tech observation deck of a space station overlooking a colorful nebula',
+        style_ambiance: 'Ethereal and timeless, volumetric crystal dust reflections, deep space glow',
+        motion_fluidity: 'dreamy slow motion floating, zero-gravity drift, stellar dust floating, ultra-fluid physics',
+        motion_stability: 'absolute physical and temporal consistency, zero visual glitches, no morphing artifacts, stable borders'
+      }
+    }
   ],
   'photo-new': [
     {
@@ -376,6 +391,19 @@ export const TEMPLATES = {
         dialogue: '',
       },
     },
+    {
+      name: 'Cinemática Fluida 4K',
+      emoji: '🌊',
+      desc: 'Padrão de slow-motion profissional que mantém a nitidez perfeita de cenários e rostos sem tremores de lente.',
+      fields: {
+        scene_summary: 'Animação cinemática super fluida e contínua com movimentação de água e vento ultra-realista.',
+        camera_motion: 'Smooth Zoom In, highly steady gimbal motion with fluid acceleration and zero camera shake',
+        sound_effects: 'SFX: Soft rolling ocean waves and soothing cinematic background pads',
+        action: 'flowing water current moving slowly around the subject, clothing swaying smoothly in a continuous natural wind current',
+        motion_fluidity: 'natural organic physics, subtle fluid motion, lifelike weight distribution, smooth flow',
+        motion_stability: 'perfect frame-to-frame coherence, stable spatial volume, flicker-free background, sharp details'
+      }
+    }
   ],
   'video-from-frames': [
     {
@@ -428,6 +456,21 @@ export const TEMPLATES = {
         dialogue: '',
       },
     },
+    {
+      name: 'Transição de Partículas Mágicas',
+      emoji: '🪄',
+      desc: 'Transição mágica com caminhos geométricos de partículas e fusões moleculares suaves sem cortes abruptos.',
+      fields: {
+        visual_quality: 'highly detailed 3D animation, vibrant magical glow, unreal engine 5 style',
+        object_interaction: 'the key object dissolves into thousands of golden glowing micro-particles, flowing in a perfect helical trajectory',
+        initial_hook: 'reacting with awe, gasping and smiling as magical light swirls dynamically around the hands',
+        general_notes: 'epic fantasy transition with perfect particle coherence',
+        camera_motion: 'Fast Snap Zoom with speed ramping, seamless helical orbit',
+        sound_effects: 'SFX: Ethereal magical chime and soft organic wind whoosh',
+        motion_fluidity: 'fluid hydrodynamic flow, gelatinous elasticity, smooth surface tension transitions',
+        motion_stability: 'strict anatomical preservation, flawless limb symmetry, logical joint movements, steady posture'
+      }
+    }
   ],
   'video-from-img-avatar': [
     {

@@ -51,8 +51,9 @@ export const videoNew = {
       },
       motion: {
         temporal_logic: "continuous",
-        physics: "realistic",
-        speed_ramp: "constant"
+        physics: vals.motion_fluidity || "realistic",
+        speed_ramp: "constant",
+        stability_rules: vals.motion_stability || "standard consistent structure"
       },
       audio: {
         sound_effects: dialogue.length > 0 ? "ASMR and matching sound effects for dialogue" : "SFX: Ambient sounds fitting the scene, no subtitles",
@@ -80,7 +81,7 @@ export const videoNew = {
   fields: [
     {
       id: 'scene_summary',
-      label: 'Resumo da Cena (Momento Cinematográfico)',
+      label: 'Resumo da Cena (Momento Cinemática)',
       hint: 'Descreva a cena em uma frase clara para roteirização',
       placeholder: 'Ex: Um astronauta caindo em um portal de neon na chuva',
       type: 'text',
@@ -131,6 +132,33 @@ export const videoNew = {
         { label: 'Comédia Rápida', value: '[morango] (rindo): [hahaha abacaxi, você parece uma coroa!]\n[abacaxi] (irritado): [ei morango, respeite minha realeza vegetal!]' },
         { label: 'Sem Fala', value: '' }
       ] 
+    },
+    {
+      id: 'motion_fluidity',
+      label: 'Fluidez & Ritmo de Movimento',
+      hint: 'Define a cadência, inércia e pacing físico do movimento',
+      placeholder: 'Ex: Cinemática Lenta, microgravidade realista, física de fluidos sutil',
+      type: 'text',
+      suggestions: [
+        { label: 'Cinemática Lenta (Slow Motion)', value: 'cinematic slow-motion 24fps, high motion inertia, realistic organic physics acceleration' },
+        { label: 'Física Natural & Fluida', value: 'natural organic physics, subtle fluid motion, lifelike weight distribution, smooth flow' },
+        { label: 'Alta Energia Cinemática', value: 'high-energy kinetic motion, explosive speed ramps, dynamic force vector, fluid wind-up' },
+        { label: 'Microgravidade Fluida', value: 'dreamy slow motion floating, zero-gravity drift, stellar dust floating, ultra-fluid physics' },
+        { label: 'Fluxo Líquido/Gelatinoso', value: 'fluid hydrodynamic flow, gelatinous elasticity, smooth surface tension transitions' }
+      ]
+    },
+    {
+      id: 'motion_stability',
+      label: 'Estabilização Física & Anatômica',
+      hint: 'Preserva a integridade estrutural e evita glitches de IA',
+      placeholder: 'Ex: Integridade anatômica absoluta, anti-glitch e consistência temporal',
+      type: 'text',
+      suggestions: [
+        { label: 'Anti-Glitch Absoluto', value: 'absolute physical and temporal consistency, zero visual glitches, no morphing artifacts, stable borders' },
+        { label: 'Preservação Anatômica', value: 'strict anatomical preservation, flawless limb symmetry, logical joint movements, steady posture' },
+        { label: 'Fluidez Cinemática Estável', value: 'perfect frame-to-frame coherence, stable spatial volume, flicker-free background, sharp details' },
+        { label: 'Hiper-Consistência Corporal', value: 'rigid body physics consistency, persistent clothing folds, non-deforming face details during motion' }
+      ]
     },
     {
       id: 'help_info',

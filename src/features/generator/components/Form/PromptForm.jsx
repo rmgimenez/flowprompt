@@ -1,6 +1,6 @@
 import { useMemo, useState, useEffect } from 'react';
 import styles from './PromptForm.module.css';
-import { Wand2, Eraser, MessageSquare, Volume2, VolumeX, Sparkles, Check, History, Settings, Camera, User, HelpCircle } from 'lucide-react';
+import { Wand2, Eraser, MessageSquare, Volume2, VolumeX, Sparkles, Check, History, Settings, Camera, User, HelpCircle, Activity } from 'lucide-react';
 import { clsx } from 'clsx';
 import TemplateSelector from './TemplateSelector';
 
@@ -256,10 +256,14 @@ const PromptForm = ({ currentModeId, fields, values, onUpdate, onAddSuggestion, 
     const hasCharacters = fields.some(f => 
       ['characters_definition', 'dialogue'].includes(f.id)
     );
+    const hasMotion = fields.some(f => 
+      ['motion_fluidity', 'motion_stability'].includes(f.id)
+    );
     const hasHelp = fields.some(f => f.type === 'info');
     
     if (hasStyle) tabs.push({ id: 'style', label: 'Estilo e Câmera' });
     if (hasCharacters) tabs.push({ id: 'characters', label: 'Personagens' });
+    if (hasMotion) tabs.push({ id: 'motion', label: 'Movimento & Física' });
     if (hasHelp) tabs.push({ id: 'help', label: 'Instruções' });
     
     return tabs;
@@ -365,13 +369,16 @@ const PromptForm = ({ currentModeId, fields, values, onUpdate, onAddSuggestion, 
   const filteredFields = useMemo(() => {
     return fields.filter(field => {
       if (activeTab === 'principal') {
-        return !['style', 'style_ambiance', 'composition', 'cinematography', 'image_type', 'transformation', 'environment', 'characters_definition', 'dialogue'].includes(field.id) && field.type !== 'info';
+        return !['style', 'style_ambiance', 'composition', 'cinematography', 'image_type', 'transformation', 'environment', 'characters_definition', 'dialogue', 'motion_fluidity', 'motion_stability'].includes(field.id) && field.type !== 'info';
       }
       if (activeTab === 'style') {
         return ['style', 'style_ambiance', 'composition', 'cinematography', 'image_type', 'transformation', 'environment'].includes(field.id);
       }
       if (activeTab === 'characters') {
         return ['characters_definition', 'dialogue'].includes(field.id);
+      }
+      if (activeTab === 'motion') {
+        return ['motion_fluidity', 'motion_stability'].includes(field.id);
       }
       if (activeTab === 'help') {
         return field.type === 'info';
@@ -418,6 +425,7 @@ const PromptForm = ({ currentModeId, fields, values, onUpdate, onAddSuggestion, 
           let Icon = Settings;
           if (tab.id === 'style') Icon = Camera;
           if (tab.id === 'characters') Icon = User;
+          if (tab.id === 'motion') Icon = Activity;
           if (tab.id === 'help') Icon = HelpCircle;
           
           return (
