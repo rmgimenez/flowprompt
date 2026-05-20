@@ -123,16 +123,16 @@ REGRAS DE PREENCHIMENTO:
     const parsedData = JSON.parse(jsonText);
     return parsedData;
   } catch (err) {
-    console.error('Failed to parse JSON response:', text);
+    console.error('Failed to parse JSON response:', text, err);
     // Regex fallback to extract anything between { and }
     const match = jsonText.match(/\{[\s\S]*\}/);
     if (match) {
       try {
         return JSON.parse(match[0]);
       } catch (innerErr) {
-        throw new Error('Falha ao formatar a resposta da IA como JSON.');
+        throw new Error('Falha ao formatar a resposta da IA como JSON.', { cause: innerErr });
       }
     }
-    throw new Error('A IA não retornou um JSON válido.');
+    throw new Error('A IA não retornou um JSON válido.', { cause: err });
   }
 }

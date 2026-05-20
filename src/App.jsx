@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import Sidebar from './features/generator/components/Sidebar/Sidebar';
 import { Menu, Wand2, Sparkles } from 'lucide-react';
 import MainLayout from './layouts/MainLayout';

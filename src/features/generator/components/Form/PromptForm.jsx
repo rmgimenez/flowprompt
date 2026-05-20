@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useEffect } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 import styles from './PromptForm.module.css';
 import { Wand2, Eraser, MessageSquare, Volume2, VolumeX, Sparkles, Check, History, Settings, Camera, User, HelpCircle } from 'lucide-react';
 import { clsx } from 'clsx';
@@ -268,7 +268,10 @@ const PromptForm = ({ currentModeId, fields, values, onUpdate, onAddSuggestion, 
   // Adjust active tab if it's not present in the new mode's tabs
   useEffect(() => {
     if (!availableTabs.some(t => t.id === activeTab)) {
-      setActiveTab('principal');
+      const timer = setTimeout(() => {
+        setActiveTab('principal');
+      }, 0);
+      return () => clearTimeout(timer);
     }
   }, [availableTabs, activeTab]);
 

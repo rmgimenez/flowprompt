@@ -1,3 +1,4 @@
+/* global process */
 /**
  * Vercel Serverless Function to safely handle AI Form Filler queries
  * without exposing OpenRouter API keys to the browser.
@@ -118,10 +119,11 @@ REGRAS DE PREENCHIMENTO:
       if (match) {
         try {
           return res.status(200).json(JSON.parse(match[0]));
-        } catch (innerErr) {
+        } catch {
           // continue
         }
       }
+      console.error('Falha de análise JSON da IA:', err);
       return res.status(500).json({ error: 'Falha ao formatar a resposta da IA como JSON.' });
     }
   } catch (error) {

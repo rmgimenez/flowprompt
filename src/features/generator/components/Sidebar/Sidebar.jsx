@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { 
   Play, Image, Camera, Sparkles, Info, Wand2, 
   History, Star, LayoutGrid, Copy, RotateCcw, Check,

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { GlassCard } from '../../../../components/ui/GlassCard';
 import { 
   Sparkles, Folders, Copy, Check, RotateCcw, Shuffle, Info, 
@@ -6,6 +6,7 @@ import {
 } from 'lucide-react';
 import styles from './TikTokCollections.module.css';
 import AIModal from '../Form/AIModal';
+import { TikTokDrawer } from './TikTokDrawer';
 
 // Estilos de Alta Conversão (Nano Banana 2 Formulas - Total de 56 estilos)
 const STYLE_PRESETS = [
@@ -888,10 +889,10 @@ export const TikTokCollections = () => {
   const [selectedTarget, setSelectedTarget] = useState('normal');
   const [notes, setNotes] = useState('');
   const [copied, setCopied] = useState(false);
-  const [generatedPrompt, setGeneratedPrompt] = useState('');
   const [portugueseText, setPortugueseText] = useState(true);
   const [activePresetId, setActivePresetId] = useState(null);
   const [isAIModalOpen, setIsAIModalOpen] = useState(false);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
   // Sincroniza o preset selecionado com os campos individuais. Se o usuário mudar manualmente algum campo, limpa o preset ativo.
   useEffect(() => {
@@ -906,7 +907,10 @@ export const TikTokCollections = () => {
        quantity !== currentPreset.qty ||
        notes !== currentPreset.notes)
     ) {
-      setActivePresetId(null);
+      const timer = setTimeout(() => {
+        setActivePresetId(null);
+      }, 0);
+      return () => clearTimeout(timer);
     }
   }, [selectedStyle, selectedVibe, selectedColors, selectedTarget, quantity, notes, activePresetId]);
 
@@ -921,7 +925,7 @@ export const TikTokCollections = () => {
   };
 
   // Atualiza o prompt em tempo real sempre que qualquer dependência mudar
-  useEffect(() => {
+  const generatedPrompt = useMemo(() => {
     const styleObj = STYLE_PRESETS.find(s => s.id === selectedStyle);
     const vibeObj = VIBE_PRESETS.find(v => v.id === selectedVibe);
     const colorObj = COLOR_PRESETS.find(c => c.id === selectedColors);
@@ -943,7 +947,7 @@ export const TikTokCollections = () => {
       ? `\n4. **Textos em Português nas Imagens:** Como o público-alvo é brasileiro, caso alguma das imagens possua texto visível (placas, camisetas, cartazes, balões de fala, letreiros, ou elementos gráficos), você DEVE especificar no prompt em inglês que esse texto deve ser gerado rigorosamente em **Português do Brasil** (por exemplo: "with Brazilian Portuguese text written: '[Texto Aqui]'" ou "bold typography in Brazilian Portuguese showing: '[Texto]'").`
       : '';
 
-    const promptText = `Você é o **FlowPrompt Image Engine**, um Engenheiro de Prompts e Diretor de Arte Sênior especializado no modelo **Google's Nano Banana 2**. 
+    return `Você é o **FlowPrompt Image Engine**, um Engenheiro de Prompts e Diretor de Arte Sênior especializado no modelo **Google's Nano Banana 2**. 
 
 Sua função é criar um post carrossel altamente viral no **TikTok** com o tema fornecido. O seu retorno DEVE conter exatamente os seguintes itens estruturados, cada um dentro de um bloco de código/artefato separado para fácil cópia individual:
 
@@ -1028,8 +1032,6 @@ Cada uma das ${quantity} imagens deve ter seu próprio bloco de código contendo
    - A Legenda com as 5 hashtags deve estar dentro de: \`\`\`text
    - Cada imagem (total de ${quantity}) deve estar dentro de seu próprio bloco: \`\`\`json (totalizando ${quantity} blocks JSON separados).
 3. **Sem Conversação Extra:** Responda diretamente com os blocos contendo os resultados. Não insira saudações, introduções ou explicações antes ou depois.${portugueseInstruction}`;
-
-    setGeneratedPrompt(promptText);
   }, [theme, quantity, selectedStyle, selectedVibe, selectedColors, selectedTarget, notes, portugueseText]);
 
   const handleCopy = () => {
@@ -1419,6 +1421,30 @@ Cada uma das ${quantity} imagens deve ter seu próprio bloco de código contendo
           }
         }}
       />
+
+      {/* TikTok Carrossel Mockup Drawer */}
+      <TikTokDrawer
+        isOpen={isDrawerOpen}
+        onClose={() => setIsDrawerOpen(false)}
+        config={{
+          theme,
+          quantity,
+          selectedStyle,
+          selectedColors
+        }}
+        STYLE_PRESETS={STYLE_PRESETS}
+        COLOR_PRESETS={COLOR_PRESETS}
+      />
+
+      <button
+        type="button"
+        className={styles.tiktokFabBtn}
+        onClick={() => setIsDrawerOpen(true)}
+        title="Visualizar Mockup Interativo do TikTok"
+      >
+        <span style={{ fontSize: '18px' }}>📱</span>
+        <span>Visualizar Carrossel</span>
+      </button>
 
       <button
         type="button"

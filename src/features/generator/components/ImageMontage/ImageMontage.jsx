@@ -1,5 +1,5 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { motion, Reorder, AnimatePresence } from 'framer-motion';
+import { useState, useRef } from 'react';
+import { Reorder, AnimatePresence } from 'framer-motion';
 import { GlassCard } from '../../../../components/ui/GlassCard';
 import { Layout, Palette, Maximize, Trash2, Download, Plus, Grid3X3 } from 'lucide-react';
 import styles from './ImageMontage.module.css';

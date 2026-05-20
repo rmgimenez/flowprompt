@@ -41,9 +41,12 @@ export const useGenerator = (initialMode = 'video-new') => {
           initialValues[field.id] = '';
         });
       }
-      setFormValues(initialValues);
+      const timer = setTimeout(() => {
+        setFormValues(initialValues);
+      }, 0);
+      return () => clearTimeout(timer);
     }
-  }, [currentModeId, currentMode.fields]);
+  }, [currentModeId, currentMode.fields, formValues]);
 
   const updateField = (id, value) => {
     setFormValues(prev => ({

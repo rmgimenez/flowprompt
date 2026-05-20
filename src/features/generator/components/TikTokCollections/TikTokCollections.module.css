@@ -695,4 +695,52 @@
   font-size: 0.85em;
 }
 
+.tiktokFabBtn {
+  position: fixed;
+  bottom: 2rem;
+  right: 13.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: rgba(236, 72, 153, 0.15); /* Pink translucent */
+  border: 1px solid rgba(236, 72, 153, 0.3);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  color: #f472b6;
+  padding: 0.75rem 1.25rem;
+  border-radius: 100px;
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  z-index: 9999;
+  box-shadow: 0 8px 32px rgba(236, 72, 153, 0.25),
+              inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.tiktokFabBtn:hover {
+  background: linear-gradient(135deg, rgba(236, 72, 153, 0.3), rgba(139, 92, 246, 0.3));
+  border-color: #ec4899;
+  color: #ffffff;
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 12px 36px rgba(236, 72, 153, 0.4),
+              0 0 15px rgba(236, 72, 153, 0.4);
+}
+
+.tiktokFabBtn:active {
+  transform: translateY(-1px) scale(0.98);
+}
+
+@media (max-width: 640px) {
+  .tiktokFabBtn {
+    bottom: 4.5rem;
+    right: 1rem;
+    padding: 0.6rem 1rem;
+    font-size: 0.8rem;
+  }
+}
+
+
 

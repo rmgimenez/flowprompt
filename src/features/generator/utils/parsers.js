@@ -125,7 +125,7 @@ export const parseCharacters = (charVal) => {
     if (trimmed.startsWith('[') || trimmed.startsWith('{')) {
       try {
         parsedVal = JSON.parse(trimmed);
-      } catch (e) {
+      } catch {
         // Fallback to manual line parsing
       }
     }

@@ -1,4 +1,3 @@
-import React from 'react';
 import styles from './MainLayout.module.css';
 
 const MainLayout = ({ sidebar, content }) => {

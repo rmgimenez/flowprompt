@@ -1,0 +1,877 @@
+/* ==========================================================================
+   TikTokDrawer.module.css - Stylesheet for Premium Interactive Drawer
+   ========================================================================== */
+
+.drawerOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(8px);
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.drawerOverlayActive {
+  opacity: 1;
+  visibility: visible;
+}
+
+.drawerContent {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 100%;
+  max-width: 520px;
+  height: 100%;
+  background: rgba(10, 10, 14, 0.85);
+  backdrop-filter: blur(25px);
+  border-left: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: -10px 0 30px rgba(0, 0, 0, 0.5);
+  z-index: 1001;
+  display: flex;
+  flex-direction: column;
+  transform: translateX(100%);
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.drawerContentActive {
+  transform: translateX(0);
+}
+
+.drawerHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.drawerHeaderInfo h3 {
+  margin: 0;
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.drawerHeaderInfo p {
+  margin: 0.25rem 0 0 0;
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.closeBtn {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 50%;
+  color: rgba(255, 255, 255, 0.6);
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.closeBtn:hover {
+  background: rgba(236, 72, 153, 0.1);
+  border-color: rgba(236, 72, 153, 0.3);
+  color: #ec4899;
+  transform: rotate(90deg);
+}
+
+.drawerBody {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  box-sizing: border-box;
+}
+
+/* Custom Scrollbar for Drawer Body */
+.drawerBody::-webkit-scrollbar {
+  width: 4px;
+}
+.drawerBody::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 2px;
+}
+
+/* Outer wrapper with subtle scale/shadow for depth */
+.phoneWrapper {
+  perspective: 1000px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin: 0.5rem 0;
+}
+
+/* Phone Bezel Frame */
+.phoneFrame {
+  position: relative;
+  width: 325px;
+  height: 610px;
+  background: #010101;
+  border-radius: 40px;
+  padding: 11px;
+  box-shadow: 
+    0 25px 50px -12px rgba(0, 0, 0, 0.7),
+    0 0 0 1px rgba(255, 255, 255, 0.15),
+    inset 0 0 3px 2px rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* Camera Punch Hole / Dynamic Island Dot */
+.phoneDynamicIsland {
+  position: absolute;
+  top: 18px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 20px;
+  background: #000000;
+  border-radius: 12px;
+  z-index: 10;
+  box-shadow: inset 0 0 2px rgba(255, 255, 255, 0.2);
+}
+
+/* Phone Screen Container */
+.phoneScreen {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: #000000;
+  border-radius: 32px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  user-select: none;
+}
+
+/* Screen top bar visual indicators */
+.phoneScreenHeader {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 48px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 1.75rem;
+  z-index: 8;
+  color: #ffffff;
+  font-size: 0.75rem;
+  font-weight: 500;
+  box-sizing: border-box;
+}
+
+.phoneTime {
+  letter-spacing: 0.1px;
+}
+
+.phoneStatusIcons {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+/* TikTok Top Feed Navigation overlay */
+.phoneTikTokNav {
+  position: absolute;
+  top: 48px;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.25rem;
+  z-index: 8;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.phoneTikTokNavActive {
+  color: #ffffff;
+  position: relative;
+}
+
+.phoneTikTokNavActive::after {
+  content: '';
+  position: absolute;
+  bottom: -6px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 18px;
+  height: 2px;
+  background: #ffffff;
+  border-radius: 1px;
+}
+
+/* Slides carrossel rendering */
+.carouselContainer {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  overflow: hidden;
+}
+
+.slide {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.25rem;
+  box-sizing: border-box;
+  opacity: 0;
+  visibility: hidden;
+  transform: scale(0.95);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.slideActive {
+  opacity: 1;
+  visibility: visible;
+  transform: scale(1);
+}
+
+.slidePlaceholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+/* Stylized glassmorphic card for slide text presentation */
+.slideGlassCard {
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  padding: 1.25rem;
+  width: 100%;
+  max-width: 255px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  color: #ffffff;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+  transform: translateY(15px);
+  opacity: 0;
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.1s;
+}
+
+.slideActive .slideGlassCard {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.slideBadge {
+  align-self: flex-start;
+  background: rgba(236, 72, 153, 0.15);
+  border: 1px solid rgba(236, 72, 153, 0.3);
+  border-radius: 20px;
+  color: #ec4899;
+  font-size: 0.65rem;
+  font-weight: 600;
+  padding: 0.25rem 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.slideTitle {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 700;
+  line-height: 1.35;
+  color: #ffffff;
+}
+
+.slideText {
+  margin: 0;
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.65);
+  line-height: 1.45;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Prompt Details (Subject, Framing) shown in Post-Generation slide */
+.promptDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-top: 0.25rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  padding-top: 0.5rem;
+}
+
+.promptDetailItem {
+  font-size: 0.68rem;
+  color: rgba(255, 255, 255, 0.45);
+  line-height: 1.35;
+}
+
+.promptDetailItem strong {
+  color: rgba(255, 255, 255, 0.8);
+  font-weight: 600;
+}
+
+/* Copy button specialized for single slide prompt extraction */
+.copySlideJsonBtn {
+  margin-top: 0.5rem;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 10px;
+  color: #ffffff;
+  padding: 0.5rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.copySlideJsonBtn:hover {
+  background: linear-gradient(135deg, rgba(236, 72, 153, 0.15), rgba(139, 92, 246, 0.15));
+  border-color: rgba(236, 72, 153, 0.4);
+  box-shadow: 0 0 10px rgba(236, 72, 153, 0.2);
+}
+
+.copySlideJsonBtnSuccess {
+  background: rgba(16, 185, 129, 0.15) !important;
+  border-color: rgba(16, 185, 129, 0.4) !important;
+  color: #10b981 !important;
+}
+
+/* Slide Progress indicator bar at the bottom or top */
+.progressIndicatorBar {
+  position: absolute;
+  top: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(4px);
+  border-radius: 12px;
+  padding: 0.2rem 0.5rem;
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 0.65rem;
+  font-weight: 600;
+  z-index: 8;
+  letter-spacing: 0.5px;
+}
+
+/* Arrow controls overlay for swiping slides manually */
+.carouselArrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 50%;
+  color: #ffffff;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 8;
+  transition: all 0.2s ease;
+  opacity: 0.4;
+}
+
+.carouselArrow:hover {
+  background: rgba(0, 0, 0, 0.6);
+  opacity: 1;
+  scale: 1.05;
+}
+
+.carouselArrowLeft {
+  left: 0.5rem;
+}
+
+.carouselArrowRight {
+  right: 0.5rem;
+}
+
+/* TikTok overlay elements: stack of icons on right */
+.phoneRightOverlay {
+  position: absolute;
+  right: 8px;
+  bottom: 120px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.9rem;
+  z-index: 7;
+}
+
+.rightOverlayItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15rem;
+  color: #ffffff;
+  cursor: pointer;
+  transition: scale 0.15s ease;
+}
+
+.rightOverlayItem:hover {
+  scale: 1.1;
+}
+
+.rightOverlayItem span {
+  font-size: 0.6rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.avatarRing {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #ec4899, #8b5cf6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1.5px solid #ffffff;
+  margin-bottom: 0.25rem;
+  position: relative;
+}
+
+.avatarPlus {
+  position: absolute;
+  bottom: -4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 12px;
+  height: 12px;
+  background: #ff3b30;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  font-size: 8px;
+  font-weight: bold;
+}
+
+/* TikTok Bottom description text overlays */
+.phoneBottomOverlay {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  padding: 1.25rem 3.5rem 1.5rem 1.25rem;
+  box-sizing: border-box;
+  background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.4) 60%, rgba(0,0,0,0) 100%);
+  z-index: 6;
+  color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.bottomUser {
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.bottomCaption {
+  font-size: 0.72rem;
+  line-height: 1.4;
+  color: rgba(255, 255, 255, 0.9);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.bottomCaptionExpanded {
+  -webkit-line-clamp: unset !important;
+  max-height: 120px;
+  overflow-y: auto;
+}
+
+.captionMoreBtn {
+  background: none;
+  border: none;
+  color: #ffffff;
+  font-weight: 700;
+  padding: 0;
+  margin-left: 0.25rem;
+  cursor: pointer;
+  font-size: 0.72rem;
+}
+
+.musicRow {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.68rem;
+  color: rgba(255, 255, 255, 0.7);
+  margin-top: 0.15rem;
+}
+
+.spinningVinyl {
+  position: absolute;
+  right: 12px;
+  bottom: 1.5rem;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #111111;
+  border: 4px solid #222222;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 7;
+  animation: spin 4s linear infinite;
+}
+
+@keyframes spin {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Toggle Floating Button to Open/Close Paste Import Box */
+.importPanelToggleBtn {
+  background: linear-gradient(135deg, #ec4899, #8b5cf6);
+  border: none;
+  border-radius: 30px;
+  color: #ffffff;
+  padding: 0.65rem 1.25rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  box-shadow: 0 4px 15px rgba(236, 72, 153, 0.3);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  margin-top: 0.5rem;
+}
+
+.importPanelToggleBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(236, 72, 153, 0.5);
+  filter: brightness(1.05);
+}
+
+.importPanelToggleBtnActive {
+  background: #ff3b30 !important;
+  box-shadow: 0 4px 15px rgba(255, 59, 48, 0.3) !important;
+}
+
+/* Glassmorphic Import Overlay that slides over the mockup phone screen */
+.importOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(10, 10, 14, 0.9);
+  backdrop-filter: blur(15px);
+  z-index: 15;
+  display: flex;
+  flex-direction: column;
+  padding: 1.25rem;
+  box-sizing: border-box;
+  border-radius: 32px;
+  transform: translateY(100%);
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.importOverlayActive {
+  transform: translateY(0);
+}
+
+.importHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding-bottom: 0.5rem;
+}
+
+.importHeader h4 {
+  margin: 0;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.importHeaderCloseBtn {
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.5);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  transition: color 0.2s ease;
+}
+
+.importHeaderCloseBtn:hover {
+  color: #ffffff;
+}
+
+.importDesc {
+  font-size: 0.65rem;
+  color: rgba(255, 255, 255, 0.45);
+  line-height: 1.4;
+  margin: 0 0 0.75rem 0;
+}
+
+.importTextarea {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  color: #ffffff;
+  padding: 0.75rem;
+  font-family: monospace;
+  font-size: 0.7rem;
+  line-height: 1.45;
+  resize: none;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.importTextarea:focus {
+  border-color: rgba(236, 72, 153, 0.5);
+}
+
+/* Notification banner for warning feedback inside import panel */
+.importFeedback {
+  margin-top: 0.5rem;
+  padding: 0.5rem;
+  border-radius: 8px;
+  font-size: 0.62rem;
+  line-height: 1.35;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.importFeedbackError {
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  color: #ef4444;
+}
+
+.importFeedbackWarning {
+  background: rgba(245, 158, 11, 0.1);
+  border: 1px solid rgba(245, 158, 11, 0.2);
+  color: #f59e0b;
+}
+
+.importFeedbackSuccess {
+  background: rgba(16, 185, 129, 0.1);
+  border: 1px solid rgba(16, 185, 129, 0.2);
+  color: #10b981;
+}
+
+.importActionRow {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.importClearBtn {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 10px;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  padding: 0.6rem;
+}
+
+.importClearBtn:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: #ffffff;
+}
+
+.importProcessBtn {
+  background: linear-gradient(135deg, #ec4899, #8b5cf6);
+  border: none;
+  border-radius: 10px;
+  color: #ffffff;
+  font-size: 0.75rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(236, 72, 153, 0.2);
+  transition: all 0.2s ease;
+  padding: 0.6rem;
+}
+
+.importProcessBtn:hover:not(:disabled) {
+  filter: brightness(1.08);
+  box-shadow: 0 4px 15px rgba(236, 72, 153, 0.35);
+}
+
+.importProcessBtn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* Bottom instructions alert box in the drawer sidebar */
+.drawerInstructions {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  border-radius: 12px;
+  padding: 1rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.drawerInstructionsTitle {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #ffffff;
+  margin-top: 0;
+  margin-bottom: 0.4rem;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.drawerInstructionsText {
+  font-size: 0.7rem;
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.5);
+  margin: 0;
+}
+
+/* Gradient Presets derived dynamically based on COLOR_PRESETS */
+.gradient_normal {
+  background: linear-gradient(135deg, #1f1f2e 0%, #111116 100%);
+}
+.gradient_quente {
+  background: linear-gradient(135deg, #4d1c13 0%, #140502 100%);
+}
+.gradient_goldenhour {
+  background: linear-gradient(135deg, #593512 0%, #1a0b02 100%);
+}
+.gradient_sunset_silhouettes {
+  background: linear-gradient(135deg, #7c1a4b 0%, #150212 100%);
+}
+.gradient_frio {
+  background: linear-gradient(135deg, #0d2847 0%, #030a14 100%);
+}
+.gradient_ocean_deep {
+  background: linear-gradient(135deg, #09374c 0%, #010d14 100%);
+}
+.gradient_arctic_glacier {
+  background: linear-gradient(135deg, #2d3b4a 0%, #08111a 100%);
+}
+.gradient_cyberpunk {
+  background: linear-gradient(135deg, #200f35 0%, #080312 100%);
+}
+.gradient_vaporwave {
+  background: linear-gradient(135deg, #37103e 0%, #0e0212 100%);
+}
+.gradient_retro_arcade {
+  background: linear-gradient(135deg, #1c140a 0%, #020100 100%);
+}
+.gradient_space_nebula {
+  background: linear-gradient(135deg, #2b113c 0%, #0c0214 100%);
+}
+.gradient_toxic_waste {
+  background: linear-gradient(135deg, #15260f 0%, #040d02 100%);
+}
+.gradient_cyberpunk_glitch {
+  background: linear-gradient(135deg, #101e35 0%, #020612 100%);
+}
+.gradient_forest_moss {
+  background: linear-gradient(135deg, #142817 0%, #040d05 100%);
+}
+.gradient_desert_sand {
+  background: linear-gradient(135deg, #3c2a11 0%, #120b02 100%);
+}
+.gradient_earthy_terracotta {
+  background: linear-gradient(135deg, #351e12 0%, #0d0603 100%);
+}
+.gradient_mint_chocolate {
+  background: linear-gradient(135deg, #16241a 0%, #0e120f 100%);
+}
+.gradient_vintage_sepia {
+  background: linear-gradient(135deg, #2b241b 0%, #0e0b07 100%);
+}
+.gradient_monocromático {
+  background: linear-gradient(135deg, #222225 0%, #08080a 100%);
+}
+.gradient_steampunk_bronze {
+  background: linear-gradient(135deg, #2f2115 0%, #0f0a05 100%);
+}
+.gradient_pastel {
+  background: linear-gradient(135deg, #2b2b35 0%, #121217 100%);
+}
+.gradient_cherry_blossom {
+  background: linear-gradient(135deg, #3a2232 0%, #150911 100%);
+}
+.gradient_candy_shop {
+  background: linear-gradient(135deg, #39203c 0%, #150518 100%);
+}
+.gradient_royal_luxury {
+  background: linear-gradient(135deg, #231238 0%, #0a0314 100%);
+}
+.gradient_royal_velvet {
+  background: linear-gradient(135deg, #2e0e1f 0%, #0d0208 100%);
+}
+.gradient_military_camo {
+  background: linear-gradient(135deg, #1e2316 0%, #090b06 100%);
+}
+.gradient_halloween_spooky {
+  background: linear-gradient(135deg, #30170b 0%, #0a0401 100%);
+}
+
+/* Mobile responsive drawer styling overrides */
+@media (max-width: 550px) {
+  .drawerContent {
+    max-width: 100%;
+  }
+}

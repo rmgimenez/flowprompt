@@ -1,4 +1,4 @@
-import React, { useState, useRef, useCallback } from 'react';
+import { useState, useRef } from 'react';
 import { motion, Reorder, AnimatePresence } from 'framer-motion';
 import { GlassCard } from '../../../../components/ui/GlassCard';
 import styles from './ImageStacker.module.css';
@@ -71,7 +71,7 @@ export const ImageStacker = () => {
 
       // Draw images
       let currentY = 0;
-      loadedImages.forEach((item, index) => {
+      loadedImages.forEach((item) => {
         ctx.drawImage(item.img, 0, currentY, CANVAS_WIDTH, item.height);
         currentY += item.height + gap;
       });
