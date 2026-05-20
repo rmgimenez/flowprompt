@@ -1,8 +1,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import { GlassCard } from '../../../../components/ui/GlassCard';
 import { 
-  Sparkles, Folders, Copy, Check, RotateCcw, Shuffle, Info, 
-  HelpCircle
+  Sparkles, Folders, Copy, Check, RotateCcw, Shuffle, Info
 } from 'lucide-react';
 import styles from './TikTokCollections.module.css';
 import AIModal from '../Form/AIModal';

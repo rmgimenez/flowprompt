@@ -5,64 +5,64 @@ export const STYLE_PRESETS = [
     category: 'Fotografia & Realismo',
     emoji: '✨',
     label: 'Estilo Padrão (Sem Filtro)', 
-    desc: 'Sem direcionamento de estilo artistic específico. Foco em realismo e alta fidelidade natural.', 
-    formula: 'A clean, natural high-fidelity photographic style, clear representation, focus on realism, vertical 9:16.'
+    desc: 'Sem direcionamento de estilo artístico específico. Foco em realismo e alta fidelidade natural.', 
+    formula: 'A clean, high-fidelity digital photograph. Sharp focus, balanced natural light, neutral exposure, natural colors, 50mm standard camera lens, true-to-life details, vertical 9:16.'
   },
   { 
     id: 'realista', 
     category: 'Fotografia & Realismo',
     emoji: '📸',
     label: 'Foto Realista 8k', 
-    desc: 'Fotografia profissional de estúdio de altíssimo nível.', 
-    formula: 'Professional studio portrait photography, 8k resolution, sharp focus, natural highly detailed skin textures, cinematic lighting, Kodachrome film look, shallow depth of field, professional grade.'
+    desc: 'Fotografia profissional de estúdio de altíssimo nível, pele super detalhada e lentes de estúdio.', 
+    formula: 'Professional studio portrait photography screenshot. Shot on medium format Hasselblad camera, 85mm f/1.8 lens. Sharp focus on subject with natural highly-detailed skin pores and texture, soft studio rim lighting. Cinematic shallow depth of field, subtle film grain, Kodak Portra 400 color science, vertical 9:16.'
   },
   { 
     id: 'natgeo', 
     category: 'Fotografia & Realismo',
     emoji: '🌍',
     label: 'Documentário NatGeo', 
-    desc: 'Fotografia documental de natureza crua e realismo geográfico impecável.', 
-    formula: 'National Geographic documentary photography, raw natural lighting, tack-sharp realism, professional telephoto lens composition, authentic environmental textures, vertical 9:16.'
+    desc: 'Fotografia documental de natureza crua, texturas e realismo geográfico impecável.', 
+    formula: 'National Geographic documentary photography screenshot. Telephoto 200mm lens, tack-sharp environmental realism. Authentic raw textures, dusty atmospheric daylight, high visual fidelity, captured in the wild, vertical 9:16.'
   },
   { 
     id: 'macro', 
     category: 'Fotografia & Realismo',
     emoji: '🔍',
     label: 'Macro Lente Extrema', 
-    desc: 'Foco hiper-detalhado em texturas microscópicas com fundo totalmente desfocado.', 
-    formula: 'Extreme macro photography, hyper-detailed texture patterns (water droplets, skin scales, fiber weaves), razor-thin depth of field, giant scale perspective, professional studio lighting, vertical 9:16.'
+    desc: 'Foco hiper-detalhado em texturas microscópicas com fundo totalmente desfocado e iluminação anelar.', 
+    formula: 'Extreme macro close-up photograph. Shot with a 100mm f/2.8 macro lens, razor-thin depth of field. Hyper-detailed microscopic textures, dew drops, fine fiber details, illuminated by professional ring flash, extreme scale perspective, vertical 9:16.'
   },
   { 
     id: 'goldenhour', 
     category: 'Fotografia & Realismo',
     emoji: '🌇',
     label: 'Golden Hour / Pôr do Sol', 
-    desc: 'Luz dourada difusa com contra-luz suave e reflexos solares cinematográficos.', 
-    formula: 'Stunning golden hour photography, warm glowing sun flare backlighting, long dramatic shadows, soft ambient orange and gold light, dreamy cinematic atmosphere, vertical 9:16.'
+    desc: 'Luz dourada difusa com contra-luz suave, reflexos solares e lens flares anamórficos.', 
+    formula: 'Golden hour cinema screenshot. Warm backlit 3200K golden sunlight, dramatic horizontal shadows, dreamy diffuse sun flare, anamorphic lens flares. Fujifilm Pro 400H analog film stock aesthetic, vertical 9:16.'
   },
   { 
     id: 'polaroid', 
     category: 'Fotografia & Realismo',
     emoji: '📼',
     label: 'Polaroid Vintage', 
-    desc: 'Visual analógico nostálgico com cores levemente desbotadas e brilho vintage.', 
-    formula: 'Vintage Polaroid snapshot photo style, faded washed-out analog colors, warm light leaks, nostalgic film grain, authentic retro atmosphere, vertical 9:16.'
+    desc: 'Visual analógico nostálgico com cores desbotadas, granulado e vazamentos de luz.', 
+    formula: 'Vintage Polaroid instant photograph. Pronounced film grain, faded washed-out analog colors, warm light leaks, nostalgic overexposed look with soft focus, authentic paper print margins, vertical 9:16.'
   },
   { 
     id: 'gopro', 
     category: 'Fotografia & Realismo',
     emoji: '🏎️',
     label: 'GoPro Action POV', 
-    desc: 'Perspectiva em primeira pessoa com lente fisheye ultra-angular e ação dinâmica.', 
-    formula: 'GoPro action camera POV shot, extreme wide-angle fisheye lens perspective, dramatic motion blur, high action adrenaline-fueled camera angle, vertical 9:16.'
+    desc: 'Perspectiva em primeira pessoa com lente fisheye ultra-angular, sujeira na lente e ação dinâmica.', 
+    formula: 'GoPro Hero action camera POV screenshot. Extreme wide-angle 12mm fisheye lens perspective, dramatic motion blur, high-dynamic range, intense dynamic action angle with natural lens dirt, vertical 9:16.'
   },
   { 
     id: 'motivacional', 
     category: 'Fotografia & Realismo',
     emoji: '🌅',
     label: 'Motivacional Moody', 
-    desc: 'Fundo perfeito e desfocado para sobrepor textos inspiradores.', 
-    formula: 'Cinematic vast moody landscape, shallow depth of field with blurred foreground/background, optimized with a large clean empty negative space in the center, prepared for text overlay. Mood: noir_melancholy, atmospheric lighting, vertical 9:16. Mandatory negative prompts: text, typography, letters.'
+    desc: 'Fundo perfeito de grande escala e névoa para sobrepor textos inspiradores.', 
+    formula: 'Cinematic moody desaturated landscape screenshot. Wide 35mm lens, massive dark negative space optimized for text overlays, atmospheric mist, dramatic volumetric rim lighting, deep shadows, vertical 9:16.'
   },
 
   // Cinema (Diretores Famosos)
@@ -71,96 +71,96 @@ export const STYLE_PRESETS = [
     category: 'Cinema (Diretores Famosos)',
     emoji: '📐',
     label: 'Wes Anderson', 
-    desc: 'Simetria impecável e cores pastéis marcantes.', 
-    formula: 'Wes Anderson movie style, perfectly symmetrical composition, centered subject, pastel color palette (soft pink, mustard yellow, pale blue, mint green), vintage retro aesthetic, flat cinematic lighting, vertical 9:16.'
+    desc: 'Simetria impecável, enquadramento plano morto-centro e cores pastéis marcantes.', 
+    formula: 'Wes Anderson movie screenshot. Symmetrical centered composition, 40mm flat lens framing. Stylized dollhouse miniature aesthetic, high-fidelity physical props. Soft retro pastel color palette (mustard yellow, dusty rose, mint green), vintage warm theatrical lighting, vertical 9:16.'
   },
   { 
     id: 'tarantino', 
     category: 'Cinema (Diretores Famosos)',
     emoji: '🎬',
     label: 'Cinematográfico Tarantino', 
-    desc: 'Cores quentes e saturadas com ângulos de câmera dramáticos e atitude de filme clássico.', 
-    formula: 'Gritty 70s cinema style inspired by Quentin Tarantino, rich warm saturated color palette, high contrast dramatic lighting, intense character expression, vintage movie frame look, vertical 9:16.'
+    desc: 'Cores quentes e saturadas de rolo 35mm com ângulos holandeses dinâmicos.', 
+    formula: 'Quentin Tarantino 70s grindhouse movie screenshot. Shot on 35mm Fujifilm Eterna cinema film stock, rich high-contrast colors, warm split-toning. Intense dramatic character expression, dynamic dutch angle framing, gritty film texture, vertical 9:16.'
   },
   { 
     id: 'nolan', 
     category: 'Cinema (Diretores Famosos)',
     emoji: '🚀',
     label: 'IMAX Christopher Nolan', 
-    desc: 'Cores frias, tom realista estéril e escalas monumentais.', 
-    formula: 'Epic IMAX cinematic style, cold clinical color grading, grand architectural scale, dramatic natural lighting, sterile sci-fi thriller atmosphere, vertical 9:16.'
+    desc: 'Cores frias, tom realista clínico, grandes escalas arquitetônicas e tensão estéril.', 
+    formula: 'IMAX 65mm anamorphic film screenshot in Christopher Nolan style. Ultra-wide grand architectural scale, cold clinical desaturated color science, sterile tense atmosphere. Kodak Vision3 250D, deep natural shadows, sharp hard lighting, vertical 9:16.'
   },
   { 
     id: 'kubrick', 
     category: 'Cinema (Diretores Famosos)',
     emoji: '👁️',
     label: 'Simetria Stanley Kubrick', 
-    desc: 'Composição perfeitamente centralizada com perspectiva de um ponto de fuga.', 
-    formula: 'Stanley Kubrick signature style, perfect one-point perspective, perfectly symmetrical composition, intense centered subject gaze, cold sterile atmospheric lighting, vertical 9:16.'
+    desc: 'Composição perfeitamente centralizada com perspectiva de um ponto de fuga e luz estéril.', 
+    formula: 'Stanley Kubrick symmetrical cinema screenshot. Perfect one-point perspective centered composition, 24mm rectilinear wide lens. Cold sterile atmospheric key lights, intense psychological tension, rich vintage textures, vertical 9:16.'
   },
   { 
     id: 'timburton', 
     category: 'Cinema (Diretores Famosos)',
     emoji: '🦇',
     label: 'Gótico Tim Burton', 
-    desc: 'Personagens magros e caricatos com olheiras profundas em ambientes misteriosos.', 
-    formula: 'Tim Burton gothic art style, pale whimsical character with large dark expressive eyes, high contrast shadows, twisted trees, gloomy spiral backdrops, surreal claymation feel, vertical 9:16.'
+    desc: 'Personagens magros/caricatos com grandes olhos em ambientes sinistros feitos à mão.', 
+    formula: 'Tim Burton gothic dark fantasy movie screenshot. Whimsical characters with pale skin and large expressive dark eyes, hand-crafted claymation aesthetic. Highly-stylized twisted physical environments, high-contrast deep gothic shadows, moody dark ambiance, vertical 9:16.'
   },
   { 
     id: 'spielberg', 
     category: 'Cinema (Diretores Famosos)',
     emoji: '🦕',
     label: 'Steven Spielberg', 
-    desc: 'Aventura nostálgica dos anos 80, lens flare dourado e atmosfera mágica.', 
-    formula: 'Classic 1980s adventure family-friendly cinematic style inspired by Steven Spielberg, warm nostalgic anamorphic lens flare, soft golden haze lighting, awe-struck expressive subjects looking slightly upwards, rich natural high-fidelity colors, vertical 9:16.'
+    desc: 'Aventura nostálgica dos anos 80, haze dourado e lens flares anamórficos mágicos.', 
+    formula: 'Steven Spielberg 1980s adventure cinema screenshot. Nostalgic anamorphic golden lens flares, soft cinematic golden haze. Rich natural Kodachrome color science, awe-struck upward gazes, warm emotional atmosphere, vertical 9:16.'
   },
   { 
     id: 'villeneuve', 
     category: 'Cinema (Diretores Famosos)',
     emoji: '🪐',
     label: 'Denis Villeneuve', 
-    desc: 'Ficção científica brutalista monumental, escala épica, poeira e luz lateral dramática.', 
-    formula: 'Epic brutalist sci-fi architecture inspired by Denis Villeneuve, massive monolithic structures, atmospheric dust and sand swirling, moody cinematic warm orange and steel-grey color grading, dramatic scale, cinematic side key lighting, vertical 9:16.'
+    desc: 'Ficção científica brutalista monumental, escala épica, poeira e luz lateral severa.', 
+    formula: 'Denis Villeneuve epic sci-fi movie screenshot. IMAX 65mm anamorphic scale, massive monolithic brutalist structures. Swirling atmospheric dust and sand particles, moody steel-grey and orange color grading, dramatic side key lighting, vertical 9:16.'
   },
   { 
     id: 'snyder', 
     category: 'Cinema (Diretores Famosos)',
     emoji: '🛡️',
     label: 'Zack Snyder', 
-    desc: 'Ação heroica ultra-dramática, alto contraste, dessaturação e forte luz de contorno.', 
-    formula: 'Ultra-dramatic dark action cinematic style inspired by Zack Snyder, high-contrast desaturated color palette, intense gritty textures, volumetric rim lighting, epic slow-motion freeze-frame feel, deep heavy shadows, premium comic book action aesthetic, vertical 9:16.'
+    desc: 'Ação heroica ultra-dramática, alto contraste, dessaturação e forte luz volumétrica de contorno.', 
+    formula: 'Zack Snyder ultra-dramatic action movie screenshot. Extreme high-contrast desaturated palette, metallic textures, intense volumetric rim lighting. Slow-motion freeze-frame feel, deep heavy charcoal shadows, epic dark fantasy tone, vertical 9:16.'
   },
   { 
     id: 'deltoro', 
     category: 'Cinema (Diretores Famosos)',
     emoji: '👹',
     label: 'Guillermo del Toro', 
-    desc: 'Fantasia sombria poética, detalhes biológicos/mecânicos e paleta âmbar/teal.', 
-    formula: 'Dark fantasy fairytale aesthetic inspired by Guillermo del Toro, biological and vintage mechanical details, amber and rich teal color palette, gothic whimsical atmosphere, cinematic soft glowing light, mysterious organic creature elements, vertical 9:16.'
+    desc: 'Fantasia sombria poética, detalhes biológicos/mecânicos e paleta rica em âmbar/teal.', 
+    formula: 'Guillermo del Toro dark fantasy movie screenshot. Rich amber and deep teal color grading, gothic whimsical atmosphere. Intricate biological and physical brass clockwork mechanisms, soft glowing practical lights, organic textures, vertical 9:16.'
   },
   { 
     id: 'wachowski', 
     category: 'Cinema (Diretores Famosos)',
     emoji: '🕶️',
     label: 'Irmãs Wachowski', 
-    desc: 'Ação cyberpunk Matrix, tonalidade verde marcante e poses em câmera lenta.', 
-    formula: 'Futuristic cyberpunk action style inspired by the Wachowski sisters, signature green matrix tint color grading, raining digital code accents, slick black leather and high-tech chrome gear, dramatic slow-motion action pose, epic cyber aesthetic, vertical 9:16.'
+    desc: 'Ação cyberpunk clássica do filme Matrix, tons esverdeados, couro brilhante e poses slow-motion.', 
+    formula: 'Wachowski sisters cyberpunk action movie screenshot. Slick black leather, reflective dark vinyl, high-tech chrome gear. Signature matrix green tint grading, cascading glowing green digital code overlays, dynamic bullet-time slow-motion action pose, vertical 9:16.'
   },
   { 
     id: 'miller', 
     category: 'Cinema (Diretores Famosos)',
     emoji: '🔥',
     label: 'George Miller', 
-    desc: 'Pós-apocalíptico caótico e desértico, cores saturadas e energia extrema de Mad Max.', 
-    formula: 'High-octane post-apocalyptic desert wasteland style inspired by George Miller, hyper-saturated orange sand and deep blue sky, dusty retrofitted survival vehicles, dramatic chaotic energy, extreme high-speed motion feel, raw post-apocalyptic punk aesthetic, vertical 9:16.'
+    desc: 'Pós-apocalíptico desértico arenoso e caótico sob cores ultra-saturadas de Mad Max.', 
+    formula: 'George Miller Mad Max post-apocalyptic movie screenshot. Saturated orange sand dunes under a deep blue sky. Dusty customized scrap metal vehicles, chaotic high-speed motion blur, raw gritty post-apocalyptic punk aesthetic, vertical 9:16.'
   },
   { 
     id: 'kurosawa', 
     category: 'Cinema (Diretores Famosos)',
     emoji: '🌧️',
     label: 'Akira Kurosawa', 
-    desc: 'Cinema samurai clássico, preto e branco dinâmico sob vento e chuva forte.', 
-    formula: 'Legendary Japanese cinematic master style inspired by Akira Kurosawa, dynamic high-contrast black and white photography, dramatic blowing wind and heavy rain textures, epic samurai stance, deep emotion, composition of weather elements, vertical 9:16.'
+    desc: 'Cinema clássico japonês em preto e branco de alto contraste, vento forte e chuva densa.', 
+    formula: 'Akira Kurosawa dynamic classic film screenshot. High-contrast black and white cinematography, rich film grain. Dramatic sweeping wind, heavy rain textures, epic samurai stance, deep emotional framing, vertical 9:16.'
   },
 
   // Animação & 3D
@@ -169,40 +169,40 @@ export const STYLE_PRESETS = [
     category: 'Animação & 3D',
     emoji: '🧸',
     label: 'Pixar 3D Cute', 
-    desc: 'Estilo de animação 3D fofo e carismático.', 
-    formula: 'A hyper-adorable character, Pixar 3D animation style, big expressive eyes, sub-surface scattering, vibrant colors, ray tracing, highly detailed, vertical 9:16. Bold stylized 3D bubble typography showing "[THEME_PT]" integrated at the bottom.'
+    desc: 'Estilo de animação 3D fofo e carismático com renderizadores ray-traced profissionais.', 
+    formula: 'Pixar RenderMan 3D animation screenshot. Vibrant saturated color palette, smooth ray-traced subsurface scattering skin shaders. Global illumination, extremely detailed physical textures, charming stylized character design, vertical 9:16.'
   },
   { 
     id: 'claymation', 
     category: 'Animação & 3D',
     emoji: '🦖',
     label: 'Massinha Claymation/Stop-Motion', 
-    desc: 'Visual de animação stop-motion com texturas reais de massinha e marcas de dedo.', 
-    formula: 'Stop-motion claymation style, hand-crafted plasticine clay textures with subtle fingerprint details, studio lighting, highly adorable miniature models, vertical 9:16.'
+    desc: 'Visual de animação stop-motion com texturas físicas de massinha e marcas de dedo.', 
+    formula: 'stop-motion claymation film screenshot. Hand-crafted plasticine clay models, detailed physical fingerprints, clay textures. Soft studio miniature lighting, charming retro animation feel, vertical 9:16.'
   },
   { 
     id: 'papercut', 
     category: 'Animação & 3D',
     emoji: '📄',
     label: 'Origami / Papel Recortado', 
-    desc: 'Camadas tridimensionais de papel colorido recortado com sombras suaves.', 
-    formula: 'Intricate 3D papercut illustration style, layered colored paper sheets creating deep drop shadows, origami art elements, clean minimalist craft design, vertical 9:16.'
+    desc: 'Camadas físicas de papel colorido com sombras tridimensionais suaves e realistas.', 
+    formula: '3D papercut illustration screenshot. Multi-layered colored paper sheets, deep realistic drop shadows, origami art craft details. Clean minimalist physical layers, soft shadow transitions, vertical 9:16.'
   },
   { 
     id: 'lowpoly', 
     category: 'Animação & 3D',
     emoji: '🧊',
     label: 'Low Poly Retro 3D', 
-    desc: 'Modelos 3D geométricos feitos de poucos polígonos com cores sólidas e retrô.', 
-    formula: 'Minimalist low-poly 3D render style, flat-shaded geometric polygon meshes, cute clean shapes, soft warm ambient lighting, retro game console aesthetic, vertical 9:16.'
+    desc: 'Modelos 3D geométricos feitos de poucos polígonos, cores foscas e visual retrô.', 
+    formula: 'low-poly 3D render screenshot. Flat-shaded geometric polygon meshes, retro game console aesthetic. Soft ambient occlusion, clean solid matte colors, cute angular shapes, vertical 9:16.'
   },
   { 
     id: 'minecraft', 
     category: 'Animação & 3D',
     emoji: '🧱',
     label: 'Minecraft Voxel 3D', 
-    desc: 'Construção em blocos tridimensionais voxelizados com luzes suaves.', 
-    formula: 'Minecraft-inspired voxel 3D blocky art style, pixelated textures, soft volumetric lighting, cute cubic character design, high-fidelity block world aesthetic, vertical 9:16.'
+    desc: 'Construção em blocos voxelizados clássicos com luz solar volumétrica.', 
+    formula: 'Minecraft-inspired voxel 3D blocky art screenshot. Sharp pixelated block textures, volumetric sunlight shafts. Charming cubic layout, retro high-fidelity block world, vertical 9:16.'
   },
 
   // Arte & Pintura Clássica
@@ -211,96 +211,96 @@ export const STYLE_PRESETS = [
     category: 'Arte & Pintura Clássica',
     emoji: '📜',
     label: 'Leonardo da Vinci',
-    desc: 'Esfuminho renascentista clássico, tons terrosos e traços anatômicos detalhados.',
-    formula: 'Classical Renaissance painting inspired by Leonardo da Vinci, masterfully executed sfumato shading, soft atmospheric contours, rich earthy pigments, detailed ink-and-wash anatomical sketch elements, vertical 9:16.'
+    desc: 'Esfuminho renascentista clássico, traços de nanquim anatômicos e pigmentos terrosos.',
+    formula: 'Leonardo da Vinci classical Renaissance painting. Sfumato atmospheric shading, soft smooth contour transitions. Deep earthy pigments, chalky raw sketch underdrawings, weathered aged canvas texture, vertical 9:16.'
   },
   {
     id: 'picasso',
     category: 'Arte & Pintura Clássica',
     emoji: '🧩',
     label: 'Cubismo Pablo Picasso',
-    desc: 'Figuras geométricas abstratas, múltiplas perspectivas e formas desconstruídas.',
-    formula: 'Analytical Cubism masterpiece inspired by Pablo Picasso, fragmented geometric shapes, multiple simultaneous perspective planes, deconstructed portrait composition, muted earthy and blue color palette, vertical 9:16.'
+    desc: 'Figuras geométricas abstratas desconstruídas em múltiplas perspectivas simultâneas.',
+    formula: 'Pablo Picasso cubism painting. Fragmented geometric shapes, multi-angled deconstructed perspective planes, bold abstract lines. Muted blue and earthy sienna color palette, vertical 9:16.'
   },
   {
     id: 'monet',
     category: 'Arte & Pintura Clássica',
     emoji: '🪷',
     label: 'Impressionismo Claude Monet',
-    desc: 'Pinceladas rápidas e suaves com luz natural vibrante e foco em paisagens aquáticas.',
-    formula: 'French Impressionism painting style inspired by Claude Monet, soft delicate brushstrokes, vibrant play of outdoor sunlight, glowing pastel textures, dappled light reflection, vertical 9:16.'
+    desc: 'Pinceladas rápidas e soltas com luz natural vibrante e texturas de tela.',
+    formula: 'Claude Monet French impressionism oil painting. Loose rapid delicate brushstrokes, vibrant natural sunlight reflections, glowing pastel textures. Dappled light, visible canvas texture, vertical 9:16.'
   },
   {
     id: 'michelangelo',
     category: 'Arte & Pintura Clássica',
     emoji: '🏛️',
     label: 'Afresco Michelangelo',
-    desc: 'Figuras humanas esculturais, musculosas e expressivas com textura de afresco de parede.',
-    formula: 'Sistine Chapel fresco painting style inspired by Michelangelo, heroic hyper-muscular human anatomy, dynamic expressive poses, chalky weathered plaster wall texture, classical Renaissance masterwork, vertical 9:16.'
+    desc: 'Figuras humanas esculturais, super-musculosas em textura áspera de afresco clássico.',
+    formula: 'Michelangelo Sistine Chapel classical fresco. Heroic hyper-muscular human anatomy, dynamic expressive postures. Cracked weathered plaster wall textures, chalky pigments, historic Renaissance masterwork, vertical 9:16.'
   },
   {
     id: 'munch',
     category: 'Arte & Pintura Clássica',
     emoji: '😱',
     label: 'Expressionismo Edvard Munch',
-    desc: 'O Grito. Linhas ondulantes, cores dramáticas e forte carga emocional.',
-    formula: 'Expressionist painting style inspired by Edvard Munch (The Scream), swirling wavy brushstrokes, intense dramatic blood-orange and dark teal sky, heavy emotional anxiety tone, stark black silhouettes, vertical 9:16.'
+    desc: 'Linhas ondulantes turbulentas e intensa angústia emocional na paleta de cores.',
+    formula: 'Edvard Munch expressionism painting. Agitated sweeping brushstrokes, blood-orange and dark teal swirling sky. Heavy existential anxiety atmosphere, dark emotional silhouettes, vertical 9:16.'
   },
   {
     id: 'fridakahlo',
     category: 'Arte & Pintura Clássica',
     emoji: '🌺',
     label: 'Surrealismo Frida Kahlo',
-    desc: 'Arte folclórica mexicana, autorretratos com natureza exuberante e simbolismo profundo.',
-    formula: 'Naïve folk surrealist art style inspired by Frida Kahlo, vibrant Mexican cultural motifs, lush exotic tropical plants, symbolic animals (monkeys, birds), rich warm decorative colors, vertical 9:16.'
+    desc: 'Arte folclórica mexicana ingênua combinada com fauna exuberante e simbolismo surreal.',
+    formula: 'Frida Kahlo naive folk surrealism painting. Vibrant Mexican cultural decorative motifs, lush tropical plant patterns, symbolic animals, warm passionate colors, vertical 9:16.'
   },
   {
     id: 'klimt',
     category: 'Arte & Pintura Clássica',
     emoji: '🌟',
     label: 'Simbolismo Gustav Klimt',
-    desc: 'O Beijo. Padrões ornamentais intrincados, folhas de ouro brilhantes e mosaicos decorativos.',
-    formula: 'Symbolist golden art style inspired by Gustav Klimt (The Kiss), intricate swirling decorative patterns, glittering gold leaf overlays, mosaic textures, warm amber and bronze tones, vertical 9:16.'
+    desc: 'Ornamentos em mosaicos dourados cintilantes, folhas de ouro e texturas ricas.',
+    formula: 'Gustav Klimt symbolist painting. Intricate swirling decorative patterns, glittering gold leaf textures, mosaic tiles. Warm glowing amber and bronze tones, flat decorative figures, vertical 9:16.'
   },
   {
     id: 'hokusai',
     category: 'Arte & Pintura Clássica',
     emoji: '🌊',
     label: 'Xilogravura Katsushika Hokusai',
-    desc: 'Gravuras em madeira de estilo Ukiyo-e clássico com ondas dramáticas e contornos fortes.',
-    formula: 'Classical Japanese Ukiyo-e woodblock print style inspired by Katsushika Hokusai, dynamic stylized ocean wave patterns, bold black ink outlines, clean solid color fills on aged block print paper texture, vertical 9:16.'
+    desc: 'Xilogravuras Ukiyo-e com contornos de nanquim fortes e texturas de papel de arroz fibroso.',
+    formula: 'Katsushika Hokusai Ukiyo-e woodblock print. Dynamic stylized ocean wave claws, bold black ink outlines, clean solid color pigments on aged handmade fibrous paper texture, vertical 9:16.'
   },
   {
     id: 'warhol',
     category: 'Arte & Pintura Clássica',
     emoji: '🥫',
     label: 'Pop Art Andy Warhol',
-    desc: 'Serigrafia colorida repetitiva em cores neon saturadas e alto contraste.',
-    formula: '1960s silkscreen pop art portrait style inspired by Andy Warhol, high-contrast flat neon screen-print textures, vibrant saturated colors, offset printing misalignment artifacts, vertical 9:16.'
+    desc: 'Serigrafia colorida retrô com erros de registro de impressão e cores puras de acrílico.',
+    formula: 'Andy Warhol 1960s silkscreen pop art print. High-contrast flat neon acrylic paint, misaligned color offset printing artifacts, vibrant saturated repetitive silkscreen pattern, vertical 9:16.'
   },
   {
     id: 'rembrandt',
     category: 'Arte & Pintura Clássica',
     emoji: '🕯️',
     label: 'Chiaroscuro Rembrandt',
-    desc: 'Contraste dramático de luz e shadow (chiaroscuro) com tons dourados ricos e intimistas.',
-    formula: 'Baroque chiaroscuro portrait painting inspired by Rembrandt, dramatic deep shadow contrast, rich golden candlelight glow illuminating face, highly detailed organic skin textures, dark earthy backdrops, vertical 9:16.'
+    desc: 'Contraste dramático de luz e shadow profunda com tom de velas dourado e pele rica.',
+    formula: 'Rembrandt baroque oil painting. Masterful high-contrast chiaroscuro, deep mysterious shadows. Warm golden candle glow key light, detailed organic skin textures, dark earthy pigments, vertical 9:16.'
   },
   {
     id: 'matisse',
     category: 'Arte & Pintura Clássica',
     emoji: '✂️',
     label: 'Fauvismo Henri Matisse',
-    desc: 'Cores puras e selvagens com recortes de papel minimalistas e expressivos.',
-    formula: 'Fauvist cut-out paper art style inspired by Henri Matisse, bold abstract minimalist organic shapes, highly vibrant flat pure colors, expressive naive composition, vertical 9:16.'
+    desc: 'Cortes minimalistas de papel em cores puras e selvagens com layout ingênuo.',
+    formula: 'Henri Matisse fauvist cut-out paper collage. Bold abstract minimalist organic shapes, highly vibrant flat pure colors (pure red, electric blue, bright yellow), naive layout, vertical 9:16.'
   },
   { 
     id: 'vangogh', 
     category: 'Arte & Pintura Clássica',
     emoji: '🌻',
     label: 'Óleo Impressionista', 
-    desc: 'Pintura texturizada com pinceladas grossas e redemoinhos de tinta a óleo à la Van Gogh.', 
-    formula: 'Post-impressionist oil painting style inspired by Vincent van Gogh, thick textured impasto brushstrokes, swirly sky details, vibrant complementary colors, vertical 9:16.'
+    desc: 'Textura de tinta a óleo grossa aplicada com espátula e céus de redemoinho vibrantes.', 
+    formula: 'Vincent van Gogh oil painting. Thick textured impasto brushstrokes applied with a palette knife, swirling turbulent sky patterns. Vibrant complementary colors, coarse canvas texture, vertical 9:16.'
   },
 
   // Ilustração & Quadrinhos
@@ -309,56 +309,56 @@ export const STYLE_PRESETS = [
     category: 'Ilustração & Quadrinhos',
     emoji: '🎨',
     label: 'Anime Anos 90', 
-    desc: 'Aparência nostálgica de desenhos clássicos pintados à mão.', 
-    formula: 'Nostalgic 90s anime illustration, hand-drawn aesthetic, cel-shaded animation style, lush hand-painted background texture, vintage soft color grading, Ghibli style visual cues.'
+    desc: 'Frame de animação cel clássica dos anos 90, traço em nanquim, granulado e fundos pintados à mão.', 
+    formula: '90s sci-fi anime style screenshot. Cel animation style, hand-drawn look with distinct dark ink outlines, sharp shadows, and a slight film grain texture, vintage hand-painted background details, vertical 9:16.'
   },
   { 
     id: 'ghibli', 
     category: 'Ilustração & Quadrinhos',
     emoji: '🌳',
     label: 'Anime Ghibli', 
-    desc: 'Aquarela pintada à mão, natureza verdejante e atmosfera nostálgica.', 
-    formula: 'Studio Ghibli aesthetic, hand-painted lush watercolor background, soft natural lighting, nostalgic warm mood, highly detailed anime illustration, vertical 9:16.'
+    desc: 'Lush aquarela mágica, luz natural difusa e atmosfera campestre nostálgica.', 
+    formula: 'Studio Ghibli aesthetic anime screenshot. Hand-painted watercolor background, lush green nature details, soft natural lighting. Dreamy nostalgic atmosphere, highly detailed classical animation, vertical 9:16.'
   },
   { 
     id: 'popart', 
     category: 'Ilustração & Quadrinhos',
     emoji: '💥',
     label: 'Pop Art Comics', 
-    desc: 'Cores chapadas primárias com contornos fortes e retículas estilo quadrinho antigo.', 
-    formula: '1960s Pop Art style, Roy Lichtenstein inspired, bold primary colors, heavy black outlines, retro comic book halftone dot pattern, dramatic dialogue panel feel, vertical 9:16.'
+    desc: 'Painel de HQ antigo com contornos em nanquim fortes, retículas de meio-tom e cores primárias.', 
+    formula: '1960s Roy Lichtenstein pop art comic book panel. Bold primary flat colors, heavy black outlines, retro half-tone dot patterns, dynamic action framing, vertical 9:16.'
   },
   { 
     id: 'pencilsketch', 
     category: 'Ilustração & Quadrinhos',
     emoji: '✏️',
     label: 'Desenho a Lápis de Grafite', 
-    desc: 'Rascunho feito à mão com sombreamento cruzado clássico e traços brutos.', 
-    formula: 'Detailed graphite pencil sketch, hand-drawn cross-hatching shading, raw charcoal pencil lines on aged cream sketch paper, high contrast textured drawing, vertical 9:16.'
+    desc: 'Esboço a lápis grafite e carvão com hachuras manuais detalhadas em papel texturizado.', 
+    formula: 'detailed academic graphite pencil sketch. Fine hand-drawn cross-hatching shading, raw charcoal lines on heavily textured aged cream paper, smudges, eraser marks, vertical 9:16.'
   },
   { 
     id: 'watercolor', 
     category: 'Ilustração & Quadrinhos',
     emoji: '🖌️',
     label: 'Aquarela Artística', 
-    desc: 'Bordas de tinta fluida e manchas transparentes de aquarela com textura de papel.', 
-    formula: 'Artistic watercolor illustration, bleeding translucent colorful paint margins, organic paint splashes, elegant wet brush texture on rough textured paper backdrop, vertical 9:16.'
+    desc: 'Bordas de tinta fluida orgânica, manchas e textura granulada de papel de algodão.', 
+    formula: 'fine art watercolor illustration. Translucent colorful paint bleeding, organic wet paint splashes, detailed wet brush paper texture, elegant bleeding gradients, vertical 9:16.'
   },
   { 
     id: 'artnouveau', 
     category: 'Ilustração & Quadrinhos',
     emoji: '⚜️',
     label: 'Art Nouveau Elegante', 
-    desc: 'Linhas curvas e contornos florais orgânicos inspirados em Alphonse Mucha.', 
-    formula: 'Elegant Art Nouveau illustration style inspired by Alphonse Mucha, ornate golden borders, flowing long organic hair and floral vine motifs, flat warm colors, vertical 9:16.'
+    desc: 'Cabelos longos e arabescos orgânicos sinuosos com molduras douradas à la Alphonse Mucha.', 
+    formula: 'Alphonse Mucha Art Nouveau illustration. Flowing organic long hair, ornate golden borders, elaborate floral vine motifs, flat warm gilded color palette, vertical 9:16.'
   },
   { 
     id: 'surrealismo', 
     category: 'Ilustração & Quadrinhos',
     emoji: '⏳',
     label: 'Surrealismo de Sonho', 
-    desc: 'Mundos oníricos com objetos derretendo e física distorcida.', 
-    formula: 'Surrealist dreamscape art style inspired by Salvador Dali, melting clocks and floating surreal structures, desert canvas background, strange dream logic, warm soft golden lighting, vertical 9:16.'
+    desc: 'Paisagem desértica onírica com física distorcida inspirada em Salvador Dalí.', 
+    formula: 'Salvador Dali surrealist painting. Melting clocks, distorted impossible physical objects in a vast desert landscape. Strange dream logic, warm soft golden atmosphere, vertical 9:16.'
   },
 
   // Efeitos & Retro-Future
@@ -367,80 +367,80 @@ export const STYLE_PRESETS = [
     category: 'Efeitos & Retro-Future',
     emoji: '🏙️',
     label: 'Cyberpunk Neon', 
-    desc: 'Metrópole futurista com luzes neon intensas e sombras cibernéticas.', 
-    formula: 'Cyberpunk 2077 aesthetic, wet rain-slicked futuristic city streets reflecting pink and cyan neon lights, glowing holographic advertisements, high tech low life, vertical 9:16.'
+    desc: 'Asfalto molhado refletindo luzes neon intensas, aberração cromática e outdoors digitais.', 
+    formula: 'Cyberpunk 2077 videogame screenshot. Rain-slicked wet asphalt streets reflecting pink and cyan neon light blooms. Chromatic aberration, high-tech holographic ads, gritty details, vertical 9:16.'
   },
   { 
     id: 'cyber_gothic', 
     category: 'Efeitos & Retro-Future',
     emoji: '🖤',
     label: 'Cyber-Gótico Neon', 
-    desc: 'Roupas escuras cibernéticas combinadas com detalhes e maquiagens em neon brilhante.', 
-    formula: 'Cyber-gothic aesthetic, dark leather and futuristic chrome cyberwear, glowing neon hair and makeup, high-contrast gothic rave lighting, deep shadows, vertical 9:16.'
+    desc: 'Couro escuro fosco, cromo futurista, maquiagem UV fluorescente e iluminação estroboscópica.', 
+    formula: 'cyber-gothic dark aesthetic screenshot. Dark matte leather, polished futuristic chrome, glowing UV neon makeup and cybernetic implants. High-contrast strobe rave lighting, vertical 9:16.'
   },
   { 
     id: 'synthwave', 
     category: 'Efeitos & Retro-Future',
     emoji: '🌴',
     label: 'Synthwave / Retro-Future', 
-    desc: 'Grade 3D no horizonte, sol roxo gigante e palmeiras neon dos anos 80.', 
-    formula: 'Synthwave outrun aesthetic, glowing wireframe grid horizon, giant retro sun graphic, neon pink palm tree silhouettes, 80s futuristic vector lines, vertical 9:16.'
+    desc: 'Grade vetorial de horizonte em 3D, sol poente gigante e palmeiras neon dos anos 80.', 
+    formula: 'synthwave retro-future vector screenshot. Glowing wireframe perspective grid, colossal glowing geometric retro sun, neon pink palm silhouettes. 80s outrun vaporous vectors, vertical 9:16.'
   },
   { 
     id: 'retro30s', 
     category: 'Efeitos & Retro-Future',
     emoji: '🎞️',
     label: 'Cartoon Clássico Anos 30', 
-    desc: 'Estilo desenho antigo com animação rubberhose e granulado de película.', 
-    formula: '1930s rubberhose cartoon style, Cuphead aesthetic, monochrome black and white, vintage film grain and scratches, high contrast ink-and-paint illustration, vertical 9:16.'
+    desc: 'Estilo de animação rubberhose clássica em P&B com imperfeições, pelos e poeira no projetor.', 
+    formula: '1930s rubberhose black and white cartoon screenshot. Monochrome vintage ink-and-paint illustration, film grain, scratches, hairs on lens, retro hand-crafted projector look, vertical 9:16.'
   },
   { 
     id: 'pixelart', 
     category: 'Efeitos & Retro-Future',
     emoji: '👾',
     label: 'Retro 16-Bit Pixel Art', 
-    desc: 'Estilo videogame nostálgico com pixels detalhados e cores saturadas.', 
-    formula: 'Detailed 16-bit pixel art style, vibrant limited color palette, clean grid sprites, nostalgic retro game aesthetic, vertical 9:16.'
+    desc: 'Visual de videogame clássico com paleta limitada de cores e pixels perfeitos.', 
+    formula: 'detailed 16-bit retro pixel art screenshot. Limited CGA/EGA color palette, pixel-perfect clean grid lines, nostalgic classic game sprites, vertical 9:16.'
   },
   { 
     id: 'steampunk', 
     category: 'Efeitos & Retro-Future',
     emoji: '⚙️',
     label: 'Steampunk Vitoriano', 
-    desc: 'Máquinas de cobre, engrenagens douradas e fumaça em atmosfera vitoriana.', 
-    formula: 'Steampunk industrial aesthetic, Victorian copper and brass clockwork gears, glowing bronze pressure meters, steam vents, sepia atmospheric lighting, vertical 9:16.'
+    desc: 'Mecânicas vitorianas de bronze e cobre polido, medidores de pressão a vapor e iluminação sépia.', 
+    formula: 'steampunk Victorian industrial screenshot. Polished copper and physical brass clockwork gears, glowing bronze pressure gauges, steam pipes, warm sepia lighting, vertical 9:16.'
   },
   { 
     id: 'thermal', 
     category: 'Efeitos & Retro-Future',
     emoji: '🌡️',
     label: 'Câmera Térmica / Infravermelho', 
-    desc: 'Cores de assinatura de calor, do azul frio ao amarelo e vermelho incandescente.', 
-    formula: 'Thermal imaging camera filter style, infrared heat signature map, glowing hot red and orange zones, warm yellow contours, deep cold blue and purple background shadows, vertical 9:16.'
+    desc: 'Mapa de radiação de calor científico, do azul glacial profundo ao amarelo incandescente.', 
+    formula: 'thermal infrared camera screenshot. Heat signature color map (blue cold to red hot), glowing thermal contours, scientific imaging aesthetic, vertical 9:16.'
   },
   { 
     id: 'holomap', 
     category: 'Efeitos & Retro-Future',
     emoji: '🌐',
     label: 'Projeção Holográfica 3D', 
-    desc: 'Grade de feixes azuis translúcidos, scanlines e pontos de dados flutuantes.', 
-    formula: 'Translucent blue glowing 3D holographic projection, digital matrix scanlines, floating glowing wireframes and data nodes, high-tech interface design, vertical 9:16.'
+    desc: 'Interface flutuante translúcida de feixes azuis com scanlines digitais e scan-blooms.', 
+    formula: 'translucent blue 3D holographic projection screenshot. Glowing digital matrix scanlines, floating wireframe data nodes, high-tech interface, glowing light blooms in dark rooms, vertical 9:16.'
   },
   { 
     id: 'chalk', 
     category: 'Efeitos & Retro-Future',
     emoji: '🖍️',
     label: 'Lousa de Giz Escolar', 
-    desc: 'Desenho feito a giz colorido em quadro negro clássico com textura apagada.', 
-    formula: 'Chalkboard drawings style, colorful dusty chalk sketches on a textured black slate chalkboard, chalk dust smudges, raw hand-crafted artistic chalkboard feel, vertical 9:16.'
+    desc: 'Traços dusty de giz colorido e esfumaçados manuais sobre textura clássica de ardósia.', 
+    formula: 'hand-drawn blackboard chalk sketch. Colorful dusty chalk lines on highly textured black slate chalkboard, chalk dust smudges, raw handmade feel, vertical 9:16.'
   },
   { 
     id: 'blueprint', 
     category: 'Efeitos & Retro-Future',
     emoji: '🗺️',
     label: 'Cópia Heliográfica / Blueprint', 
-    desc: 'Desenhos técnicos de engenharia em azul com linhas de giz e notas de projeto.', 
-    formula: 'Architectural blueprint style, technical white chalk draft lines on deep cyan blueprint grid paper, handwritten engineering notes and measurements, vertical 9:16.'
+    desc: 'Desenho de engenharia técnico em azul heliográfico com notas manuscritas e medidas.', 
+    formula: 'heliographic blueprint draft drawing. Clean white chalk technical draft lines on deep cyan blue engineering grid paper, hand-written technical notes, vertical 9:16.'
   }
 ];
 
