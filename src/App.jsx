@@ -33,7 +33,8 @@ function App() {
     toggleFavorite,
     loadSavedItem,
     randomize,
-    clearFields
+    clearFields,
+    applyPreset
   } = useGenerator();
 
   const isFavorite = favorites.some(f => f.prompt === generatedPrompt);
@@ -101,6 +102,7 @@ function App() {
                         onAddSuggestion={addSuggestion}
                         onRandomize={randomize}
                         onClear={clearFields}
+                        onApplyPreset={applyPreset}
                       />
                     </GlassCard>
                   )}
@@ -119,6 +121,8 @@ function App() {
                     values: formValues,
                     prompt: generatedPrompt
                   })}
+                  formValues={formValues}
+                  currentModeId={currentModeId}
                 />
               </div>
             )}

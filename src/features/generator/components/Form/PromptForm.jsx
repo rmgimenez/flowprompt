@@ -2,6 +2,7 @@ import React, { useMemo, useState, useEffect } from 'react';
 import styles from './PromptForm.module.css';
 import { Wand2, Eraser, MessageSquare, Volume2, VolumeX, Sparkles, Check, History, Settings, Camera, User, HelpCircle } from 'lucide-react';
 import { clsx } from 'clsx';
+import TemplateSelector from './TemplateSelector';
 
 const VIRAL_PROMPTS = {
   'video-from-frames': {
@@ -234,143 +235,16 @@ const VIRAL_PROMPTS = {
   }
 };
 
-const PRESETS = {
-  'video-new': [
-    {
-      name: 'Cinema Épico (Veo 3.1)',
-      emoji: '🎬',
-      desc: 'Widescreen cinemático com iluminação dramática e movimentos lentos.',
-      fields: {
-        scene_summary: 'Astronauta descobrindo ruínas bioluminescentes em planeta distante.',
-        cinematography: 'Cinematic slow push-in, wide focal length 18mm, aperture f/4.0, gimbal dolly camera',
-        subject: 'brave explorer astronaut in glowing space suit exploring the caves',
-        action: 'pointing their hand-held lights scanner at ancient glowing alien walls',
-        context: 'gritty bioluminescent cavern on a desert planet, volumetric dust particles, reflections',
-        style_ambiance: 'Epic and grand cinematic lighting, warm golden accents, dark blue atmospheric shadows'
-      }
-    },
-    {
-      name: 'Vlog Viral TikTok',
-      emoji: '🤳',
-      desc: 'Câmera na mão, comédia e falas com dublagem enérgica.',
-      fields: {
-        scene_summary: 'Vlog engraçado de frutas conversando de forma dinâmica no balcão.',
-        cinematography: 'Handheld camera with natural jitter, fast orbit, close-up framing, active visual hooks',
-        subject: 'energetic cartoon strawberry talking excitedly to camera',
-        action: 'jumping and screaming while looking directly at camera',
-        context: 'modern clean kitchen counter, dynamic warm sunlight coming from window',
-        style_ambiance: 'Vibrant, high saturated colors, professional stream lighting, warm golden tones',
-        characters_definition: [
-          { name: 'morango', appearance: 'cute red fruit character with strawberry face', clothing: 'tiny white leaf collar', motion: 'high_energy_expressive', voice: 'sweet high-pitched voice' },
-          { name: 'abacaxi', appearance: 'relaxed yellow fruit character with pineapple crown', clothing: 'sunglasses and tropical shirt', motion: 'composed_natural', voice: 'calm deep laidback voice' }
-        ],
-        dialogue: '[morango] (excited): [E aí abacaxi! Você viu que o chef comprou um liquidificador novo?!]\n[abacaxi] (calmo): [Sim morango... relaxa aí, não entra em pânico não...]\n[morango] (rindo): [hahaha corrreeeee!]'
-      }
-    },
-    {
-      name: 'Cyberpunk Neon',
-      emoji: '🕶️',
-      desc: 'Ruas molhadas, luzes neon de alta fidelidade e câmera lenta.',
-      fields: {
-        scene_summary: 'Guerreiro caminhando por rua cyberpunk chuvosa.',
-        cinematography: 'Gimbal tracking shot, low-angle, slow dolly in, realistic fluid motion',
-        subject: 'mysterious cybernetic street racer wearing oversized glowing cyberpunk leather hoodie',
-        action: 'walking slowly through the rain puddles, steam rising from glowing grates',
-        context: 'neon cyberpunk city street at rain, holographic billboards, reflections on ground',
-        style_ambiance: 'Vibrant Cyberpunk, high contrast neon colors, cool blue and magenta grading'
-      }
-    }
-  ],
-  'photo-new': [
-    {
-      name: 'Estúdio Profissional (Banana 2)',
-      emoji: '📸',
-      desc: 'Fotografia com nitidez extrema e desfoque profissional.',
-      fields: {
-        subject: 'charismatic cyberpunk model with glowing tattoos and silver hair',
-        action: 'looking directly at camera, posing with confident expression',
-        context: 'professional photography studio, minimalist dark grey backdrop, soft fill light',
-        composition: 'close-up shot, shallow depth of field, 85mm f/1.4 lens, portrait lighting',
-        style: 'professional studio photography, ultra-realistic textures, grainy analog film look, sharp focus, 8k resolution'
-      }
-    },
-    {
-      name: 'Estilo Anime Ghibli',
-      emoji: '🍃',
-      desc: 'Aquarela pintada à mão e cores mágicas vibrantes.',
-      fields: {
-        subject: 'cute samurai cat holding a miniature glowing katana sword',
-        action: 'sitting peacefully on a mossy stone under a cherry blossom tree',
-        context: 'lush green floating fantasy island, glowing pink flower petals falling around',
-        composition: 'cinematic wide establishing shot, panoramic beautiful scale',
-        style: 'Studio Ghibli style, hand-drawn anime illustration, vintage watercolor textures, soft sun rays'
-      }
-    },
-    {
-      name: 'Vetor Minimalista',
-      emoji: '🍦',
-      desc: 'Ilustração moderna com tons pastel suaves.',
-      fields: {
-        subject: 'cute robot character with big glowing blue digital eyes',
-        action: 'holding a tiny digital flower pot smiling',
-        context: 'dreamy clean workspace, simple flat color elements, minimal bright background',
-        composition: 'symmetrical eye-level composition, aesthetic flat layout',
-        style: 'modern vector illustration, pastel tones, minimalist flat color, clean line art, high aesthetic'
-      }
-    }
-  ],
-  'photo-transform': [
-    {
-      name: 'Estilo Os Simpsons',
-      emoji: '🍩',
-      desc: 'Transforme o sujeito em um personagem amarelo clássico de Os Simpsons.',
-      fields: {
-        relationship: 'The Simpsons cartoon style, classic yellow skin, iconic bold outlines, animated screen aesthetic',
-        new_scenario: 'in front of the iconic Simpsons house in Springfield, sunny day, cartoon clouds'
-      }
-    },
-    {
-      name: 'Estilo Pixar 3D',
-      emoji: '🧸',
-      desc: 'Transforme em uma animação 3D premium com iluminação suave.',
-      fields: {
-        relationship: '3D Pixar animation style, adorable features, highly detailed fabric and hair textures, raytraced render',
-        new_scenario: 'inside a cozy warm kids playroom, toys in the background, soft warm lighting'
-      }
-    },
-    {
-      name: 'Guerreiro Cyberpunk',
-      emoji: '🏮',
-      desc: 'Aplica um traje cibernético e iluminação neon.',
-      fields: {
-        relationship: 'Cyberpunk 2077 aesthetic, cybernetic warrior details, neon holographic visor, high tech plates',
-        new_scenario: 'on a rainy street in Neo-Tokyo, giant glowing hologram billboards, wet ground reflections'
-      }
-    }
-  ]
-};
+// Templates are now imported from constants/templates.js for a curated library
 
-const PromptForm = ({ currentModeId, fields, values, onUpdate, onAddSuggestion, onRandomize, onClear }) => {
+const PromptForm = ({ currentModeId, fields, values, onUpdate, onAddSuggestion, onRandomize, onClear, onApplyPreset }) => {
   const [copiedSpeech, setCopiedSpeech] = useState(false);
   const [copiedSfx, setCopiedSfx] = useState(false);
   const [copiedSilent, setCopiedSilent] = useState(false);
   const [copiedRestore, setCopiedRestore] = useState(false);
   const [activeTab, setActiveTab] = useState('principal');
 
-  // Load Presets based on exact mode ID or fallback to general type
-  const availablePresets = useMemo(() => {
-    if (PRESETS[currentModeId]) {
-      return PRESETS[currentModeId];
-    }
-    // Fallbacks
-    if (currentModeId.startsWith('video-')) {
-      return PRESETS['video-new'];
-    }
-    if (currentModeId.startsWith('photo-')) {
-      return PRESETS['photo-new'];
-    }
-    return null;
-  }, [currentModeId]);
+
 
   // Filter categories dynamically based on fields actually present in current mode
   const availableTabs = useMemo(() => {
@@ -399,13 +273,7 @@ const PromptForm = ({ currentModeId, fields, values, onUpdate, onAddSuggestion, 
   }, [availableTabs, activeTab]);
 
   const handleApplyPreset = (preset) => {
-    onClear();
-    // Batch updates to avoid visual lag
-    setTimeout(() => {
-      Object.entries(preset.fields).forEach(([key, val]) => {
-        onUpdate(key, val);
-      });
-    }, 50);
+    onApplyPreset(preset);
   };
 
   const handleCopyAuxPrompt = (type) => {
@@ -535,26 +403,11 @@ const PromptForm = ({ currentModeId, fields, values, onUpdate, onAddSuggestion, 
         </div>
       </div>
 
-      {/* Presets Rápidos */}
-      {availablePresets && (
-        <div className={styles.presetsContainer}>
-          <span className={styles.presetsLabel}>Estilos Rápidos:</span>
-          <div className={styles.presetsGrid}>
-            {availablePresets.map((preset) => (
-              <button
-                key={preset.name}
-                type="button"
-                className={styles.presetBtn}
-                onClick={() => handleApplyPreset(preset)}
-                title={preset.desc}
-              >
-                <span className={styles.presetEmoji}>{preset.emoji}</span>
-                <span className={styles.presetName}>{preset.name}</span>
-              </button>
-            ))}
-          </div>
-        </div>
-      )}
+      {/* Biblioteca de Templates Curados */}
+      <TemplateSelector 
+        currentModeId={currentModeId} 
+        onSelectTemplate={handleApplyPreset} 
+      />
 
       {/* Abas de Configuração */}
       <div className={styles.tabsContainer}>

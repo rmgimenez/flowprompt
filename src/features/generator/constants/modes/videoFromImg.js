@@ -82,7 +82,8 @@ export const videoFromImg = {
       placeholder: 'Ex: O cabelo da guerreira voa ao vento enquanto as folhas caem ao redor',
       type: 'text',
       suggestions: [
-        { label: 'Exemplo Vento', value: 'O cabelo longo do guerreiro e suas vestes balançam suavemente com um vento forte da montanha.' }
+        { label: 'Exemplo Vento', value: 'O cabelo longo do guerreiro e suas vestes balançam suavemente com um vento forte da montanha.' },
+        { label: 'Dança em Loop', value: 'Personagem dança de forma super expressiva e dinâmica, retornando suavemente à pose inicial em um loop contínuo.' }
       ]
     },
     { 
@@ -108,6 +109,7 @@ export const videoFromImg = {
       placeholder: 'Ex: Zoom suave', 
       type: 'text', 
       suggestions: [
+        { label: 'Zoom Pulsante no Ritmo', value: 'Static camera with subtle zoom pulsing in and out matching the musical beat' },
         { label: 'Panorâmica Direita', value: 'Slow Pan Right' }, 
         { label: 'Panorâmica Esquerda', value: 'Slow Pan Left' }, 
         { label: 'Dolly Zoom', value: 'Dolly Zoom' }, 
@@ -136,6 +138,7 @@ export const videoFromImg = {
       placeholder: 'Ex: Som de vento', 
       type: 'text', 
       suggestions: [
+        { label: 'Música Eletrônica (Loop)', value: 'SFX: Upbeat electronic dance music loop with deep bass' },
         { label: 'Sem Som', value: 'no audio' }, 
         { label: 'Som de Trovão', value: 'SFX: Thunder cracks' }, 
         { label: 'Som de Chuva', value: 'SFX: Rain falling' }, 
@@ -164,6 +167,7 @@ export const videoFromImg = {
       placeholder: 'Ex: nuvens se movem', 
       type: 'textarea', 
       suggestions: [
+        { label: 'Dança em Loop Perfeito', value: 'performing a dynamic dance style, smoothly returning to the exact initial pose in the final frames to create a flawless seamless loop' },
         { label: 'cabelo ao vento', value: 'hair blowing in the wind' }, 
         { label: 'mudança de luz', value: 'cinematic lighting shift' }, 
         { label: 'água escorrendo', value: 'water flowing' }, 

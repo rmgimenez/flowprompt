@@ -138,6 +138,20 @@ export const useGenerator = (initialMode = 'video-new') => {
     setFormValues(initialValues);
   };
 
+  const applyPreset = useCallback((preset) => {
+    if (!preset || !preset.fields) return;
+    const newValues = {};
+    if (currentMode.fields) {
+      currentMode.fields.forEach(field => {
+        newValues[field.id] = field.type === 'characters-table' ? [] : '';
+      });
+    }
+    Object.entries(preset.fields).forEach(([key, val]) => {
+      newValues[key] = val;
+    });
+    setFormValues(newValues);
+  }, [currentMode]);
+
   return {
     currentMode,
     currentModeId,
@@ -153,6 +167,7 @@ export const useGenerator = (initialMode = 'video-new') => {
     toggleFavorite,
     loadSavedItem,
     randomize,
-    clearFields
+    clearFields,
+    applyPreset
   };
 };

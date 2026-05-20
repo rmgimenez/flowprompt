@@ -90,6 +90,129 @@
   color: #fff;
 }
 
+/* Quality Score Section */
+.scoreSection {
+  margin-bottom: 1.25rem;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 14px;
+  padding: 0.75rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  animation: fadeInScore 0.4s ease;
+}
+
+@keyframes fadeInScore {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.scoreHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  width: 100%;
+  font-family: inherit;
+}
+
+.scoreLeft {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.scoreLabel {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.5);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.scoreRight {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.scoreValue {
+  font-size: 0.9rem;
+  font-weight: 800;
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+}
+
+.scoreBadge {
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 0.15rem 0.5rem;
+  border-radius: 100px;
+  border: 1px solid;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.scoreToggleIcon {
+  transition: transform 0.3s ease;
+  opacity: 0.7;
+}
+
+.scoreToggleIconOpen {
+  transform: rotate(180deg);
+}
+
+.scoreBarBg {
+  width: 100%;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 100px;
+  overflow: hidden;
+}
+
+.scoreBarFill {
+  height: 100%;
+  border-radius: 100px;
+  transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.scoreTips {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-top: 0.25rem;
+  animation: fadeInTips 0.3s ease;
+}
+
+@keyframes fadeInTips {
+  from { opacity: 0; transform: translateY(-2px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.scoreTipItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.scoreTipDot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  margin-top: 0.4rem;
+  flex-shrink: 0;
+  opacity: 0.8;
+}
+
+.scoreTipText {
+  font-size: 0.78rem;
+  color: rgba(255, 255, 255, 0.55);
+  line-height: 1.4;
+}
+
 .promptArea {
   background: rgba(0, 0, 0, 0.2);
   border: 1px solid rgba(0, 229, 255, 0.1);
