@@ -65,12 +65,24 @@
   justify-content: space-between;
 }
 
-/* Selectors layout - vertical stack for high readability */
+/* Selectors layout - dual column grid for maximum space efficiency and readability */
 .selectorsGrid {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: 1.25rem;
   width: 100%;
+  margin-bottom: 1.25rem;
+}
+
+.selectorsGrid .controlGroup {
+  margin-bottom: 0;
+}
+
+@media (max-width: 600px) {
+  .selectorsGrid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
 }
 
 .inputField,

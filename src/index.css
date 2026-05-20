@@ -37,6 +37,10 @@ body {
   padding: 2rem;
 }
 
+.p-6 {
+  padding: 1.5rem;
+}
+
 .mobile-header {
   display: none;
 }
