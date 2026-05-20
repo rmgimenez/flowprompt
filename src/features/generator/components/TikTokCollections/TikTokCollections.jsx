@@ -1409,14 +1409,10 @@ Cada uma das ${quantity} imagens deve ter seu próprio bloco de código contendo
             if (data.selectedTarget !== undefined) setSelectedTarget(data.selectedTarget);
             if (data.selectedVibe !== undefined) setSelectedVibe(data.selectedVibe);
             if (data.selectedColors !== undefined) setSelectedColors(data.selectedColors);
-            if (data.portugueseText !== undefined) {
-              setPortugueseText(
-                data.portugueseText === 'Sim' || 
-                data.portugueseText === 'yes' || 
-                data.portugueseText === true || 
-                data.portugueseText === 'true'
-              );
-            }
+            
+            // Sempre forçar textos das imagens em português marcado ao preencher com IA
+            setPortugueseText(true);
+            
             if (data.notes !== undefined) setNotes(data.notes);
           }
         }}
@@ -1449,7 +1445,10 @@ Cada uma das ${quantity} imagens deve ter seu próprio bloco de código contendo
       <button
         type="button"
         className="ai-fab-btn"
-        onClick={() => setIsAIModalOpen(true)}
+        onClick={() => {
+          setIsAIModalOpen(true);
+          setPortugueseText(true);
+        }}
         title="Preencher com Inteligência Artificial"
       >
         <Sparkles size={18} />
