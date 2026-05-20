@@ -2,11 +2,51 @@ import React, { useState } from 'react';
 import { 
   Play, Image, Camera, Sparkles, Info, Wand2, 
   History, Star, LayoutGrid, Copy, RotateCcw, Check,
-  Layers, X, Folders
+  Layers, X, Folders, Film, Palette, Wrench, Zap
 } from 'lucide-react';
 import { clsx } from 'clsx';
 import styles from './Sidebar.module.css';
 import { MODES } from '../../constants/modes';
+import { TEMPLATES } from '../../constants/templates';
+
+const MODE_CATEGORIES = [
+  {
+    id: 'video',
+    label: 'Vídeo',
+    icon: Film,
+    color: '#3d5afe',
+    items: [
+      { id: 'video-from-frames', label: 'Interpolação (2 Frames)', icon: Wand2 },
+      { id: 'video-new', label: 'Vídeo Novo', icon: Play },
+      { id: 'video-from-img', label: 'Vídeo de Imagem', icon: Image },
+    ]
+  },
+  {
+    id: 'photo',
+    label: 'Foto',
+    icon: Palette,
+    color: '#00c853',
+    items: [
+      { id: 'photo-new', label: 'Foto Nova', icon: Camera },
+      { id: 'photo-transform', label: 'Transformar Foto', icon: Sparkles },
+    ]
+  },
+  {
+    id: 'tools',
+    label: 'Ferramentas',
+    icon: Wrench,
+    color: '#ff6d00',
+    items: [
+      { id: 'tiktok-collections', label: 'Coleção TikTok', icon: Folders },
+      { id: 'image-stacker', label: 'Empilhador Pinterest', icon: Layers },
+      { id: 'photo-montage', label: 'Montagem de Fotos', icon: LayoutGrid },
+    ]
+  },
+];
+
+const FOOTER_ITEMS = [
+  { id: 'about', label: 'Sobre a Ferramenta', icon: Info },
+];
 
 const SavedItem = ({ item, onToggleFavorite, onLoadItem, onClose }) => {
   const mode = MODES[item.modeId] || { title: 'Desconhecido' };
@@ -53,6 +93,29 @@ const SavedItem = ({ item, onToggleFavorite, onLoadItem, onClose }) => {
   );
 };
 
+const ModeItem = ({ item, currentModeId, onModeChange, onClose, hasTemplates }) => {
+  const Icon = item.icon;
+  const isActive = currentModeId === item.id;
+
+  return (
+    <button
+      className={clsx(styles.navLink, isActive && styles.active)}
+      onClick={() => {
+        onModeChange(item.id);
+        if (onClose) onClose();
+      }}
+    >
+      <Icon size={20} className={styles.icon} />
+      <span className={styles.linkLabel}>{item.label}</span>
+      {hasTemplates && (
+        <span className={styles.templateBadge} title="Templates disponíveis">
+          <Zap size={10} />
+        </span>
+      )}
+    </button>
+  );
+};
+
 const Sidebar = ({ 
   currentModeId, 
   onModeChange, 
@@ -63,28 +126,21 @@ const Sidebar = ({
   isOpen,
   onClose
 }) => {
-  const [activeTab, setActiveTab] = useState('modes'); // 'modes', 'history', 'favorites'
+  const [activeTab, setActiveTab] = useState('modes');
+  const [collapsedCategories, setCollapsedCategories] = useState({});
 
-  const menuItems = [
-    { id: 'video-from-frames', label: 'Interpolação (2 Frames)', icon: Wand2 },
-    { id: 'video-new', label: 'Vídeo Novo', icon: Play },
-    { id: 'video-from-img', label: 'Vídeo de Imagem', icon: Image },
-    { id: 'photo-new', label: 'Foto Nova', icon: Camera },
-    { id: 'photo-transform', label: 'Transformar Foto', icon: Sparkles },
-    { id: 'tiktok-collections', label: 'Coleção TikTok', icon: Folders },
-    { id: 'image-stacker', label: 'Empilhador Pinterest', icon: Layers },
-    { id: 'photo-montage', label: 'Montagem de Fotos', icon: LayoutGrid },
-    { id: 'divider', isDivider: true },
-    { id: 'about', label: 'Sobre a Ferramenta', icon: Info },
-  ];
+  const toggleCategory = (categoryId) => {
+    setCollapsedCategories(prev => ({
+      ...prev,
+      [categoryId]: !prev[categoryId]
+    }));
+  };
 
   return (
     <>
-      {/* Backdrop overlay for mobile drawer */}
       {isOpen && <div className={styles.backdrop} onClick={onClose} />}
 
       <aside className={clsx(styles.sidebar, isOpen && styles.sidebarOpen)}>
-        {/* Mobile close button */}
         <button className={styles.closeBtn} onClick={onClose} aria-label="Fechar menu">
           <X size={20} />
         </button>
@@ -123,11 +179,45 @@ const Sidebar = ({
       <div className={styles.scrollArea}>
         {activeTab === 'modes' && (
           <nav className={styles.nav}>
-            {menuItems.map((item, index) => {
-              if (item.isDivider) {
-                return <hr key={`divider-${index}`} className={styles.divider} />;
-              }
+            {MODE_CATEGORIES.map((category) => {
+              const CategoryIcon = category.icon;
+              const isCollapsed = collapsedCategories[category.id];
 
+              return (
+                <div key={category.id} className={styles.categoryGroup}>
+                  <button
+                    className={styles.categoryHeader}
+                    onClick={() => toggleCategory(category.id)}
+                    style={{ '--category-color': category.color }}
+                  >
+                    <div className={styles.categoryHeaderLeft}>
+                      <CategoryIcon size={14} className={styles.categoryIcon} />
+                      <span className={styles.categoryLabel}>{category.label}</span>
+                    </div>
+                    <span className={clsx(styles.categoryToggle, isCollapsed && styles.categoryToggleCollapsed)}>
+                      ▾
+                    </span>
+                  </button>
+
+                  <div className={clsx(styles.categoryItems, isCollapsed && styles.categoryItemsCollapsed)}>
+                    {category.items.map((item) => (
+                      <ModeItem
+                        key={item.id}
+                        item={item}
+                        currentModeId={currentModeId}
+                        onModeChange={onModeChange}
+                        onClose={onClose}
+                        hasTemplates={!!TEMPLATES[item.id]}
+                      />
+                    ))}
+                  </div>
+                </div>
+              );
+            })}
+
+            <div className={styles.divider} />
+
+            {FOOTER_ITEMS.map((item) => {
               const Icon = item.icon;
               return (
                 <button
@@ -188,6 +278,14 @@ const Sidebar = ({
       <div className={styles.footer}>
         <div className={styles.helpCard}>
           <p className={styles.helpText}>Baseado no guia oficial do Google Flow.</p>
+          <div className={styles.shortcutHint}>
+            <span>Navegar modos</span>
+            <span className={styles.shortcutKey}>1-9</span>
+          </div>
+          <div className={styles.shortcutHint}>
+            <span>Copiar prompt</span>
+            <span className={styles.shortcutKey}>Ctrl+C</span>
+          </div>
         </div>
       </div>
     </aside>
