@@ -1,12 +1,14 @@
 import { useState, useEffect, useMemo } from 'react';
 import { GlassCard } from '../../../../components/ui/GlassCard';
 import { 
-  Sparkles, Folders, Copy, Check, RotateCcw, Shuffle, Info
+  Sparkles, Folders, Copy, Check, RotateCcw, Shuffle, Info, History, X, Trash2
 } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 import styles from './TikTokCollections.module.css';
 import AIModal from '../Form/AIModal';
 import { TikTokDrawer } from './TikTokDrawer';
 import { TikTokGuide } from './TikTokGuide';
+import { useTikTokHistory } from './useTikTokHistory';
 import {
   STYLE_PRESETS,
   VIBE_PRESETS,
@@ -34,6 +36,11 @@ export const TikTokCollections = () => {
   const [activePresetId, setActivePresetId] = useState(null);
   const [isAIModalOpen, setIsAIModalOpen] = useState(false);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [isHistoryModalOpen, setIsHistoryModalOpen] = useState(false);
+  const [selectedHistoryItem, setSelectedHistoryItem] = useState(null);
+  const [currentAIPrompt, setCurrentAIPrompt] = useState('');
+  
+  const { history, saveToHistory, deleteHistoryItem, clearHistory, loadFromHistory } = useTikTokHistory();
 
   // Sincroniza o preset selecionado com os campos individuais. Se o usuário mudar manualmente algum campo, limpa o preset ativo.
   useEffect(() => {
@@ -83,6 +90,19 @@ export const TikTokCollections = () => {
     if (!generatedPrompt) return;
     navigator.clipboard.writeText(generatedPrompt);
     setCopied(true);
+    saveToHistory({
+      theme,
+      quantity,
+      selectedStyle,
+      selectedVibe,
+      selectedColors,
+      selectedTarget,
+      notes,
+      portugueseText,
+      generatedPrompt,
+      aiPrompt: currentAIPrompt || null
+    });
+    setCurrentAIPrompt('');
     setTimeout(() => setCopied(false), 2000);
   };
 
@@ -417,7 +437,8 @@ export const TikTokCollections = () => {
         onClose={() => setIsAIModalOpen(false)}
         fields={TIKTOK_FIELDS}
         currentModeTitle="Configuração da Coleção TikTok"
-        onSuccess={(data) => {
+        onSuccess={(data, aiPrompt) => {
+          setCurrentAIPrompt(aiPrompt);
           if (data && typeof data === 'object') {
             // Wipes previous form state clean
             setTheme('');
@@ -481,6 +502,241 @@ export const TikTokCollections = () => {
         <Sparkles size={18} />
         <span>Preencher com IA</span>
       </button>
+
+      <button
+        type="button"
+        className={styles.historyFabBtn}
+        onClick={() => setIsHistoryModalOpen(true)}
+        title="Ver Histórico de Gerações"
+      >
+        <History size={18} />
+        <span>Histórico</span>
+      </button>
+
+      {/* History Modal */}
+      <AnimatePresence>
+        {isHistoryModalOpen && (
+          <div className={styles.historyModalOverlay}>
+            <motion.div
+              className={styles.historyModalBackdrop}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => {
+                setIsHistoryModalOpen(false);
+                setSelectedHistoryItem(null);
+              }}
+            />
+            <motion.div
+              className={styles.historyModalContent}
+              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 20 }}
+              transition={{ type: 'spring', damping: 25, stiffness: 350 }}
+            >
+              <div className={styles.historyModalHeader}>
+                <div className={styles.historyModalTitle}>
+                  <History size={20} />
+                  <h3>Histórico de Gerações</h3>
+                </div>
+                <button
+                  type="button"
+                  className={styles.historyModalCloseBtn}
+                  onClick={() => {
+                    setIsHistoryModalOpen(false);
+                    setSelectedHistoryItem(null);
+                  }}
+                >
+                  <X size={18} />
+                </button>
+              </div>
+
+              {history.length === 0 ? (
+                <div className={styles.historyEmptyState}>
+                  <History size={48} className={styles.historyEmptyIcon} />
+                  <p>Nenhum histórico encontrado</p>
+                  <span>As gerações aparecerão aqui quando você copiar o prompt</span>
+                </div>
+              ) : (
+                <div className={styles.historyModalBody}>
+                  {selectedHistoryItem ? (
+                    <div className={styles.historyDetailView}>
+                      <button
+                        type="button"
+                        className={styles.historyBackBtn}
+                        onClick={() => setSelectedHistoryItem(null)}
+                      >
+                        ← Voltar à lista
+                      </button>
+                      <div className={styles.historyDetailContent}>
+                        <div className={styles.historyDetailHeader}>
+                          <h4>Detalhes da Geração</h4>
+                          <span className={styles.historyDetailDate}>
+                            {new Date(selectedHistoryItem.timestamp).toLocaleString('pt-BR')}
+                          </span>
+                        </div>
+                        
+                        <div className={styles.historyDetailGrid}>
+                          <div className={styles.historyDetailItem}>
+                            <label>Tema</label>
+                            <span>{selectedHistoryItem.theme || '-'}</span>
+                          </div>
+                          <div className={styles.historyDetailItem}>
+                            <label>Quantidade</label>
+                            <span>{selectedHistoryItem.quantity}</span>
+                          </div>
+                          <div className={styles.historyDetailItem}>
+                            <label>Estilo</label>
+                            <span>{selectedHistoryItem.selectedStyle}</span>
+                          </div>
+                          <div className={styles.historyDetailItem}>
+                            <label>Vibe</label>
+                            <span>{selectedHistoryItem.selectedVibe}</span>
+                          </div>
+                          <div className={styles.historyDetailItem}>
+                            <label>Cores</label>
+                            <span>{selectedHistoryItem.selectedColors}</span>
+                          </div>
+                          <div className={styles.historyDetailItem}>
+                            <label>Público-Alvo</label>
+                            <span>{selectedHistoryItem.selectedTarget}</span>
+                          </div>
+                          <div className={styles.historyDetailItem}>
+                            <label>Texto em Português</label>
+                            <span>{selectedHistoryItem.portugueseText ? 'Sim' : 'Não'}</span>
+                          </div>
+                          <div className={styles.historyDetailItem}>
+                            <label>Gerado por IA</label>
+                            <span>{selectedHistoryItem.isFromAI ? 'Sim' : 'Não'}</span>
+                          </div>
+                        </div>
+
+                        {selectedHistoryItem.aiPrompt && (
+                          <div className={styles.historyDetailFull}>
+                            <label>Prompt para IA</label>
+                            <div className={styles.historyPromptBox}>
+                              {selectedHistoryItem.aiPrompt}
+                            </div>
+                          </div>
+                        )}
+
+                        {selectedHistoryItem.notes && (
+                          <div className={styles.historyDetailFull}>
+                            <label>Observações</label>
+                            <span>{selectedHistoryItem.notes}</span>
+                          </div>
+                        )}
+
+                        <div className={styles.historyDetailFull}>
+                          <label>Prompt Gerado</label>
+                          <pre className={styles.historyPromptBox}>
+                            {selectedHistoryItem.generatedPrompt}
+                          </pre>
+                        </div>
+
+                        <div className={styles.historyDetailActions}>
+                          <button
+                            type="button"
+                            className={styles.historyLoadBtn}
+                            onClick={() => {
+                              const data = loadFromHistory(selectedHistoryItem);
+                              setTheme(data.theme);
+                              setQuantity(data.quantity);
+                              setSelectedStyle(data.selectedStyle);
+                              setSelectedVibe(data.selectedVibe);
+                              setSelectedColors(data.selectedColors);
+                              setSelectedTarget(data.selectedTarget);
+                              setNotes(data.notes);
+                              setPortugueseText(data.portugueseText);
+                              setActivePresetId(null);
+                              setCurrentAIPrompt(selectedHistoryItem.aiPrompt || '');
+                              setIsHistoryModalOpen(false);
+                              setSelectedHistoryItem(null);
+                            }}
+                          >
+                            <Sparkles size={16} />
+                            Usar esta Configuração
+                          </button>
+                          <button
+                            type="button"
+                            className={styles.historyDeleteBtn}
+                            onClick={() => {
+                              deleteHistoryItem(selectedHistoryItem.id);
+                              setSelectedHistoryItem(null);
+                            }}
+                          >
+                            <Trash2 size={16} />
+                            Excluir
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className={styles.historyList}>
+                      {history.map((item) => (
+                        <div
+                          key={item.id}
+                          className={styles.historyItem}
+                          onClick={() => setSelectedHistoryItem(item)}
+                        >
+                          <div className={styles.historyItemInfo}>
+                            <span className={styles.historyItemTheme}>{item.theme || 'Sem tema'}</span>
+                            <span className={styles.historyItemDate}>
+                              {new Date(item.timestamp).toLocaleString('pt-BR', {
+                                day: '2-digit',
+                                month: '2-digit',
+                                year: 'numeric',
+                                hour: '2-digit',
+                                minute: '2-digit'
+                              })}
+                            </span>
+                          </div>
+                          <div className={styles.historyItemMeta}>
+                            <span className={styles.historyItemQty}>{item.quantity} imgs</span>
+                            {item.isFromAI && (
+                              <span className={styles.historyItemAI}>🤖 IA</span>
+                            )}
+                            <button
+                              type="button"
+                              className={styles.historyItemDeleteBtn}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                if (window.confirm('Excluir este item do histórico?')) {
+                                  deleteHistoryItem(item.id);
+                                }
+                              }}
+                              title="Excluir item"
+                            >
+                              <Trash2 size={14} />
+                            </button>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {history.length > 0 && !selectedHistoryItem && (
+                <div className={styles.historyModalFooter}>
+                  <button
+                    type="button"
+                    className={styles.historyClearBtn}
+                    onClick={() => {
+                      if (window.confirm('Tem certeza que deseja limpar todo o histórico?')) {
+                        clearHistory();
+                      }
+                    }}
+                  >
+                    <Trash2 size={16} />
+                    Limpar Todo Histórico
+                  </button>
+                </div>
+              )}
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };

@@ -18,7 +18,7 @@ const AIModal = ({ isOpen, onClose, fields, currentModeTitle, onSuccess }) => {
 
     try {
       const data = await fillFormWithAI(promptText, fields, currentModeTitle);
-      onSuccess(data);
+      onSuccess(data, promptText);
       setPromptText('');
       onClose();
     } catch (err) {
