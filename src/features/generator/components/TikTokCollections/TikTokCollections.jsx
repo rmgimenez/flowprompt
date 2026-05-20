@@ -1,12 +1,11 @@
 import { useState, useEffect, useMemo } from 'react';
 import { GlassCard } from '../../../../components/ui/GlassCard';
 import { 
-  Sparkles, Folders, Copy, Check, RotateCcw, Shuffle, Info, History, X, Trash2, BarChart3
+  Sparkles, Folders, Copy, Check, RotateCcw, Shuffle, History, X, Trash2, BarChart3
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import styles from './TikTokCollections.module.css';
 import AIModal from '../Form/AIModal';
-import { TikTokDrawer } from './TikTokDrawer';
 import { TikTokGuide } from './TikTokGuide';
 import { useTikTokHistory } from './useTikTokHistory';
 import { TrendsRadar } from './TrendsRadar';
@@ -39,7 +38,6 @@ export const TikTokCollections = () => {
   const [portugueseText, setPortugueseText] = useState(true);
   const [activePresetId, setActivePresetId] = useState(null);
   const [isAIModalOpen, setIsAIModalOpen] = useState(false);
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isHistoryModalOpen, setIsHistoryModalOpen] = useState(false);
   const [selectedHistoryItem, setSelectedHistoryItem] = useState(null);
   const [currentAIPrompt, setCurrentAIPrompt] = useState('');
@@ -163,34 +161,6 @@ export const TikTokCollections = () => {
             Configuração da Coleção TikTok
           </h3>
 
-          {/* Trends Radar — Temas em Alta */}
-          <TrendsRadar onSelectTheme={(trendTheme) => setTheme(trendTheme)} />
-
-          {/* Presets de Alta Conversão */}
-          <div className={styles.presetsSection}>
-            <span className={styles.presetsSectionLabel}>
-              <Sparkles size={14} style={{ color: '#ec4899' }} />
-              Combos de Alta Conversão (Preenchimento Rápido)
-            </span>
-            <div className={styles.presetsGrid}>
-              {COLLECTION_PRESETS.map((preset) => (
-                <button
-                  key={preset.id}
-                  type="button"
-                  className={`${styles.presetCard} ${activePresetId === preset.id ? styles.presetCardActive : ''}`}
-                  onClick={() => handleSelectPreset(preset)}
-                  title={`Clique para aplicar as configurações recomendadas para ${preset.label}`}
-                >
-                  <span className={styles.presetCardEmoji}>{preset.emoji}</span>
-                  <div className={styles.presetCardContent}>
-                    <span className={styles.presetCardLabel}>{preset.label}</span>
-                    <span className={styles.presetCardDesc}>{preset.desc}</span>
-                  </div>
-                </button>
-              ))}
-            </div>
-          </div>
-
           {/* Tema Principal */}
           <div className={styles.controlGroup}>
             <label htmlFor="themeInput">
@@ -216,9 +186,6 @@ export const TikTokCollections = () => {
               </button>
             </div>
           </div>
-
-          {/* Ganchos Virais para o Slide 1 */}
-          <HookOptimizer theme={theme} />
 
           {/* Quantidade de Imagens (Custom Stepper) */}
           <div className={styles.controlGroup}>
@@ -249,9 +216,8 @@ export const TikTokCollections = () => {
             </div>
           </div>
 
-          {/* Grid de Seleção Dual 1: Estilo e Público-Alvo */}
+          {/* Grid de Seleção Dual 1: Estilo + Paleta de Cores */}
           <div className={styles.selectorsGrid}>
-            {/* Preset de Estilo */}
             <div className={styles.controlGroup}>
               <label htmlFor="styleSelect">Estilo Principal (Fórmula Nano)</label>
               <select 
@@ -272,20 +238,19 @@ export const TikTokCollections = () => {
               </select>
             </div>
 
-            {/* Público-Alvo */}
             <div className={styles.controlGroup}>
-              <label htmlFor="targetSelect">Público-Alvo (Cópia/Roteiro)</label>
+              <label htmlFor="colorSelect">Paleta de Cores (Diretriz Visual)</label>
               <select 
-                id="targetSelect"
+                id="colorSelect"
                 className={styles.selectField}
-                value={selectedTarget}
-                onChange={(e) => setSelectedTarget(e.target.value)}
+                value={selectedColors}
+                onChange={(e) => setSelectedColors(e.target.value)}
               >
-                {Object.entries(groupByCategory(TARGET_PRESETS)).map(([category, items]) => (
+                {Object.entries(groupByCategory(COLOR_PRESETS)).map(([category, items]) => (
                   <optgroup key={category} label={category} className={styles.optGroup}>
                     {items.map(preset => (
-                      <option key={preset.id} value={preset.id} title={preset.desc}>
-                        {preset.emoji ? `${preset.emoji} ` : ''}{preset.label}
+                      <option key={preset.id} value={preset.id} title={preset.value}>
+                        {preset.label}
                       </option>
                     ))}
                   </optgroup>
@@ -294,9 +259,8 @@ export const TikTokCollections = () => {
             </div>
           </div>
 
-          {/* Grid de Seleção Dual 2: Vibe e Paleta de Cores */}
+          {/* Grid de Seleção Dual 2: Tom/Vibe + Público-Alvo */}
           <div className={styles.selectorsGrid}>
-            {/* Tom / Vibe */}
             <div className={styles.controlGroup}>
               <label htmlFor="vibeSelect">Tom / Vibe do Post</label>
               <select 
@@ -317,20 +281,19 @@ export const TikTokCollections = () => {
               </select>
             </div>
 
-            {/* Paleta de Cores */}
             <div className={styles.controlGroup}>
-              <label htmlFor="colorSelect">Paleta de Cores (Diretriz Visual)</label>
+              <label htmlFor="targetSelect">Público-Alvo (Cópia/Roteiro)</label>
               <select 
-                id="colorSelect"
+                id="targetSelect"
                 className={styles.selectField}
-                value={selectedColors}
-                onChange={(e) => setSelectedColors(e.target.value)}
+                value={selectedTarget}
+                onChange={(e) => setSelectedTarget(e.target.value)}
               >
-                {Object.entries(groupByCategory(COLOR_PRESETS)).map(([category, items]) => (
+                {Object.entries(groupByCategory(TARGET_PRESETS)).map(([category, items]) => (
                   <optgroup key={category} label={category} className={styles.optGroup}>
                     {items.map(preset => (
-                      <option key={preset.id} value={preset.id} title={preset.value}>
-                        {preset.label}
+                      <option key={preset.id} value={preset.id} title={preset.desc}>
+                        {preset.emoji ? `${preset.emoji} ` : ''}{preset.label}
                       </option>
                     ))}
                   </optgroup>
@@ -367,6 +330,34 @@ export const TikTokCollections = () => {
             />
           </div>
 
+          {/* Presets de Alta Conversão */}
+          <div className={styles.presetsSection}>
+            <span className={styles.presetsSectionLabel}>
+              <Sparkles size={14} style={{ color: '#ec4899' }} />
+              Combos de Alta Conversão (Preenchimento Rápido)
+            </span>
+            <div className={styles.presetsGrid}>
+              {COLLECTION_PRESETS.map((preset) => (
+                <button
+                  key={preset.id}
+                  type="button"
+                  className={`${styles.presetCard} ${activePresetId === preset.id ? styles.presetCardActive : ''}`}
+                  onClick={() => handleSelectPreset(preset)}
+                  title={`Clique para aplicar as configurações recomendadas para ${preset.label}`}
+                >
+                  <span className={styles.presetCardEmoji}>{preset.emoji}</span>
+                  <div className={styles.presetCardContent}>
+                    <span className={styles.presetCardLabel}>{preset.label}</span>
+                    <span className={styles.presetCardDesc}>{preset.desc}</span>
+                  </div>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Trends Radar — Temas em Alta */}
+          <TrendsRadar onSelectTheme={(trendTheme) => setTheme(trendTheme)} />
+
           {/* Ações Criativas */}
           <div className={styles.actionButtonsRow}>
             <button 
@@ -389,6 +380,11 @@ export const TikTokCollections = () => {
             </button>
           </div>
 
+        </GlassCard>
+      </div>
+
+      <div className={styles.indicatorsColumn}>
+        <GlassCard className="p-6">
           {/* Viral Score — Potencial Viral */}
           <ViralScore
             theme={theme}
@@ -400,58 +396,11 @@ export const TikTokCollections = () => {
             notes={notes}
           />
 
+          {/* Ganchos Virais para o Slide 1 */}
+          <HookOptimizer theme={theme} />
+
           {/* Guia Prático & Dicas de Alta Conversão */}
           <TikTokGuide />
-        </GlassCard>
-      </div>
-
-      {/* Preview e Cópia do Prompt */}
-      <div className={styles.workspaceColumn}>
-        <GlassCard className="p-0 overflow-hidden" style={{ background: 'rgba(10, 10, 18, 0.4)' }}>
-          <div className={styles.editorContainer}>
-            <div className={styles.editorHeader}>
-              <div className={styles.macControls}>
-                <span className={`${styles.macDot} ${styles.macDotRed}`}></span>
-                <span className={`${styles.macDot} ${styles.macDotYellow}`}></span>
-                <span className={`${styles.macDot} ${styles.macDotGreen}`}></span>
-              </div>
-              <div className={styles.editorTab}>
-                <Sparkles size={12} className={styles.tabIcon} style={{ color: '#ec4899' }} />
-                <span className={styles.tabName}>prompt_mestre.md</span>
-              </div>
-              <button 
-                className={`${styles.editorCopyBtn} ${copied ? styles.editorCopySuccess : ''}`}
-                onClick={handleCopy}
-                disabled={!theme.trim()}
-                title={theme.trim() ? "Copiar prompt completo" : "Preencha o tema para habilitar"}
-              >
-                {copied ? <Check size={14} /> : <Copy size={14} />}
-                <span>{copied ? 'Copiado!' : 'Copiar Prompt'}</span>
-              </button>
-            </div>
-
-            {theme.trim() ? (
-              <pre className={styles.outputArea}>{generatedPrompt}</pre>
-            ) : (
-              <div className={styles.emptyState}>
-                <div className={styles.emptyStateIconContainer}>
-                  <Sparkles size={40} className={styles.emptyStateIcon} />
-                </div>
-                <p className={styles.emptyStateText}>
-                  Preencha o **Tema Principal** na coluna esquerda para visualizar o prompt gerado em tempo real.
-                </p>
-              </div>
-            )}
-          </div>
-
-          <div className="p-6 pt-0">
-            <div className={styles.infoBox}>
-              <Info size={16} className={styles.infoIcon} />
-              <p className={styles.infoText}>
-                <strong>Como usar:</strong> Cole o prompt copiado no seu chat de IA. Ele irá gerar a legenda do post e os JSONs individuais de cada imagem prontos em **artefatos separados**. Copie cada JSON gerado e use na <strong>Foto Nova (Nano Banana)</strong> aqui no FlowPrompt para gerar as imagens perfeitas!
-              </p>
-            </div>
-          </div>
         </GlassCard>
       </div>
 
@@ -490,30 +439,6 @@ export const TikTokCollections = () => {
         }}
       />
 
-      {/* TikTok Carrossel Mockup Drawer */}
-      <TikTokDrawer
-        isOpen={isDrawerOpen}
-        onClose={() => setIsDrawerOpen(false)}
-        config={{
-          theme,
-          quantity,
-          selectedStyle,
-          selectedColors
-        }}
-        STYLE_PRESETS={STYLE_PRESETS}
-        COLOR_PRESETS={COLOR_PRESETS}
-      />
-
-      <button
-        type="button"
-        className={styles.tiktokFabBtn}
-        onClick={() => setIsDrawerOpen(true)}
-        title="Visualizar Mockup Interativo do TikTok"
-      >
-        <span style={{ fontSize: '18px' }}>📱</span>
-        <span>Visualizar Carrossel</span>
-      </button>
-
       <button
         type="button"
         className="ai-fab-btn"
@@ -535,6 +460,17 @@ export const TikTokCollections = () => {
       >
         <History size={18} />
         <span>Histórico</span>
+      </button>
+
+      <button
+        type="button"
+        className={`${styles.copyFabBtn} ${copied ? styles.copyFabSuccess : ''}`}
+        onClick={handleCopy}
+        disabled={!theme.trim()}
+        title={theme.trim() ? "Copiar prompt completo" : "Preencha o tema para habilitar"}
+      >
+        {copied ? <Check size={18} /> : <Copy size={18} />}
+        <span>{copied ? 'Copiado!' : 'Copiar Prompt'}</span>
       </button>
 
       <button
