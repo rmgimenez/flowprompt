@@ -16,53 +16,147 @@ export const videoFromFrames = {
     const dialogue = parseDialogue(vals.dialogue);
     const characters = enrichCharacters(parseCharacters(vals.characters_definition), dialogue);
 
-    const jsonPrompt = {
-      cinematography: camera,
-      subject: {
-        primary: {
-          type: "guided_by_frames",
-          description: "seamless high-fidelity transition connecting the start and end frames",
-          action: vals.initial_hook || "natural fluid connection",
-          magic_interaction: vals.object_interaction || "smooth trajectory interpolation"
-        },
-        ...(characters.length > 0 ? { characters } : {})
-      },
-      environment: {
-        lighting: "maintain_from_frames",
-        atmosphere: {
-          weather: "maintain_from_frames",
-          mood: vals.general_notes || "funny comedic skit for TikTok"
-        },
-        style_quality: vals.visual_quality || "hyper-realistic, 8k, cinematic lighting"
-      },
-      motion: {
-        temporal_logic: "continuous",
-        physics: vals.motion_fluidity || "fluid_pacing_and_retention",
-        stability_rules: vals.motion_stability || "standard consistent structure",
-        transitions: {
-          from_start_frame: "match_cut",
-          to_end_frame: "smooth_interpolation"
-        }
-      },
-      audio: {
-        sound_effects: vals.sound_effects || "no audio",
-        ...(dialogue.length > 0 ? {
-          dialogue,
-          language: "pt-BR",
-          lip_sync: "perfect",
-          voice_acting_direction: {
-            accent: "natural Brazilian Portuguese (pt-BR) accent with authentic pronunciation, zero robotic formalisms",
-            delivery_style: "energetic, comedic, charismatic, and expressive like a modern TikTok/Reels influencer vlog",
-            comedic_timing: "modern comedic influencer timing, utilizing subtle awkward pauses, realistic conversational breaths, and meme-style pacing"
-          }
-        } : {})
-      },
-      negative_prompts: VIDEO_NEGATIVE_PROMPTS
-    };
+    const aspectRatio = vals.aspect_ratio || "9:16 (Vertical)";
+    const durationText = vals.video_duration || "6 segundos";
+    const durationNum = parseInt(durationText) || 6;
+    const timelineMode = vals.timeline_mode || "Multi-shot Dinâmico";
 
-    return JSON.stringify(jsonPrompt, null, 2);
+    // Character manifest formatting
+    let charManifest = "";
+    if (characters.length > 0) {
+      charManifest = characters.map(char => {
+        let bio = `- **${char.name}**: ${char.description}`;
+        if (char.voice_attributes) bio += `, voice direction: ${char.voice_attributes}`;
+        if (char.motion_signature) bio += `, movement style: ${char.motion_signature}`;
+        return bio;
+      }).join('\n');
+    } else {
+      charManifest = "- **Main Focus**: Guided interpolation between start and end frames";
+    }
+
+    const voiceDirection = dialogue.length > 0
+      ? `\n- **Voice & Dubbing Specs:** All character speech must be in natural Brazilian Portuguese (pt-BR) with flawless lip-sync. Voice acting should be highly expressive, charismatic, and energetic, matching comedic influencer delivery. Use realistic breaths and modern pacing.`
+      : "";
+
+    let timelineScript = "";
+
+    if (dialogue.length > 0) {
+      if (timelineMode.includes("Multi-shot")) {
+        // Multi-shot mode: Create camera cuts for each dialogue line
+        timelineScript = dialogue.map((line, idx) => {
+          const start = line.timing.start.toFixed(1).padStart(5, '0').replace('.', ':');
+          const end = line.timing.end.toFixed(1).padStart(5, '0').replace('.', ':');
+          
+          const characterObj = characters.find(c => c.name.toLowerCase() === line.character.toLowerCase());
+          const actionText = characterObj ? `performing in a ${characterObj.motion_signature} manner` : "acting naturally in the scene";
+          
+          const cameraCuts = ["Close-up Shot", "Medium Close-up Shot", "Reverse Shot", "Tight Portrait Shot"];
+          const selectedCut = cameraCuts[idx % cameraCuts.length];
+
+          const startBridge = idx === 0 
+            ? "Animate the first phase of transition starting directly from the first guided frame: " 
+            : "";
+          
+          const endBridge = idx === dialogue.length - 1
+            ? " Conclude the animation by seamlessly blending into the exact visual pose and state of the second guided frame."
+            : "";
+
+          return `[${start} - ${end}]
+- **Camera Cut:** ${idx === 0 ? "Initial framing from first image, then transition to: " : ""}${selectedCut} focusing on '${line.character}'.
+- **Action/Expression:** ${startBridge}'${line.character}' displays a '${line.emotion_tone}' expression while ${actionText}.${endBridge}
+- **Dialogue Speech:** '${line.character}' says in a direct quote: "${line.speech}"
+- **Sound Effects (SFX) & Ambiance:** ${vals.sound_effects && vals.sound_effects !== 'no audio' ? vals.sound_effects : "SFX: Atmospheric ambient sounds matching the action"}. ${idx === 0 ? "Perfect audio ducking for speaking voice." : ""}`;
+        }).join('\n\n');
+      } else {
+        // Single continuous shot mode
+        const totalDurationFormatted = `00:0${durationNum}:0`;
+        const dialogueLinesText = dialogue.map(line => {
+          const timestamp = line.timing.start.toFixed(1).padStart(5, '0').replace('.', ':');
+          return `  * At [${timestamp}], '${line.character}' (feeling ${line.emotion_tone}) says in a direct quote: "${line.speech}"`;
+        }).join('\n');
+
+        timelineScript = `[00:00 - ${totalDurationFormatted}]
+- **Camera Motion:** Continuous shot starting from the first frame's camera perspective, slowly interpolating to the second frame's perspective, using: ${vals.camera_motion || "gentle panning"}.
+- **Action/Expression:** Begin exactly from the first frame's pose, performing: ${vals.initial_hook || "natural fluid movement"}. Interpolate and smoothly guide all motion trajectories to align perfectly with the second frame's end state.
+- **Production Script (Dialogue Sequence):**
+${dialogueLinesText}
+- **Sound Effects (SFX) & Ambiance:** ${vals.sound_effects && vals.sound_effects !== 'no audio' ? vals.sound_effects : "SFX: Balanced background environmental soundscape with clear speech"}.`;
+      }
+    } else {
+      const totalDurationFormatted = `00:0${durationNum}:0`;
+      timelineScript = `[00:00 - ${totalDurationFormatted}]
+- **Camera Motion:** Continuous shot starting from the first frame's camera perspective, slowly interpolating to the second frame's perspective, using: ${vals.camera_motion || "gentle panning"}.
+- **Action & Movement:** Smoothly animate starting exactly from the first image pose, performing: ${vals.initial_hook || "natural fluid movement"}. Smoothly guide the motion of the subjects and objects to end precisely in the second image pose.
+- **Sound Effects (SFX) & Ambiance:** ${vals.sound_effects && vals.sound_effects !== 'no audio' ? vals.sound_effects : "SFX: High-fidelity ambient sounds"}.`;
+    }
+
+    const negativeText = [
+      "subtitles", "text", "watermark", "distortions", "unrealistic proportions", "flickering lighting",
+      "extra characters not in the brief",
+      ...VIDEO_NEGATIVE_PROMPTS
+    ].join(', ');
+
+    return `# GOOGLE VEO 3.1 FRAME-TO-FRAME INTERPOLATION DIRECTIVE
+
+## 📸 GUIDED FRAME TRANSITION & CONTINUITY
+- **Transition Goal:** Animate a seamless, highly engaging cinematic transition that connects the provided start frame (first image) to the end frame (second image).
+- **Match-Cut & Coherence Rule:** The animation must start exactly at the visual state, character styling, outfits, and lighting of the first frame (00:00). It must morph and progress seamlessly over time to end exactly in the visual layout and pose of the second frame.
+- **Initial Hook (0-2s):** ${vals.initial_hook || "Establish a strong dynamic connection to capture attention."}
+- **Trajectory & Object Interaction:** ${vals.object_interaction || "Smooth physical trajectory interpolation of any moving objects."}
+
+## 🎥 PRODUCTION SPECIFICATIONS
+- **Aspect Ratio:** ${aspectRatio}
+- **Target Duration:** ${durationText}
+- **Timeline Configuration:** ${timelineMode}
+- **Primary Camera Motion:** ${vals.camera_motion || "guided transition between frame perspectives"}
+- **Atmosphere & General Notes:** ${vals.general_notes || "funny comedic skit for TikTok"}
+- **Visual Quality & Style:** ${vals.visual_quality || "hyper-realistic, 8k, cinematic lighting"}
+- **Motion Stability Rules:** ${vals.motion_stability || "perfect frame-to-frame coherence"}, ${vals.motion_fluidity || "fluid motion"}${voiceDirection}
+
+## 👥 CHARACTER BIO-MANIFEST
+${charManifest}
+
+## ⏱️ TIMELINES & PRODUCTION SCRIPT
+${timelineScript}
+
+## 🔇 EXCLUSIONS (NEGATIVE PROMPT)
+${negativeText}`;
   },
   fields: [
+    {
+      id: 'timeline_mode',
+      label: 'Modo de Linha de Tempo (Timeline Mode)',
+      hint: 'Escolha se a câmera fará cortes de cena para cada fala ou manterá um plano único.',
+      placeholder: 'Ex: Multi-shot Dinâmico',
+      type: 'text',
+      suggestions: [
+        { label: 'Multi-shot Dinâmico (Cortes para cada fala)', value: 'Multi-shot Dinâmico' },
+        { label: 'Tomada Única Contínua (Sem cortes)', value: 'Tomada Única Contínua' }
+      ]
+    },
+    {
+      id: 'aspect_ratio',
+      label: 'Proporção da Tela (Aspect Ratio)',
+      hint: 'Proporção recomendada para redes sociais (9:16) ou cinema (16:9)',
+      placeholder: 'Ex: 9:16 (Vertical)',
+      type: 'text',
+      suggestions: [
+        { label: '9:16 (Vertical - TikTok/Reels)', value: '9:16 (Vertical)' },
+        { label: '16:9 (Horizontal - Cinema/YouTube)', value: '16:9 (Horizontal)' }
+      ]
+    },
+    {
+      id: 'video_duration',
+      label: 'Duração do Clipe (Video Duration)',
+      hint: 'Defina a duração do vídeo suportada nativamente pelo Veo 3.1',
+      placeholder: 'Ex: 6 segundos',
+      type: 'text',
+      suggestions: [
+        { label: '4 segundos', value: '4 segundos' },
+        { label: '6 segundos', value: '6 segundos' },
+        { label: '8 segundos', value: '8 segundos' }
+      ]
+    },
     { 
       id: 'characters_definition', 
       label: 'Criação dos Personagens', 

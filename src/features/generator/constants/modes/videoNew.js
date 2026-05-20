@@ -18,65 +18,113 @@ export const videoNew = {
     const characters = enrichCharacters(parseCharacters(vals.characters_definition), dialogue);
     const envAmbiance = parseAmbiance(vals.context, vals.style_ambiance);
 
-    const jsonPrompt = {
-      scene_summary: vals.scene_summary || "A compelling cinematic moment designed for TikTok engagement.",
-      cinematography: {
-        style_aesthetic: "Always cinematic, photorealistic, professional film look, high detail",
-        camera_instructions: vals.cinematography || "Cinematic eye-level shot emphasizing the subject",
-        composition_framing: "Professional framing that emphasizes the subject clearly in the center",
-        ...camera
-      },
-      subject: {
-        primary: {
-          type: characters.length > 0 ? "character" : "environment",
-          description: vals.subject || "main focus",
-          action: vals.action || "natural flow",
-          attributes: vals.style_ambiance && !vals.style_ambiance.includes('<<<') 
-            ? vals.style_ambiance.split(',').map(s => s.trim()).filter(s => s !== '') 
-            : []
-        },
-        ...(characters.length > 0 ? { characters } : {})
-      },
-      environment: {
-        context: vals.context || "cinematic space",
-        color_palette: vals.style_ambiance && !vals.style_ambiance.includes('<<<')
-          ? `Cohesive cinematic tones aligned with ${vals.style_ambiance}`
-          : "Natural, lifelike color representation, balanced contrast",
-        time_of_day: envAmbiance.time_of_day,
-        lighting_and_mood: {
-          ...envAmbiance.lighting,
-          mood: `Realistic cinematic lighting matching a ${envAmbiance.atmosphere.mood || 'neutral'} mood`
-        },
-        atmosphere: envAmbiance.atmosphere
-      },
-      motion: {
-        temporal_logic: "continuous",
-        physics: vals.motion_fluidity || "realistic",
-        speed_ramp: "constant",
-        stability_rules: vals.motion_stability || "standard consistent structure"
-      },
-      audio: {
-        sound_effects: dialogue.length > 0 ? "ASMR and matching sound effects for dialogue" : "SFX: Ambient sounds fitting the scene, no subtitles",
-        rules: "Always add audio. Never include subtitles or on-screen text overlays.",
-        ...(dialogue.length > 0 ? {
-          dialogue,
-          language: "pt-BR",
-          lip_sync: "perfect",
-          voice_acting_direction: {
-            accent: "natural Brazilian Portuguese (pt-BR) accent with authentic pronunciation, zero robotic formalisms",
-            delivery_style: "energetic, comedic, charismatic, and expressive like a modern TikTok/Reels influencer vlog",
-            comedic_timing: "modern comedic influencer timing, utilizing subtle awkward pauses, realistic conversational breaths, and meme-style pacing"
-          }
-        } : {})
-      },
-      negative_prompts: [
-        "subtitles", "text", "watermark", "distortions", "unrealistic proportions", "flickering lighting",
-        ...VIDEO_NEGATIVE_PROMPTS,
-        "extra characters not in the brief"
-      ]
-    };
+    const aspectRatio = vals.aspect_ratio || "9:16 (Vertical)";
+    const durationText = vals.video_duration || "6 segundos";
+    const durationNum = parseInt(durationText) || 6;
+    const timelineMode = vals.timeline_mode || "Multi-shot Dinâmico";
 
-    return JSON.stringify(jsonPrompt, null, 2);
+    const styleAmbianceText = vals.style_ambiance && !vals.style_ambiance.includes('<<<')
+      ? vals.style_ambiance
+      : "Cinematic, photorealistic, professional film look";
+
+    const cameraText = vals.cinematography && !vals.cinematography.includes('<<<')
+      ? vals.cinematography
+      : "Cinematic camera movement";
+
+    const sceneSummaryText = vals.scene_summary && !vals.scene_summary.includes('<<<')
+      ? vals.scene_summary
+      : "A compelling cinematic moment designed for TikTok engagement.";
+
+    // Character manifest formatting
+    let charManifest = "";
+    if (characters.length > 0) {
+      charManifest = characters.map(char => {
+        let bio = `- **${char.name}**: ${char.description}`;
+        if (char.voice_attributes) bio += `, voice direction: ${char.voice_attributes}`;
+        if (char.motion_signature) bio += `, movement style: ${char.motion_signature}`;
+        return bio;
+      }).join('\n');
+    } else {
+      charManifest = "- **Main Focus**: " + (vals.subject || "The main visual subject of the scene");
+    }
+
+    const voiceDirection = dialogue.length > 0
+      ? `\n- **Voice & Dubbing Specs:** All character speech must be in natural Brazilian Portuguese (pt-BR) with flawless lip-sync. Voice acting should be highly expressive, charismatic, and energetic, matching comedic influencer delivery. Use realistic breaths and modern pacing.`
+      : "";
+
+    let timelineScript = "";
+
+    if (dialogue.length > 0) {
+      if (timelineMode.includes("Multi-shot")) {
+        // Multi-shot mode: Create camera cuts for each dialogue line
+        timelineScript = dialogue.map((line, idx) => {
+          const start = line.timing.start.toFixed(1).padStart(5, '0').replace('.', ':');
+          const end = line.timing.end.toFixed(1).padStart(5, '0').replace('.', ':');
+          
+          const characterObj = characters.find(c => c.name.toLowerCase() === line.character.toLowerCase());
+          const actionText = characterObj ? `performing in a ${characterObj.motion_signature} manner` : "acting naturally in the scene";
+          
+          const cameraCuts = ["Close-up Shot", "Medium Close-up Shot", "Reverse Shot", "Tight Portrait Shot"];
+          const selectedCut = cameraCuts[idx % cameraCuts.length];
+
+          return `[${start} - ${end}]
+- **Camera Cut:** ${selectedCut} focusing on '${line.character}'.
+- **Action/Expression:** '${line.character}' displays a '${line.emotion_tone}' expression while ${actionText}.
+- **Dialogue Speech:** '${line.character}' says in a direct quote: "${line.speech}"
+- **Sound Effects (SFX) & Ambiance:** SFX: Ambient hum and sounds fitting the action. ${idx === 0 ? "Perfect audio ducking for speaking voice." : ""}`;
+        }).join('\n\n');
+      } else {
+        // Single continuous shot mode
+        const totalDurationFormatted = `00:0${durationNum}:0`;
+        const dialogueLinesText = dialogue.map(line => {
+          const timestamp = line.timing.start.toFixed(1).padStart(5, '0').replace('.', ':');
+          return `  * At [${timestamp}], '${line.character}' (feeling ${line.emotion_tone}) says in a direct quote: "${line.speech}"`;
+        }).join('\n');
+
+        timelineScript = `[00:00 - ${totalDurationFormatted}]
+- **Camera Cut:** Single continuous shot using ${cameraText}. Maintain framing and visual volume without any sudden camera cuts.
+- **Action/Expression:** ${vals.subject || "Subjects"} performing ${vals.action || "realistic continuous movement"} inside the scene.
+- **Production Script (Dialogue Sequence):**
+${dialogueLinesText}
+- **Sound Effects (SFX) & Ambiance:** SFX: Balanced background environmental soundscape with clear speech.`;
+      }
+    } else {
+      const totalDurationFormatted = `00:0${durationNum}:0`;
+      timelineScript = `[00:00 - ${totalDurationFormatted}]
+- **Camera Cut:** Continuous cinematic camera work. ${cameraText}.
+- **Action & Movement:** The subject (${vals.subject || "main focus"}) performs the following action: ${vals.action || "natural organic motion"}. Consistent physics, continuous flow, dynamic pacing.
+- **Environment Context:** ${vals.context || "cinematic scene environment"}.
+- **Sound Effects (SFX) & Ambiance:** SFX: Immersive high-fidelity sound effects fitting the visual action.`;
+    }
+
+    const negativeText = [
+      "subtitles", "text", "watermark", "distortions", "unrealistic proportions", "flickering lighting",
+      "extra characters not in the brief",
+      ...VIDEO_NEGATIVE_PROMPTS
+    ].join(', ');
+
+    return `# GOOGLE VEO 3.1 CINEMATIC PROMPT DIRECTIVE
+
+## 🎬 SCENE LOGLINE
+${sceneSummaryText}
+
+## 🎥 PRODUCTION SPECIFICATIONS
+- **Aspect Ratio:** ${aspectRatio}
+- **Target Duration:** ${durationText}
+- **Timeline Configuration:** ${timelineMode}
+- **Primary Cinematography:** ${cameraText}
+- **Lighting & Ambiance:** ${envAmbiance.lighting.key_light} key light, ${envAmbiance.lighting.fill_light} fill light, ${envAmbiance.lighting.rim_light} rim light. Atmosphere: ${envAmbiance.atmosphere.weather} weather, ${envAmbiance.atmosphere.mood} mood.
+- **Color Palette & Visuals:** ${styleAmbianceText}
+- **Motion Stability Rules:** ${vals.motion_stability || "perfect frame-to-frame coherence"}, ${vals.motion_fluidity || "fluid motion"}${voiceDirection}
+
+## 👥 CHARACTER BIO-MANIFEST
+${charManifest}
+
+## ⏱️ TIMELINES & PRODUCTION SCRIPT
+${timelineScript}
+
+## 🔇 EXCLUSIONS (NEGATIVE PROMPT)
+${negativeText}`;
   },
   fields: [
     {
@@ -87,6 +135,40 @@ export const videoNew = {
       type: 'text',
       suggestions: [
         { label: 'Exemplo Comédia', value: 'Um astronauta trapalhão escorrega e cai de costas em um portal de neon psicodélico e colorido.' }
+      ]
+    },
+    {
+      id: 'timeline_mode',
+      label: 'Modo de Linha de Tempo (Timeline Mode)',
+      hint: 'Escolha se a câmera fará cortes de cena para cada fala ou manterá um plano único.',
+      placeholder: 'Ex: Multi-shot Dinâmico',
+      type: 'text',
+      suggestions: [
+        { label: 'Multi-shot Dinâmico (Cortes para cada fala)', value: 'Multi-shot Dinâmico' },
+        { label: 'Tomada Única Contínua (Sem cortes)', value: 'Tomada Única Contínua' }
+      ]
+    },
+    {
+      id: 'aspect_ratio',
+      label: 'Proporção da Tela (Aspect Ratio)',
+      hint: 'Proporção recomendada para redes sociais (9:16) ou cinema (16:9)',
+      placeholder: 'Ex: 9:16 (Vertical)',
+      type: 'text',
+      suggestions: [
+        { label: '9:16 (Vertical - TikTok/Reels)', value: '9:16 (Vertical)' },
+        { label: '16:9 (Horizontal - Cinema/YouTube)', value: '16:9 (Horizontal)' }
+      ]
+    },
+    {
+      id: 'video_duration',
+      label: 'Duração do Clipe (Video Duration)',
+      hint: 'Defina a duração do vídeo suportada nativamente pelo Veo 3.1',
+      placeholder: 'Ex: 6 segundos',
+      type: 'text',
+      suggestions: [
+        { label: '4 segundos', value: '4 segundos' },
+        { label: '6 segundos', value: '6 segundos' },
+        { label: '8 segundos', value: '8 segundos' }
       ]
     },
     { 
