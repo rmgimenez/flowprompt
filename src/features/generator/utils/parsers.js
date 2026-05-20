@@ -157,6 +157,34 @@ export const parseCharacters = (charVal) => {
   return chars;
 };
 
+export const isAnimalOnomatopoeia = (speech) => {
+  if (typeof speech !== 'string') return false;
+  const clean = speech.toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9\s]/g, '')
+    .trim();
+
+  if (!clean) return false;
+
+  const animalWords = new Set([
+    'miau', 'miaus', 'meow', 'meows', 'miado', 'miando', 'purr', 'purrs', 'purring', 'ronrom', 'ronronando',
+    'au', 'auau', 'bark', 'barks', 'barking', 'woof', 'woofs', 'ruff', 'arf',
+    'piu', 'piupiu', 'tweet', 'tweets', 'chirp', 'chirps', 'chirping', 'quack', 'quacks', 'cuac',
+    'sss', 'hiss', 'hissing', 'roar', 'roars', 'rosnado', 'rosnando', 'growl', 'growling',
+    'muuu', 'moo', 'moos', 'beee', 'baaa', 'cocorico', 'cluck', 'crowing',
+    'uivo', 'uivando', 'howl', 'howls', 'howling', 'relincho', 'neigh', 'coaxar', 'croak',
+    'oink', 'oinks', 'rawr'
+  ]);
+
+  const words = clean.split(/\s+/).filter(w => w.length > 0);
+  if (words.length === 0) return false;
+
+  return words.every(word => {
+    return animalWords.has(word) || Array.from(animalWords).some(aw => word.includes(aw) || aw.includes(word));
+  });
+};
+
 export const parseDialogue = (dialStr) => {
   if (typeof dialStr !== 'string' || !dialStr || dialStr.includes('<<<') || dialStr.trim() === '') return [];
   const lines = dialStr.split('\n').filter(l => l.trim() !== '');
@@ -172,6 +200,11 @@ export const parseDialogue = (dialStr) => {
 
     // Clean brackets
     speechPart = speechPart.replace(/^\[|\]$/g, '').trim();
+
+    // Skip animal noises/onomatopoeias that break Veo 3.1 TTS engine
+    if (isAnimalOnomatopoeia(speechPart)) {
+      return;
+    }
 
     // Extract emotion in parentheses from charPart
     let emotion = 'natural';
