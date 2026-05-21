@@ -1,364 +1,66 @@
-import { useMemo, useState, useEffect } from 'react';
+import { useMemo, useState } from 'react';
 import styles from './PromptForm.module.css';
-import { Wand2, Eraser, MessageSquare, Volume2, VolumeX, Sparkles, Check, History, Settings, Camera, User, HelpCircle, Activity } from 'lucide-react';
+import { Wand2, Eraser, Settings, Camera, User, HelpCircle, Activity } from 'lucide-react';
 import { clsx } from 'clsx';
 import TemplateSelector from './TemplateSelector';
 import SearchableSelect from '../../../../components/ui/SearchableSelect';
+import { CharacterChips } from './CharacterChips';
+import { VideoQuickPrompts, RestorePromptButton } from './AuxiliaryPrompts';
 
-const VIRAL_PROMPTS = {
-  'video-from-frames': {
-    speech: `{
-  "cinematography": {
-    "camera_type": "handheld",
-    "movement": {
-      "type": "orbit_cw",
-      "speed": "fast",
-      "easing": "ease_in_out"
-    },
-    "framing": "medium"
-  },
-  "subject": {
-    "primary": {
-      "type": "guided_by_frames",
-      "description": "seamless high-fidelity transition optimized for vertical social media with high-energy retention hook",
-      "action": "reacting with high energy within the first 2 seconds, performing dynamic actions to maximize retention"
-    }
-  },
-  "environment": {
-    "lighting": "maintain_from_frames",
-    "style_quality": "hyper-realistic, 8k resolution, cinematic lighting, unreal engine 5 style, masterfully executed"
-  },
-  "motion": {
-    "temporal_logic": "continuous",
-    "physics": "fluid_and_consistent",
-    "transitions": {
-      "from_start_frame": "match_cut",
-      "to_end_frame": "smooth_interpolation"
-    }
-  },
-  "audio": {
-    "dialogue": [
-      {
-        "character": "personagem",
-        "speech": "fala inteligente, cativante e altamente identificável para redes sociais"
-      }
-    ],
-    "language": "pt-BR",
-    "lip_sync": "perfect"
-  },
-  "negative_prompts": [
-    "glitch", "deformed details", "sudden cuts", "abrupt transition", "unstable frames"
-  ]
-}`,
-    sfx: `{
-  "cinematography": {
-    "camera_type": "handheld",
-    "movement": {
-      "type": "orbit_cw",
-      "speed": "fast",
-      "easing": "ease_in_out"
-    },
-    "framing": "medium"
-  },
-  "subject": {
-    "primary": {
-      "type": "guided_by_frames",
-      "description": "seamless high-fidelity transition optimized for vertical social media with high-energy retention hook",
-      "action": "reacting with high energy within the first 2 seconds, performing dynamic actions to maximize retention"
-    }
-  },
-  "environment": {
-    "lighting": "maintain_from_frames",
-    "style_quality": "hyper-realistic, 8k resolution, cinematic lighting, unreal engine 5 style, masterfully executed"
-  },
-  "motion": {
-    "temporal_logic": "continuous",
-    "physics": "fluid_and_consistent",
-    "transitions": {
-      "from_start_frame": "match_cut",
-      "to_end_frame": "smooth_interpolation"
-    }
-  },
-  "audio": {
-    "sound_effects": "enriched with immersive sound effects, realistic ambient audio cues, and an engaging cinematic background soundtrack to match the action perfectly",
-    "voice_dialogue": "none"
-  },
-  "negative_prompts": [
-    "glitch", "deformed details", "sudden cuts", "abrupt transition", "unstable frames"
-  ]
-}`,
-    silent: `{
-  "cinematography": {
-    "camera_type": "handheld",
-    "movement": {
-      "type": "orbit_cw",
-      "speed": "fast",
-      "easing": "ease_in_out"
-    },
-    "framing": "medium"
-  },
-  "subject": {
-    "primary": {
-      "type": "guided_by_frames",
-      "description": "seamless high-fidelity transition optimized for vertical social media with high-energy retention hook",
-      "action": "reacting with high energy within the first 2 seconds, performing dynamic actions to maximize retention"
-    }
-  },
-  "environment": {
-    "lighting": "maintain_from_frames",
-    "style_quality": "hyper-realistic, 8k resolution, cinematic lighting, unreal engine 5 style, masterfully executed"
-  },
-  "motion": {
-    "temporal_logic": "continuous",
-    "physics": "fluid_and_consistent",
-    "transitions": {
-      "from_start_frame": "match_cut",
-      "to_end_frame": "smooth_interpolation"
-    }
-  },
-  "audio": {
-    "sound_effects": "none",
-    "voice_dialogue": "none",
-    "silent": true
-  },
-  "negative_prompts": [
-    "glitch", "deformed details", "sudden cuts", "abrupt transition", "unstable frames"
-  ]
-}`
-  },
-  'video-from-img': {
-    speech: `{
-  "cinematography": {
-    "camera_type": "gimbal",
-    "movement": {
-      "type": "push_in",
-      "speed": "fast",
-      "easing": "ease_in_out"
-    },
-    "framing": "maintain_from_image"
-  },
-  "subject": {
-    "primary": {
-      "type": "based_on_image",
-      "description": "highly engaging viral video sequence using the base image as foundation",
-      "action": "starting with a strong visual hook in the first 2 seconds, flowing towards a surprising high-retention climax"
-    }
-  },
-  "environment": {
-    "lighting": "maintain_from_image",
-    "style_quality": "hyper-realistic, 8k resolution, cinematic lighting, unreal engine 5 style, masterfully executed"
-  },
-  "motion": {
-    "temporal_logic": "continuous",
-    "physics": "realistic_fluid"
-  },
-  "audio": {
-    "dialogue": [
-      {
-        "character": "personagem",
-        "speech": "diálogo rápido, espirituoso e divertido"
-      }
-    ],
-    "language": "pt-BR",
-    "lip_sync": "perfect"
-  },
-  "negative_prompts": [
-    "glitch", "deformed details", "sudden cuts", "abrupt transition", "unstable frames"
-  ]
-}`,
-    sfx: `{
-  "cinematography": {
-    "camera_type": "gimbal",
-    "movement": {
-      "type": "push_in",
-      "speed": "fast",
-      "easing": "ease_in_out"
-    },
-    "framing": "maintain_from_image"
-  },
-  "subject": {
-    "primary": {
-      "type": "based_on_image",
-      "description": "highly engaging viral video sequence using the base image as foundation",
-      "action": "starting with a strong visual hook in the first 2 seconds, flowing towards a surprising high-retention climax"
-    }
-  },
-  "environment": {
-    "lighting": "maintain_from_image",
-    "style_quality": "hyper-realistic, 8k resolution, cinematic lighting, unreal engine 5 style, masterfully executed"
-  },
-  "motion": {
-    "temporal_logic": "continuous",
-    "physics": "realistic_fluid"
-  },
-  "audio": {
-    "sound_effects": "enriched with immersive sound effects, realistic ambient audio cues, and an engaging cinematic background soundtrack to match the action perfectly",
-    "voice_dialogue": "none"
-  },
-  "negative_prompts": [
-    "glitch", "deformed details", "sudden cuts", "abrupt transition", "unstable frames"
-  ]
-}`,
-    silent: `{
-  "cinematography": {
-    "camera_type": "gimbal",
-    "movement": {
-      "type": "push_in",
-      "speed": "fast",
-      "easing": "ease_in_out"
-    },
-    "framing": "maintain_from_image"
-  },
-  "subject": {
-    "primary": {
-      "type": "based_on_image",
-      "description": "highly engaging viral video sequence using the base image as foundation",
-      "action": "starting with a strong visual hook in the first 2 seconds, flowing towards a surprising high-retention climax"
-    }
-  },
-  "environment": {
-    "lighting": "maintain_from_image",
-    "style_quality": "hyper-realistic, 8k resolution, cinematic lighting, unreal engine 5 style, masterfully executed"
-  },
-  "motion": {
-    "temporal_logic": "continuous",
-    "physics": "realistic_fluid"
-  },
-  "audio": {
-    "sound_effects": "none",
-    "voice_dialogue": "none",
-    "silent": true
-  },
-  "negative_prompts": [
-    "glitch", "deformed details", "sudden cuts", "abrupt transition", "unstable frames"
-  ]
-}`
-  }
+const TAB_ICONS = {
+  style: Camera,
+  characters: User,
+  motion: Activity,
+  help: HelpCircle
 };
 
-// Templates are now imported from constants/templates.js for a curated library
+function pickSuggestions(suggestions, count) {
+  if (!suggestions || suggestions.length <= count) return suggestions || [];
+  const pool = [...suggestions];
+  for (let i = pool.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [pool[i], pool[j]] = [pool[j], pool[i]];
+  }
+  return pool.slice(0, count);
+}
 
 const PromptForm = ({ currentModeId, fields, values, onUpdate, onAddSuggestion, onRandomize, onClear, onApplyPreset }) => {
-  const [copiedSpeech, setCopiedSpeech] = useState(false);
-  const [copiedSfx, setCopiedSfx] = useState(false);
-  const [copiedSilent, setCopiedSilent] = useState(false);
-  const [copiedRestore, setCopiedRestore] = useState(false);
   const [activeTab, setActiveTab] = useState('principal');
 
-
-
-  // Filter categories dynamically based on fields actually present in current mode
   const availableTabs = useMemo(() => {
     const tabs = [{ id: 'principal', label: 'Principal' }];
-    
-    const hasStyle = fields.some(f => 
+
+    const hasStyle = fields.some(f =>
       ['style', 'style_ambiance', 'composition', 'cinematography', 'image_type', 'transformation', 'environment'].includes(f.id)
     );
-    const hasCharacters = fields.some(f => 
+    const hasCharacters = fields.some(f =>
       ['characters_definition', 'dialogue'].includes(f.id)
     );
-    const hasMotion = fields.some(f => 
+    const hasMotion = fields.some(f =>
       ['motion_fluidity', 'motion_stability'].includes(f.id)
     );
     const hasHelp = fields.some(f => f.type === 'info');
-    
+
     if (hasStyle) tabs.push({ id: 'style', label: 'Estilo e Câmera' });
     if (hasCharacters) tabs.push({ id: 'characters', label: 'Personagens' });
     if (hasMotion) tabs.push({ id: 'motion', label: 'Movimento & Física' });
     if (hasHelp) tabs.push({ id: 'help', label: 'Instruções' });
-    
+
     return tabs;
   }, [fields]);
 
-  // Adjust active tab if it's not present in the new mode's tabs
-  useEffect(() => {
-    if (!availableTabs.some(t => t.id === activeTab)) {
-      const timer = setTimeout(() => {
-        setActiveTab('principal');
-      }, 0);
-      return () => clearTimeout(timer);
-    }
+  const effectiveTab = useMemo(() => {
+    if (availableTabs.some(t => t.id === activeTab)) return activeTab;
+    return 'principal';
   }, [availableTabs, activeTab]);
 
-  const handleApplyPreset = (preset) => {
-    onApplyPreset(preset);
-  };
-
-  const handleCopyAuxPrompt = (type) => {
-    if (type === 'restore') {
-      const restorePrompt = `{
-  "transformation": {
-    "reference_mode": "structural_composition_fidelity",
-    "relationship_to_source": "high-fidelity restoration and precise colorization of the historical archive photograph, absolute structure and portrait line preservation",
-    "target_scenario": "flawlessly restored and realistically colorized version of the original image, removing scratches, fading, grain, noise, dust, and stains"
-  },
-  "environment": {
-    "context": "as captured in the original frame, but in realistic true-to-life colors",
-    "time_of_day": "natural daylight",
-    "lighting": {
-      "key_light": "balanced photographic key light",
-      "fill_light": "soft natural fill to eliminate harsh shadows",
-      "rim_light": "none"
-    },
-    "atmosphere": {
-      "weather": "clear",
-      "mood": "nostalgic, warm, high-fidelity memory"
-    }
-  },
-  "style_and_quality": {
-    "medium": "photograph",
-    "rendering_engine": "none",
-    "color_grading": "realistic full color spectrum, warm lifelike skin tones, vibrant natural environments",
-    "golden_tokens": [
-      "professional restoration",
-      "scratch-free",
-      "colorized masterpiece",
-      "micro-details preserved",
-      "sharp focus",
-      "8k resolution"
-    ]
-  },
-  "negative_prompts": [
-    "black and white", "sepia", "grayscale", "scratches", "noise", "dust", 
-    "cracks", "stains", "blurry", "faded colors", "oversaturated", "artifacts"
-  ]
-}`;
-      navigator.clipboard.writeText(restorePrompt);
-      setCopiedRestore(true);
-      setTimeout(() => setCopiedRestore(false), 2000);
-      return;
-    }
-
-    const modePrompts = VIRAL_PROMPTS[currentModeId];
-    if (!modePrompts) return;
-
-    const promptText = modePrompts[type];
-    navigator.clipboard.writeText(promptText);
-
-    if (type === 'speech') {
-      setCopiedSpeech(true);
-      setTimeout(() => setCopiedSpeech(false), 2000);
-    } else if (type === 'sfx') {
-      setCopiedSfx(true);
-      setTimeout(() => setCopiedSfx(false), 2000);
-    } else if (type === 'silent') {
-      setCopiedSilent(true);
-      setTimeout(() => setCopiedSilent(false), 2000);
-    }
-  };
-
-  // Memoize random suggestions so they don't change while typing
   const displaySuggestions = useMemo(() => {
     const map = {};
     fields.forEach(field => {
       if (field.suggestions) {
         if (field.type !== 'textarea') {
-          // Pick 5 random suggestions for datalist fields
-          map[field.id] = [...field.suggestions]
-            .sort(() => 0.5 - Math.random())
-            .slice(0, 5);
+          map[field.id] = pickSuggestions(field.suggestions, 5);
         } else {
-          // Show all for textareas (or we could limit them too, but instruction specifies datalist fields)
           map[field.id] = field.suggestions;
         }
       }
@@ -366,27 +68,29 @@ const PromptForm = ({ currentModeId, fields, values, onUpdate, onAddSuggestion, 
     return map;
   }, [fields]);
 
-  // Filtered fields based on active tab
   const filteredFields = useMemo(() => {
-    return fields.filter(field => {
-      if (activeTab === 'principal') {
-        return !['style', 'style_ambiance', 'composition', 'cinematography', 'image_type', 'transformation', 'environment', 'characters_definition', 'dialogue', 'motion_fluidity', 'motion_stability'].includes(field.id) && field.type !== 'info';
-      }
-      if (activeTab === 'style') {
-        return ['style', 'style_ambiance', 'composition', 'cinematography', 'image_type', 'transformation', 'environment'].includes(field.id);
-      }
-      if (activeTab === 'characters') {
-        return ['characters_definition', 'dialogue'].includes(field.id);
-      }
-      if (activeTab === 'motion') {
-        return ['motion_fluidity', 'motion_stability'].includes(field.id);
-      }
-      if (activeTab === 'help') {
-        return field.type === 'info';
-      }
-      return false;
-    });
-  }, [fields, activeTab]);
+    const tabFieldIds = {
+      principal: ['style', 'style_ambiance', 'composition', 'cinematography', 'image_type', 'transformation', 'environment', 'characters_definition', 'dialogue', 'motion_fluidity', 'motion_stability'],
+      style: ['style', 'style_ambiance', 'composition', 'cinematography', 'image_type', 'transformation', 'environment'],
+      characters: ['characters_definition', 'dialogue'],
+      motion: ['motion_fluidity', 'motion_stability']
+    };
+
+    const excludedIds = tabFieldIds.principal;
+    const includedIds = tabFieldIds[effectiveTab];
+
+    if (effectiveTab === 'principal') {
+      return fields.filter(f => !excludedIds.includes(f.id) && f.type !== 'info');
+    }
+    if (effectiveTab === 'help') {
+      return fields.filter(f => f.type === 'info');
+    }
+    return fields.filter(f => includedIds.includes(f.id));
+  }, [fields, effectiveTab]);
+
+  const characters = Array.isArray(values.characters_definition)
+    ? values.characters_definition
+    : [];
 
   return (
     <form className={styles.form} onSubmit={(e) => e.preventDefault()}>
@@ -414,26 +118,19 @@ const PromptForm = ({ currentModeId, fields, values, onUpdate, onAddSuggestion, 
         </div>
       </div>
 
-      {/* Biblioteca de Templates Curados */}
-      <TemplateSelector 
-        currentModeId={currentModeId} 
-        onSelectTemplate={handleApplyPreset} 
+      <TemplateSelector
+        currentModeId={currentModeId}
+        onSelectTemplate={onApplyPreset}
       />
 
-      {/* Abas de Configuração */}
       <div className={styles.tabsContainer}>
         {availableTabs.map((tab) => {
-          let Icon = Settings;
-          if (tab.id === 'style') Icon = Camera;
-          if (tab.id === 'characters') Icon = User;
-          if (tab.id === 'motion') Icon = Activity;
-          if (tab.id === 'help') Icon = HelpCircle;
-          
+          const Icon = TAB_ICONS[tab.id] || Settings;
           return (
             <button
               key={tab.id}
               type="button"
-              className={clsx(styles.tabBtn, activeTab === tab.id && styles.activeTab)}
+              className={clsx(styles.tabBtn, effectiveTab === tab.id && styles.activeTab)}
               onClick={() => setActiveTab(tab.id)}
             >
               <Icon size={14} className={styles.tabIcon} />
@@ -470,7 +167,7 @@ const PromptForm = ({ currentModeId, fields, values, onUpdate, onAddSuggestion, 
                   </tr>
                 </thead>
                 <tbody>
-                  {(values[field.id] && Array.isArray(values[field.id]) ? values[field.id] : []).map((char, index) => (
+                  {(Array.isArray(values[field.id]) ? values[field.id] : []).map((char, index) => (
                     <tr key={index}>
                       <td>
                         <input
@@ -558,7 +255,7 @@ const PromptForm = ({ currentModeId, fields, values, onUpdate, onAddSuggestion, 
                       </td>
                     </tr>
                   ))}
-                  {(values[field.id] && Array.isArray(values[field.id]) ? values[field.id] : []).length === 0 && (
+                  {(Array.isArray(values[field.id]) ? values[field.id] : []).length === 0 && (
                     <tr>
                       <td colSpan="6" className={styles.emptyTable}>
                         Nenhum personagem adicionado. Use as sugestões abaixo ou clique em "Adicionar Personagem".
@@ -592,7 +289,7 @@ const PromptForm = ({ currentModeId, fields, values, onUpdate, onAddSuggestion, 
                 <option value="charismatic teenage boy wearing headphones" />
                 <option value="adorable robot with big glowing blue digital eyes" />
               </datalist>
-              
+
               <datalist id="clothing-suggestions">
                 <option value="historically inspired simple white linen kilt" />
                 <option value="ornate traditional royal guard armor" />
@@ -616,95 +313,12 @@ const PromptForm = ({ currentModeId, fields, values, onUpdate, onAddSuggestion, 
             </div>
           ) : field.type === 'textarea' ? (
             <>
-              {field.id === 'dialogue' && Array.isArray(values['characters_definition']) && values['characters_definition'].length > 0 && (
-                <div className={styles.dialogueShortcuts}>
-                  <span className={styles.shortcutLabel}>Atalhos rápidos de Fala:</span>
-                  <div className={styles.shortcutChips}>
-                    {values['characters_definition'].filter(c => c.name).map((char) => (
-                      <button
-                        key={char.name}
-                        type="button"
-                        className={styles.shortcutChip}
-                        onClick={() => {
-                          const textarea = document.getElementById('dialogue');
-                          if (!textarea) return;
-                          const text = values['dialogue'] || '';
-                          const start = textarea.selectionStart || 0;
-                          const end = textarea.selectionEnd || 0;
-                          const insertStr = `[${char.name}] (excited): []`;
-                          const newText = text.substring(0, start) + insertStr + text.substring(end);
-                          onUpdate('dialogue', newText);
-                          
-                          setTimeout(() => {
-                            textarea.focus();
-                            const newCursorPos = start + insertStr.length - 1;
-                            textarea.setSelectionRange(newCursorPos, newCursorPos);
-                          }, 50);
-                        }}
-                        title={`Inserir fala de [${char.name}] no cursor`}
-                      >
-                        💬 {char.name}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              )}
-              {field.id !== 'dialogue' && Array.isArray(values['characters_definition']) && values['characters_definition'].length > 0 && (
-                <div className={styles.dialogueShortcuts}>
-                  <span className={styles.shortcutLabel}>Inserir Personagem:</span>
-                  <div className={styles.shortcutChips}>
-                    {values['characters_definition'].filter(c => c.name).map((char) => (
-                      <span key={char.name} className={styles.shortcutGroup}>
-                        <button
-                          type="button"
-                          className={styles.shortcutChip}
-                          onClick={() => {
-                            const input = document.getElementById(field.id);
-                            if (!input) return;
-                            const text = values[field.id] || '';
-                            const start = input.selectionStart || 0;
-                            const end = input.selectionEnd || 0;
-                            const insertStr = char.name;
-                            const newText = text.substring(0, start) + insertStr + text.substring(end);
-                            onUpdate(field.id, newText);
-                            setTimeout(() => {
-                              input.focus();
-                              const newPos = start + insertStr.length;
-                              input.setSelectionRange(newPos, newPos);
-                            }, 50);
-                          }}
-                          title={`Inserir nome [${char.name}] no cursor`}
-                        >
-                          👤 {char.name}
-                        </button>
-                        <button
-                          type="button"
-                          className={`${styles.shortcutChip} ${styles.shortcutChipSecondary}`}
-                          onClick={() => {
-                            const input = document.getElementById(field.id);
-                            if (!input) return;
-                            const text = values[field.id] || '';
-                            const start = input.selectionStart || 0;
-                            const end = input.selectionEnd || 0;
-                            const desc = `${char.appearance || ''}${char.clothing ? `, wearing ${char.clothing}` : ''}`;
-                            const insertStr = desc;
-                            const newText = text.substring(0, start) + insertStr + text.substring(end);
-                            onUpdate(field.id, newText);
-                            setTimeout(() => {
-                              input.focus();
-                              const newPos = start + insertStr.length;
-                              input.setSelectionRange(newPos, newPos);
-                            }, 50);
-                          }}
-                          title={`Inserir descrição completa de [${char.name}] no cursor`}
-                        >
-                          📝 Descrição
-                        </button>
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              )}
+              <CharacterChips
+                fieldId={field.id}
+                characters={characters}
+                onUpdate={onUpdate}
+                values={values}
+              />
               <textarea
                 id={field.id}
                 className={styles.textarea}
@@ -716,62 +330,12 @@ const PromptForm = ({ currentModeId, fields, values, onUpdate, onAddSuggestion, 
             </>
           ) : (
             <>
-              {Array.isArray(values['characters_definition']) && values['characters_definition'].length > 0 && (
-                <div className={styles.dialogueShortcuts}>
-                  <span className={styles.shortcutLabel}>Inserir Personagem:</span>
-                  <div className={styles.shortcutChips}>
-                    {values['characters_definition'].filter(c => c.name).map((char) => (
-                      <span key={char.name} className={styles.shortcutGroup}>
-                        <button
-                          type="button"
-                          className={styles.shortcutChip}
-                          onClick={() => {
-                            const input = document.getElementById(field.id);
-                            if (!input) return;
-                            const text = values[field.id] || '';
-                            const start = input.selectionStart || 0;
-                            const end = input.selectionEnd || 0;
-                            const insertStr = char.name;
-                            const newText = text.substring(0, start) + insertStr + text.substring(end);
-                            onUpdate(field.id, newText);
-                            setTimeout(() => {
-                              input.focus();
-                              const newPos = start + insertStr.length;
-                              input.setSelectionRange(newPos, newPos);
-                            }, 50);
-                          }}
-                          title={`Inserir nome [${char.name}] no cursor`}
-                        >
-                          👤 {char.name}
-                        </button>
-                        <button
-                          type="button"
-                          className={`${styles.shortcutChip} ${styles.shortcutChipSecondary}`}
-                          onClick={() => {
-                            const input = document.getElementById(field.id);
-                            if (!input) return;
-                            const text = values[field.id] || '';
-                            const start = input.selectionStart || 0;
-                            const end = input.selectionEnd || 0;
-                            const desc = `${char.appearance || ''}${char.clothing ? `, wearing ${char.clothing}` : ''}`;
-                            const insertStr = desc;
-                            const newText = text.substring(0, start) + insertStr + text.substring(end);
-                            onUpdate(field.id, newText);
-                            setTimeout(() => {
-                              input.focus();
-                              const newPos = start + insertStr.length;
-                              input.setSelectionRange(newPos, newPos);
-                            }, 50);
-                          }}
-                          title={`Inserir descrição completa de [${char.name}] no cursor`}
-                        >
-                          📝 Descrição
-                        </button>
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              )}
+              <CharacterChips
+                fieldId={field.id}
+                characters={characters}
+                onUpdate={onUpdate}
+                values={values}
+              />
               <input
                 id={field.id}
                 type="text"
@@ -817,73 +381,8 @@ const PromptForm = ({ currentModeId, fields, values, onUpdate, onAddSuggestion, 
         </div>
       ))}
 
-      {/* Auxiliary/Quick-generate buttons for Video modes */}
-      {(currentModeId === 'video-from-frames' || currentModeId === 'video-from-img') && (
-        <div className={styles.auxiliarySection}>
-          <h5 className={styles.auxiliaryTitle}>
-            <Sparkles size={14} className={styles.auxiliaryIcon} />
-            <span>Prompts Rápidos Virais (TikTok/Reels)</span>
-          </h5>
-          <p className={styles.auxiliaryDesc}>
-            Copie prompts otimizados independentes das seleções acima, onde a IA tem total liberdade criativa para guiar a cena e viralizar.
-          </p>
-          <div className={styles.auxiliaryButtons}>
-            <button
-              type="button"
-              className={styles.auxBtnSpeech}
-              onClick={() => handleCopyAuxPrompt('speech')}
-              title="Copiar prompt viral com fala nativa em português e lip-sync"
-            >
-              {copiedSpeech ? <Check size={16} /> : <MessageSquare size={16} />}
-              <span>{copiedSpeech ? 'Copiado!' : 'IA Decide + Falas (pt-BR)'}</span>
-            </button>
-            <button
-              type="button"
-              className={styles.auxBtnSfx}
-              onClick={() => handleCopyAuxPrompt('sfx')}
-              title="Copiar prompt viral sem fala, mas com efeitos sonoros (SFX) e ambiente"
-            >
-              {copiedSfx ? <Check size={16} /> : <Volume2 size={16} />}
-              <span>{copiedSfx ? 'Copiado!' : 'IA Decide + Efeitos (SFX)'}</span>
-            </button>
-            <button
-              type="button"
-              className={styles.auxBtnSilent}
-              onClick={() => handleCopyAuxPrompt('silent')}
-              title="Copiar prompt viral puramente silencioso, sem áudio"
-            >
-              {copiedSilent ? <Check size={16} /> : <VolumeX size={16} />}
-              <span>{copiedSilent ? 'Copiado!' : 'IA Decide + Sem Áudio'}</span>
-            </button>
-          </div>
-        </div>
-      )}
-
-      {/* Auxiliary button for photo-transform restoration */}
-      {currentModeId === 'photo-transform' && (
-        <div className={styles.auxiliarySection}>
-          <h5 className={styles.auxiliaryTitle}>
-            <History size={14} className={styles.auxiliaryIcon} />
-            <span>Restauração e Colorização Profissional</span>
-          </h5>
-          <p className={styles.auxiliaryDesc}>
-            Copie um prompt JSON pronto, otimizado para restaurar a nitidez, colorir com realismo e remover arranhões de fotos antigas sem perder a fidelidade do sujeito.
-          </p>
-          <div className={styles.auxiliaryButtons}>
-            <button
-              type="button"
-              className={styles.auxBtnSpeech}
-              onClick={() => handleCopyAuxPrompt('restore')}
-              title="Copiar prompt JSON pronto para restauração e colorização"
-            >
-              {copiedRestore ? <Check size={16} /> : <History size={16} />}
-              <span>{copiedRestore ? 'Copiado!' : 'Copiar Prompt de Restauração'}</span>
-            </button>
-          </div>
-        </div>
-      )}
-
-
+      <VideoQuickPrompts currentModeId={currentModeId} />
+      {currentModeId === 'photo-transform' && <RestorePromptButton />}
     </form>
   );
 };

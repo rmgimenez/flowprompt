@@ -1,14 +1,15 @@
 import { useState, useEffect } from 'react';
-import { 
-  X, Sparkles, Heart, MessageCircle, Bookmark, Share2, 
-  ArrowLeft, ArrowRight, Check, Copy, AlertTriangle, 
+import {
+  X, Sparkles, Heart, MessageCircle, Bookmark, Share2,
+  ArrowLeft, ArrowRight, Check, Copy, AlertTriangle,
   AlertCircle, CheckCircle, RefreshCw
 } from 'lucide-react';
 import styles from './TikTokDrawer.module.css';
+import { parseAIResponse, buildParserFeedback } from './utils/parseAIResponse';
 
-export const TikTokDrawer = ({ 
-  isOpen, 
-  onClose, 
+export const TikTokDrawer = ({
+  isOpen,
+  onClose,
   config,
   STYLE_PRESETS,
   COLOR_PRESETS
@@ -24,14 +25,11 @@ export const TikTokDrawer = ({
   const [isLiked, setIsLiked] = useState(false);
   const [isImportOpen, setIsImportOpen] = useState(false);
   const [rawText, setRawText] = useState('');
-  
-  // Parsed states
   const [parsedData, setParsedData] = useState(null);
   const [parserFeedback, setParserFeedback] = useState(null);
   const [copiedSlideIndex, setCopiedSlideIndex] = useState(null);
   const [captionExpanded, setCaptionExpanded] = useState(false);
 
-  // Reset states when opening/closing asynchronously to prevent cascading renders
   useEffect(() => {
     const timer = setTimeout(() => {
       if (!isOpen) {
@@ -45,9 +43,6 @@ export const TikTokDrawer = ({
     return () => clearTimeout(timer);
   }, [isOpen]);
 
-
-
-  // Robust parsing engine to clean and extract data
   const handleProcessImport = () => {
     if (!rawText.trim()) {
       setParserFeedback({
@@ -58,135 +53,30 @@ export const TikTokDrawer = ({
     }
 
     try {
-      // 1. Extração de Título
-      let title = '';
-      const titleRegexes = [
-        /1\.\s+\*\*Título[^*]*\*\*:\s*([^\n]+)/i,
-        /Título[^\n:]*:\s*([^\n]+)/i,
-        /#\s+Título[^\n]*\n+([^\n]+)/i,
-        /\*\*Título\*\*:\s*([^\n]+)/i
-      ];
+      const data = parseAIResponse(rawText, theme);
+      const feedback = buildParserFeedback(data.slides, !!data.title, !!data.caption);
 
-      for (const regex of titleRegexes) {
-        const match = rawText.match(regex);
-        if (match && match[1]) {
-          title = match[1].replace(/["']/g, '').trim();
-          break;
-        }
-      }
-
-      // 2. Extração de Legenda
-      let caption = '';
-      const captionRegexes = [
-        /2\.\s+\*\*Legenda[^*]*\*\*:\s*([\s\S]*?)(?=\n\n\d\.|\n\n---|```json|$)/i,
-        /Legenda[^\n:]*:\s*([\s\S]*?)(?=\n\n\d\.|\n\n---|```json|$)/i,
-        /\*\*Legenda\*\*:\s*([\s\S]*?)(?=\n\n\d\.|\n\n---|```json|$)/i
-      ];
-
-      for (const regex of captionRegexes) {
-        const match = rawText.match(regex);
-        if (match && match[1]) {
-          caption = match[1].trim();
-          break;
-        }
-      }
-
-      // Fallback for caption if not found explicitly but hashtags exist
-      if (!caption) {
-        const hashtagIndex = rawText.indexOf('#');
-        if (hashtagIndex !== -1) {
-          // Grab the paragraph leading to the hashtag
-          const priorText = rawText.substring(0, hashtagIndex);
-          const paragraphs = priorText.split('\n\n');
-          caption = paragraphs[paragraphs.length - 1].trim();
-        }
-      }
-
-      // 3. Extração de Hashtags
-      const hashtagRegex = /#\w+/g;
-      const hashtags = rawText.match(hashtagRegex) || [];
-
-      // 4. Extração de blocos JSON
-      const jsonBlockRegex = /```json\s*([\s\S]*?)```/g;
-      const slides = [];
-      let match;
-
-      while ((match = jsonBlockRegex.exec(rawText)) !== null) {
-        const rawJson = match[1].trim();
-        const parsedJson = cleanAndParseJSON(rawJson);
-        if (parsedJson) {
-          slides.push({
-            raw: rawJson,
-            parsed: parsedJson
-          });
-        }
-      }
-
-      // 5. Avaliação do parsing
-      if (slides.length === 0) {
-        setParserFeedback({
-          type: 'error',
-          message: 'Nenhum prompt JSON válido no formato do Nano Banana 2 foi encontrado no texto.'
-        });
+      if (data.slides.length === 0) {
+        setParserFeedback(feedback);
         return;
       }
 
-      const hasTitle = !!title;
-      const hasCaption = !!caption;
-
-      setParsedData({
-        title: title || theme || 'Coleção de Fotos Viral',
-        caption: caption || 'Carrossel incrível estruturado pelo FlowPrompt.',
-        hashtags: hashtags.length > 0 ? hashtags.join(' ') : '#viral #carrossel #nano2 #art',
-        slides: slides
-      });
-
+      setParsedData(data);
       setActiveSlide(0);
+      setParserFeedback(feedback);
 
-      if (!hasTitle || !hasCaption) {
-        setParserFeedback({
-          type: 'warning',
-          message: `Sucesso parcial! Carregamos ${slides.length} slides, mas não identificamos o Título ou a Legenda. Preenchemos com dados simulados.`
-        });
-      } else {
-        setParserFeedback({
-          type: 'success',
-          message: `Sensacional! Extraímos com sucesso o Título, Legenda e os ${slides.length} slides de imagem.`
-        });
-        // Auto-close import panel after 1.5s on full success
+      if (feedback.type === 'success') {
         setTimeout(() => {
           setIsImportOpen(false);
           setParserFeedback(null);
         }, 1500);
       }
-
     } catch (err) {
       console.error(err);
       setParserFeedback({
         type: 'error',
         message: 'Ocorreu um erro inesperado ao analisar o texto colado. Verifique o formato.'
       });
-    }
-  };
-
-  // Robust JSON Cleaner & Parser
-  const cleanAndParseJSON = (jsonStr) => {
-    try {
-      return JSON.parse(jsonStr);
-    } catch {
-      try {
-        // Clean comments
-        let cleaned = jsonStr.replace(/\/\*[\s\S]*?\*\/|([^\\:]|^)\/\/.*$/gm, '$1');
-        // Quote unquoted keys
-        cleaned = cleaned.replace(/([{,]\s*)([a-zA-Z0-9_]+)\s*:/g, '$1"$2":');
-        // Remove trailing commas
-        cleaned = cleaned.replace(/,\s*([}\]])/g, '$1');
-        // Replace single quotes with double quotes
-        cleaned = cleaned.replace(/'/g, '"');
-        return JSON.parse(cleaned);
-      } catch {
-        return null;
-      }
     }
   };
 
@@ -224,28 +114,22 @@ export const TikTokDrawer = ({
     });
   };
 
-  // Resolve presets descriptions
   const styleObj = STYLE_PRESETS.find(s => s.id === selectedStyle);
   const colorObj = COLOR_PRESETS.find(c => c.id === selectedColors);
 
   const totalSlides = parsedData ? parsedData.slides.length : quantity;
   const displaySlideIndex = activeSlide >= totalSlides ? 0 : activeSlide;
-
-  // Determine background color based on preset for simulation
   const gradientClass = styles[`gradient_${selectedColors}`] || styles.gradient_normal;
 
   return (
     <>
-      {/* Background Overlay */}
-      <div 
-        className={`${styles.drawerOverlay} ${isOpen ? styles.drawerOverlayActive : ''}`} 
+      <div
+        className={`${styles.drawerOverlay} ${isOpen ? styles.drawerOverlayActive : ''}`}
         onClick={onClose}
       />
 
-      {/* Floating sliding drawer */}
       <div className={`${styles.drawerContent} ${isOpen ? styles.drawerContentActive : ''}`}>
-        
-        {/* Drawer Header */}
+
         <div className={styles.drawerHeader}>
           <div className={styles.drawerHeaderInfo}>
             <h3>
@@ -259,18 +143,14 @@ export const TikTokDrawer = ({
           </button>
         </div>
 
-        {/* Drawer Scrollable Body */}
         <div className={styles.drawerBody}>
-          
-          {/* Main phone frame container */}
+
           <div className={styles.phoneWrapper}>
             <div className={styles.phoneFrame}>
               <div className={styles.phoneDynamicIsland} />
-              
-              {/* Actual inside screen */}
+
               <div className={styles.phoneScreen}>
-                
-                {/* Visual Status bar mock */}
+
                 <div className={styles.phoneScreenHeader}>
                   <span className={styles.phoneTime}>08:08</span>
                   <div className={styles.phoneStatusIcons}>
@@ -279,18 +159,15 @@ export const TikTokDrawer = ({
                   </div>
                 </div>
 
-                {/* TikTok Feed Header tabs mock */}
                 <div className={styles.phoneTikTokNav}>
                   <span>Seguindo</span>
                   <span className={styles.phoneTikTokNavActive}>Para Você</span>
                 </div>
 
-                {/* Bullets indicator */}
                 <div className={styles.progressIndicatorBar}>
                   {displaySlideIndex + 1} / {totalSlides}
                 </div>
 
-                {/* Left/Right controls overlays */}
                 {totalSlides > 1 && (
                   <>
                     <button className={`${styles.carouselArrow} ${styles.carouselArrowLeft}`} onClick={handlePrevSlide}>
@@ -302,7 +179,6 @@ export const TikTokDrawer = ({
                   </>
                 )}
 
-                {/* Feed stack lateral buttons */}
                 <div className={styles.phoneRightOverlay}>
                   <div className={styles.rightOverlayItem}>
                     <div className={styles.avatarRing}>
@@ -328,16 +204,14 @@ export const TikTokDrawer = ({
                   </div>
                 </div>
 
-                {/* Bottom overlays: channel info and legends */}
                 <div className={styles.phoneBottomOverlay}>
                   <span className={styles.bottomUser}>@flowprompt</span>
-                  
+
                   {parsedData ? (
-                    /* POST-GENERATION REAL MODE DESCRIPTION */
                     <div className={`${styles.bottomCaption} ${captionExpanded ? styles.bottomCaptionExpanded : ''}`}>
                       <strong>{parsedData.title}</strong> — {parsedData.caption} {parsedData.hashtags}
                       {parsedData.caption.length > 50 && (
-                        <button 
+                        <button
                           className={styles.captionMoreBtn}
                           onClick={() => setCaptionExpanded(!captionExpanded)}
                         >
@@ -346,7 +220,6 @@ export const TikTokDrawer = ({
                       )}
                     </div>
                   ) : (
-                    /* PRE-GENERATION SIMULATION MODE DESCRIPTION */
                     <div className={styles.bottomCaption}>
                       <strong>{theme || 'Sem Tema Definido'}</strong> — Cole seu retorno da IA para atualizar a legenda e obter ganchos e hashtags reais ajustados para o público. #viral #flowprompt
                     </div>
@@ -361,12 +234,8 @@ export const TikTokDrawer = ({
                   </div>
                 </div>
 
-                {/* Slides Visual Carousel Engine */}
                 <div className={styles.carouselContainer}>
                   {parsedData ? (
-                    /* ----------------------------------------------------
-                       POST-GENERATION REAL STATE: SLIDES GENERATED
-                       ---------------------------------------------------- */
                     parsedData.slides.map((slide, index) => {
                       const subjectText = slide.parsed?.subject?.primary?.description || 'Descrição da cena não identificada';
                       const actionText = slide.parsed?.subject?.primary?.action || 'Ação não identificada';
@@ -375,7 +244,7 @@ export const TikTokDrawer = ({
                       const styleVal = slide.parsed?.style_and_quality?.medium || 'Fotografia';
 
                       return (
-                        <div 
+                        <div
                           key={index}
                           className={`${styles.slide} ${gradientClass} ${displaySlideIndex === index ? styles.slideActive : ''}`}
                         >
@@ -389,7 +258,7 @@ export const TikTokDrawer = ({
                             <p className={styles.slideText} title={`${subjectText} - ${actionText}`}>
                               <strong>Assunto:</strong> {subjectText} ({actionText})
                             </p>
-                            
+
                             <div className={styles.promptDetails}>
                               <span className={styles.promptDetailItem}>
                                 <strong>Enquadramento:</strong> {framing}
@@ -402,7 +271,7 @@ export const TikTokDrawer = ({
                               </span>
                             </div>
 
-                            <button 
+                            <button
                               className={`${styles.copySlideJsonBtn} ${copiedSlideIndex === index ? styles.copySlideJsonBtnSuccess : ''}`}
                               onClick={() => handleCopySlideJson(slide.raw, index)}
                               title="Copiar JSON desse slide para a Foto Nova"
@@ -415,14 +284,10 @@ export const TikTokDrawer = ({
                       );
                     })
                   ) : (
-                    /* ----------------------------------------------------
-                       PRE-GENERATION ESTIMATED STATE: PREVIEW FORM
-                       ---------------------------------------------------- */
                     Array.from({ length: quantity }).map((_, index) => {
-                      // Generate dynamic placeholder title/hook estimates
                       let hookTitle = `📈 Desenvolvimento #${index}`;
                       let hookDesc = `Narrativa lógica que aprofunda o tema com o estilo "${styleObj?.label || 'Padrão'}". Mantém o usuário deslizando.`;
-                      
+
                       if (index === 0) {
                         hookTitle = `🚨 O Gancho (Hook)`;
                         hookDesc = `O primeiro segundo crucial! Aparição com impacto visual extremo para impedir que o espectador passe o feed.`;
@@ -432,7 +297,7 @@ export const TikTokDrawer = ({
                       }
 
                       return (
-                        <div 
+                        <div
                           key={index}
                           className={`${styles.slide} ${gradientClass} ${displaySlideIndex === index ? styles.slideActive : ''}`}
                         >
@@ -463,29 +328,26 @@ export const TikTokDrawer = ({
                   )}
                 </div>
 
-                {/* ----------------------------------------------------
-                   GLASSMORPHIC IMPORT OVERLAY (Pasting panel)
-                   ---------------------------------------------------- */}
                 <div className={`${styles.importOverlay} ${isImportOpen ? styles.importOverlayActive : ''}`}>
                   <div className={styles.importHeader}>
                     <h4>
                       <Sparkles size={14} style={{ color: '#ec4899' }} />
                       Importar Resposta da IA
                     </h4>
-                    <button 
-                      className={styles.importHeaderCloseBtn} 
+                    <button
+                      className={styles.importHeaderCloseBtn}
                       onClick={() => setIsImportOpen(false)}
                       title="Voltar ao mockup"
                     >
                       <X size={16} />
                     </button>
                   </div>
-                  
+
                   <p className={styles.importDesc}>
                     Cole abaixo a resposta bruta gerada pelo seu Chat GPT ou Claude (contendo o título, legenda e os blocos de código JSON dos slides).
                   </p>
 
-                  <textarea 
+                  <textarea
                     className={styles.importTextarea}
                     placeholder="Cole aqui o texto..."
                     value={rawText}
@@ -498,8 +360,8 @@ export const TikTokDrawer = ({
                       parserFeedback.type === 'warning' ? styles.importFeedbackWarning :
                       styles.importFeedbackSuccess
                     }`}>
-                      {parserFeedback.type === 'error' ? <AlertCircle size={14} /> : 
-                       parserFeedback.type === 'warning' ? <AlertTriangle size={14} /> : 
+                      {parserFeedback.type === 'error' ? <AlertCircle size={14} /> :
+                       parserFeedback.type === 'warning' ? <AlertTriangle size={14} /> :
                        <CheckCircle size={14} />}
                       <span>{parserFeedback.message}</span>
                     </div>
@@ -509,8 +371,8 @@ export const TikTokDrawer = ({
                     <button className={styles.importClearBtn} onClick={handleClearImport}>
                       Limpar
                     </button>
-                    <button 
-                      className={styles.importProcessBtn} 
+                    <button
+                      className={styles.importProcessBtn}
                       onClick={handleProcessImport}
                       disabled={!rawText.trim()}
                     >
@@ -523,10 +385,9 @@ export const TikTokDrawer = ({
             </div>
           </div>
 
-          {/* Interactive controls under the phone bezel */}
           {!parsedData ? (
-            <button 
-              className={styles.importPanelToggleBtn} 
+            <button
+              className={styles.importPanelToggleBtn}
               onClick={() => setIsImportOpen(true)}
               title="Colar legenda e JSONs gerados pela IA"
             >
@@ -535,16 +396,16 @@ export const TikTokDrawer = ({
             </button>
           ) : (
             <div style={{ display: 'flex', gap: '0.75rem', width: '100%', justifyContent: 'center' }}>
-              <button 
-                className={`${styles.importPanelToggleBtn} ${styles.importPanelToggleBtnActive}`} 
+              <button
+                className={`${styles.importPanelToggleBtn} ${styles.importPanelToggleBtnActive}`}
                 onClick={handleResetToSimulation}
                 title="Voltar ao modo simulador de rascunho"
               >
                 <RefreshCw size={14} />
                 Resetar para Rascunho
               </button>
-              <button 
-                className={styles.importPanelToggleBtn} 
+              <button
+                className={styles.importPanelToggleBtn}
                 onClick={() => setIsImportOpen(true)}
                 title="Colar legenda e JSONs atualizados"
               >
@@ -554,7 +415,6 @@ export const TikTokDrawer = ({
             </div>
           )}
 
-          {/* Instruction box footer */}
           <div className={styles.drawerInstructions}>
             <h4 className={styles.drawerInstructionsTitle}>
               💡 Dica de Fluxo Rápido

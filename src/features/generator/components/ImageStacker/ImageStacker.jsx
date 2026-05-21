@@ -1,40 +1,17 @@
-import { useState, useRef } from 'react';
+import { useState } from 'react';
 import { motion, Reorder, AnimatePresence } from 'framer-motion';
 import { GlassCard } from '../../../../components/ui/GlassCard';
+import { useImageManager } from '../../hooks/useImageManager';
 import styles from './ImageStacker.module.css';
 
 const MAX_RECOMMENDED = 10;
 const CANVAS_WIDTH = 1000;
 
 export const ImageStacker = () => {
-  const [images, setImages] = useState([]);
   const [gap, setGap] = useState(10);
   const [bgColor, setBgColor] = useState('#ffffff');
   const [format, setFormat] = useState('image/png');
-  const [isGenerating, setIsGenerating] = useState(false);
-  const fileInputRef = useRef(null);
-
-  const handleFileChange = (e) => {
-    const files = Array.from(e.target.files);
-    const newImages = files.map(file => ({
-      id: Math.random().toString(36).substr(2, 9),
-      file: file,
-      preview: URL.createObjectURL(file)
-    }));
-    setImages(prev => [...prev, ...newImages]);
-    // Reset input
-    e.target.value = '';
-  };
-
-  const removeImage = (id) => {
-    setImages(prev => {
-      const filtered = prev.filter(img => img.id !== id);
-      // Clean up the URL
-      const removed = prev.find(img => img.id === id);
-      if (removed) URL.revokeObjectURL(removed.preview);
-      return filtered;
-    });
-  };
+  const { images, setImages, isGenerating, setIsGenerating, fileInputRef, handleFileChange, removeImage, loadImages } = useImageManager();
 
   const generateImage = async () => {
     if (images.length < 2) {
@@ -45,18 +22,12 @@ export const ImageStacker = () => {
     setIsGenerating(true);
 
     try {
-      // Load all images and calculate total height
-      const loadedImages = await Promise.all(images.map(img => {
-        return new Promise((resolve) => {
-          const image = new Image();
-          image.onload = () => {
-            const ratio = CANVAS_WIDTH / image.width;
-            const h = image.height * ratio;
-            resolve({ img: image, height: h });
-          };
-          image.src = img.preview;
-        });
-      }));
+      const loaded = await loadImages(images.map(img => img.preview));
+
+      const loadedImages = loaded.map((img) => {
+        const ratio = CANVAS_WIDTH / img.width;
+        return { img, height: img.height * ratio };
+      });
 
       const totalHeight = loadedImages.reduce((acc, curr) => acc + curr.height, 0) + (gap * (images.length - 1));
 
@@ -65,18 +36,15 @@ export const ImageStacker = () => {
       canvas.height = totalHeight;
       const ctx = canvas.getContext('2d');
 
-      // Fill background
       ctx.fillStyle = bgColor;
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      // Draw images
       let currentY = 0;
       loadedImages.forEach((item) => {
         ctx.drawImage(item.img, 0, currentY, CANVAS_WIDTH, item.height);
         currentY += item.height + gap;
       });
 
-      // Download
       const link = document.createElement('a');
       link.download = `pinterest-stack-${Date.now()}.${format === 'image/png' ? 'png' : 'jpg'}`;
       link.href = canvas.toDataURL(format, 0.9);

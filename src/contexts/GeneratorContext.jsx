@@ -1,11 +1,8 @@
-import { createContext, useRef, useEffect, useCallback } from 'react';
+import { useRef, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useGenerator } from '../features/generator/hooks/useGenerator';
-
-// eslint-disable-next-line react-refresh/only-export-components
-export const GeneratorContext = createContext(null);
-
-
+import { FormContext } from './FormContext';
+import { PersistenceContext } from './PersistenceContext';
 
 export function GeneratorProvider({ modeId, children }) {
   const navigate = useNavigate();
@@ -40,14 +37,48 @@ export function GeneratorProvider({ modeId, children }) {
     navigate(`/${id}`);
   }, [navigate]);
 
+  const {
+    formValues,
+    updateField,
+    addSuggestion,
+    generatedPrompt,
+    randomize,
+    clearFields,
+    applyPreset,
+    history,
+    favorites,
+    addToHistory,
+    toggleFavorite,
+    currentMode: mode
+  } = generator;
+
+  const formContextValue = {
+    currentMode: mode,
+    currentModeId: modeId,
+    formValues,
+    setFormValues,
+    updateField,
+    addSuggestion,
+    generatedPrompt,
+    randomize,
+    clearFields,
+    applyPreset,
+    addToHistory
+  };
+
+  const persistenceContextValue = {
+    history,
+    favorites,
+    toggleFavorite,
+    loadSavedItem,
+    handleModeChange
+  };
+
   return (
-    <GeneratorContext.Provider value={{
-      ...generator,
-      currentModeId: modeId,
-      loadSavedItem,
-      handleModeChange,
-    }}>
-      {children}
-    </GeneratorContext.Provider>
+    <PersistenceContext.Provider value={persistenceContextValue}>
+      <FormContext.Provider value={formContextValue}>
+        {children}
+      </FormContext.Provider>
+    </PersistenceContext.Provider>
   );
 }

@@ -2,14 +2,14 @@ import { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { 
   Play, Image, Camera, Sparkles, Info, Wand2, 
-  History, Star, LayoutGrid, Copy, RotateCcw, Check,
-  Layers, X, Folders, Film, Palette, Wrench, Zap
+  History, LayoutGrid, Layers, X, Folders, Film, Palette, Wrench, Star
 } from 'lucide-react';
 import { clsx } from 'clsx';
 import styles from './Sidebar.module.css';
-import { MODES } from '../../constants/modes';
 import { TEMPLATES } from '../../constants/templates';
-import { useGeneratorContext } from '../../../../contexts/useGeneratorContext';
+import { usePersistenceContext } from '../../../../contexts/PersistenceContext';
+import { SavedItem } from './SavedItem';
+import { ModeItem } from './ModeItem';
 
 const MODE_CATEGORIES = [
   {
@@ -50,74 +50,6 @@ const FOOTER_ITEMS = [
   { id: 'about', label: 'Sobre a Ferramenta', icon: Info },
 ];
 
-const SavedItem = ({ item, onToggleFavorite, onLoadItem, onClose }) => {
-  const mode = MODES[item.modeId] || { title: 'Desconhecido' };
-  const [copied, setCopied] = useState(false);
-
-  const handleCopy = (e) => {
-    e.stopPropagation();
-    navigator.clipboard.writeText(item.prompt);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
-
-  return (
-    <div className={styles.savedItem}>
-      <div className={styles.savedHeader}>
-        <span className={styles.savedMode}>{mode.title}</span>
-        <div className={styles.savedActions}>
-          <button 
-            onClick={(e) => { e.stopPropagation(); onToggleFavorite(item); }} 
-            className={clsx(styles.actionBtn, item.isFavorite && styles.isFavorite)}
-          >
-            <Star size={14} fill={item.isFavorite ? "currentColor" : "none"} />
-          </button>
-          <button onClick={handleCopy} className={styles.actionBtn}>
-            {copied ? <Check size={14} className={styles.successIcon} /> : <Copy size={14} />}
-          </button>
-          <button 
-            onClick={() => { 
-              onLoadItem(item); 
-              if (onClose) onClose(); 
-            }} 
-            className={styles.actionBtn} 
-            title="Restaurar Campos"
-          >
-            <RotateCcw size={14} />
-          </button>
-        </div>
-      </div>
-      <p className={styles.savedPrompt}>{item.prompt}</p>
-      <span className={styles.savedTime}>
-        {new Date(item.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-      </span>
-    </div>
-  );
-};
-
-const ModeItem = ({ item, currentModeId, onModeChange, onClose, hasTemplates }) => {
-  const Icon = item.icon;
-  const isActive = currentModeId === item.id;
-
-  return (
-    <button
-      className={clsx(styles.navLink, isActive && styles.active)}
-      onClick={() => {
-        onModeChange(item.id);
-        if (onClose) onClose();
-      }}
-    >
-      <Icon size={20} className={styles.icon} />
-      <span className={styles.linkLabel}>{item.label}</span>
-      {hasTemplates && (
-        <span className={styles.templateBadge} title="Templates disponíveis">
-          <Zap size={10} />
-        </span>
-      )}
-    </button>
-  );
-};
-
 const Sidebar = ({
   isOpen,
   onClose
@@ -125,7 +57,7 @@ const Sidebar = ({
   const navigate = useNavigate();
   const location = useLocation();
   const currentModeId = location.pathname.replace('/', '') || 'tiktok-collections';
-  const { history = [], favorites = [], toggleFavorite, loadSavedItem } = useGeneratorContext();
+  const { history = [], favorites = [], toggleFavorite, loadSavedItem } = usePersistenceContext();
 
   const [activeTab, setActiveTab] = useState('modes');
   const [collapsedCategories, setCollapsedCategories] = useState({ video: true, photo: true });

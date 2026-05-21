@@ -1,12 +1,15 @@
 import { 
-  parseCamera, 
   parseDialogue, 
   parseCharacters, 
   enrichCharacters, 
   parseAmbiance, 
-  sanitizeValues,
-  VIDEO_NEGATIVE_PROMPTS 
+  sanitizeValues
 } from '../../utils/parsers';
+import {
+  buildCharacterManifest,
+  buildVoiceDirection,
+  buildNegativePrompt
+} from './sharedVideoHelpers';
 
 export const videoNew = {
   id: 'video-new',
@@ -20,7 +23,6 @@ export const videoNew = {
     const rawContext = cleanVals.context;
     const rawSceneSummary = cleanVals.scene_summary;
 
-    const camera = parseCamera(cleanVals.cinematography);
     const dialogue = parseDialogue(cleanVals.dialogue);
     const characters = enrichCharacters(parseCharacters(cleanVals.characters_definition), dialogue);
     const envAmbiance = parseAmbiance(rawContext, cleanVals.style_ambiance);
@@ -42,28 +44,13 @@ export const videoNew = {
       ? rawSceneSummary
       : "A compelling cinematic moment designed for TikTok engagement.";
 
-    // Character manifest formatting
-    let charManifest = "";
-    if (characters.length > 0) {
-      charManifest = characters.map(char => {
-        let bio = `- **${char.name}**: ${char.description}`;
-        if (char.voice_attributes) bio += `, voice direction: ${char.voice_attributes}`;
-        if (char.motion_signature) bio += `, movement style: ${char.motion_signature}`;
-        return bio;
-      }).join('\n');
-    } else {
-      charManifest = "- **Main Focus**: " + (rawSubject || "The main visual subject of the scene");
-    }
+    const charManifest = buildCharacterManifest(characters, rawSubject || "The main visual subject of the scene");
+    const voiceDirection = buildVoiceDirection(dialogue);
 
-    const voiceDirection = dialogue.length > 0
-      ? `\n- **Voice & Dubbing Specs:** All character speech must be in natural Brazilian Portuguese (pt-BR) with flawless lip-sync. Voice acting should be highly expressive, charismatic, and energetic, matching comedic influencer delivery. Use realistic breaths and modern pacing.`
-      : "";
-
-    let timelineScript = "";
+    let timelineScript;
 
     if (dialogue.length > 0) {
       if (timelineMode.includes("Multi-shot")) {
-        // Multi-shot mode: Create camera cuts for each dialogue line
         timelineScript = dialogue.map((line, idx) => {
           const start = line.timing.start.toFixed(1).padStart(5, '0').replace('.', ':');
           const end = line.timing.end.toFixed(1).padStart(5, '0').replace('.', ':');
@@ -85,7 +72,6 @@ export const videoNew = {
   * **Mixing & Ducking:** Complete separation of dialogue, music, and SFX. Music and Ambience are ducked to -12dB during speech to prevent masking. No animal onomatopoeias in speech.`;
         }).join('\n\n');
       } else {
-        // Single continuous shot mode
         const totalDurationFormatted = `00:0${durationNum}:0`;
         const dialogueLinesText = dialogue.map(line => {
           const timestamp = line.timing.start.toFixed(1).padStart(5, '0').replace('.', ':');
@@ -116,11 +102,7 @@ ${dialogueLinesText}
   * **Mixing & Ducking:** Balanced cinematic audio mix with strong foreground sound effects and supportive background atmosphere.`;
     }
 
-    const negativeText = [
-      "subtitles", "text", "watermark", "distortions", "unrealistic proportions", "flickering lighting",
-      "extra characters not in the brief",
-      ...VIDEO_NEGATIVE_PROMPTS
-    ].join(', ');
+    const negativeText = buildNegativePrompt();
 
     return `# GOOGLE VEO 3.1 CINEMATIC PROMPT DIRECTIVE
 

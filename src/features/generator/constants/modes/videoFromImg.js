@@ -1,11 +1,16 @@
 import { 
-  parseCamera, 
   parseDialogue, 
   parseCharacters, 
   enrichCharacters, 
-  sanitizeValues,
-  VIDEO_NEGATIVE_PROMPTS 
+  sanitizeValues
 } from '../../utils/parsers';
+import {
+  buildCharacterManifest,
+  buildVoiceDirection,
+  buildNegativePrompt,
+  buildSfxBlock,
+  buildNoDialogueSfxBlock
+} from './sharedVideoHelpers';
 
 export const videoFromImg = {
   id: 'video-from-img',
@@ -14,7 +19,6 @@ export const videoFromImg = {
   helpText: 'Dê vida às suas fotos! Descreva o que deve se mover na cena, o movimento de câmera e os efeitos sonoros. Dica: você pode escolher "Sem Som" se desejar apenas a animação visual.',
   formula: (vals) => {
     const cleanVals = sanitizeValues(vals);
-    const camera = parseCamera(cleanVals.camera_motion);
     const dialogue = parseDialogue(cleanVals.dialogue);
     const characters = enrichCharacters(parseCharacters(cleanVals.characters_definition), dialogue);
 
@@ -27,29 +31,15 @@ export const videoFromImg = {
       ? cleanVals.scene_summary
       : "An animated cinematic transition maintaining visual fidelity from the static frame.";
 
-    // Character manifest formatting
-    let charManifest = "";
-    if (characters.length > 0) {
-      charManifest = characters.map(char => {
-        let bio = `- **${char.name}**: ${char.description}`;
-        if (char.voice_attributes) bio += `, voice direction: ${char.voice_attributes}`;
-        if (char.motion_signature) bio += `, movement style: ${char.motion_signature}`;
-        return bio;
-      }).join('\n');
-    } else {
-      charManifest = "- **Main Focus**: " + (cleanVals.subject || "The main visual subject of the static image");
-    }
-
-    const voiceDirection = dialogue.length > 0
-      ? `\n- **Voice & Dubbing Specs:** All character speech must be in natural Brazilian Portuguese (pt-BR) with flawless lip-sync. Voice acting should be highly expressive, charismatic, and energetic, matching comedic influencer delivery. Use realistic breaths and modern pacing.`
-      : "";
+    const charManifest = buildCharacterManifest(characters, cleanVals.subject || "The main visual subject of the static image");
+    const voiceDirection = buildVoiceDirection(dialogue);
 
     const hasAudio = cleanVals.sound_effects !== 'no audio';
     const sfxValText = (cleanVals.sound_effects && cleanVals.sound_effects !== 'no audio')
       ? cleanVals.sound_effects
       : "Atmospheric ambient sounds matching the scene";
 
-    let timelineScript = "";
+    let timelineScript;
 
     if (dialogue.length > 0) {
       if (timelineMode.includes("Multi-shot")) {
@@ -83,19 +73,11 @@ export const videoFromImg = {
   ${sfxBlock}`;
         }).join('\n\n');
       } else {
-        // Single continuous shot mode
         const totalDurationFormatted = `00:0${durationNum}:0`;
         const dialogueLinesText = dialogue.map(line => {
           const timestamp = line.timing.start.toFixed(1).padStart(5, '0').replace('.', ':');
           return `  * At [${timestamp}], '${line.character}' (feeling ${line.emotion_tone}) says in a direct quote: "${line.speech}"`;
         }).join('\n');
-
-        const sfxBlock = hasAudio
-          ? `* **Foreground Layer (Dialogue & SFX):** Clear, staggered speech in pt-BR with expressive voice acting matching character emotions. SFX: Continuous action-synced sound effects (e.g. footsteps, object handling) matching: ${sfxValText}.
-  * **Midground Layer (Music):** Soft supporting atmospheric musical texture, zero heavy beats, no vocal masks.
-  * **Background Layer (Ambience):** Steady environmental background noise bed.
-  * **Mixing & Ducking:** All background layers (Music & Ambience) are ducked to -12dB when characters speak. No crosstalk.`
-          : `* Disabled - No audio generation requested. Completely silent video track.`;
 
         timelineScript = `[00:00 - ${totalDurationFormatted}]
 - **Camera Motion:** Continuous shot starting from the source image framing, applying: ${cleanVals.camera_motion || "gentle cinematic camera movement"}. Maintain framing coherence without cuts.
@@ -103,29 +85,19 @@ export const videoFromImg = {
 - **Production Script (Dialogue Sequence):**
 ${dialogueLinesText}
 - **Soundscape & Audio Hierarchy (Veo 3.1 Design):**
-  ${sfxBlock}`;
+  ${buildSfxBlock(hasAudio, sfxValText)}`;
       }
     } else {
       const totalDurationFormatted = `00:0${durationNum}:0`;
-      const sfxBlock = hasAudio
-        ? `* **Foreground Layer (SFX):** High-fidelity action-synced sound effects (SFX) matching: ${sfxValText}. High kinetic audio precision.
-  * **Midground Layer (Music):** Thematic cinematic musical bed matching the scene mood.
-  * **Background Layer (Ambience):** Immersive environmental ambiance.
-  * **Mixing & Ducking:** Balanced cinematic audio mix with strong foreground sound effects and supportive background atmosphere.`
-        : `* Disabled - No audio generation requested. Completely silent video track.`;
 
       timelineScript = `[00:00 - ${totalDurationFormatted}]
 - **Camera Motion:** Continuous shot starting from the source image framing, applying: ${cleanVals.camera_motion || "gentle panning"}.
 - **Action & Movement:** Smoothly animate the scene starting exactly from the initial pose of the static source image. Main animation action: ${cleanVals.action || "natural consistent animation of the visual elements"}.
 - **Soundscape & Audio Hierarchy (Veo 3.1 Design):**
-  ${sfxBlock}`;
+  ${buildNoDialogueSfxBlock(hasAudio, sfxValText)}`;
     }
 
-    const negativeText = [
-      "subtitles", "text", "watermark", "distortions", "unrealistic proportions", "flickering lighting",
-      "extra characters not in the brief",
-      ...VIDEO_NEGATIVE_PROMPTS
-    ].join(', ');
+    const negativeText = buildNegativePrompt();
 
     return `# GOOGLE VEO 3.1 IMAGE-TO-VIDEO PROMPT DIRECTIVE
 

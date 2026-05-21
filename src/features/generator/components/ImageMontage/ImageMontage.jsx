@@ -1,53 +1,27 @@
-import { useState, useRef } from 'react';
+import { useState } from 'react';
 import { Reorder, AnimatePresence } from 'framer-motion';
 import { GlassCard } from '../../../../components/ui/GlassCard';
 import { Layout, Palette, Maximize, Trash2, Download, Plus, Grid3X3 } from 'lucide-react';
+import { useImageManager } from '../../hooks/useImageManager';
 import styles from './ImageMontage.module.css';
 
 const MAX_DIMENSION_LIMIT = 2500;
 
 export const ImageMontage = () => {
-  const [images, setImages] = useState([]);
   const [columns, setColumns] = useState(2);
   const [gap, setGap] = useState(10);
   const [borderColor, setBorderColor] = useState('#ffffff');
-  const [fittingMode, setFittingMode] = useState('cover'); // 'cover' or 'contain'
+  const [fittingMode, setFittingMode] = useState('cover');
   const [maxDim, setMaxDim] = useState(1200);
-  const [isGenerating, setIsGenerating] = useState(false);
-  const fileInputRef = useRef(null);
-
-  const handleFileChange = (e) => {
-    const files = Array.from(e.target.files);
-    const newImages = files.map(file => ({
-      id: Math.random().toString(36).substr(2, 9),
-      file: file,
-      preview: URL.createObjectURL(file)
-    }));
-    setImages(prev => [...prev, ...newImages]);
-    e.target.value = '';
-  };
-
-  const removeImage = (id) => {
-    setImages(prev => {
-      const removed = prev.find(img => img.id === id);
-      if (removed) URL.revokeObjectURL(removed.preview);
-      return prev.filter(img => img.id !== id);
-    });
-  };
+  const { images, setImages, isGenerating, setIsGenerating, fileInputRef, handleFileChange, removeImage, loadImages } = useImageManager();
 
   const generateImage = async () => {
     if (images.length === 0) return;
     setIsGenerating(true);
 
     try {
-      // 1. Load all images and get their natural dimensions
-      const loadedImages = await Promise.all(images.map(img => {
-        return new Promise((resolve) => {
-          const image = new Image();
-          image.onload = () => resolve({ img: image, w: image.width, h: image.height });
-          image.src = img.preview;
-        });
-      }));
+      const loaded = await loadImages(images.map(img => img.preview));
+      const loadedImages = loaded.map(img => ({ img, w: img.width, h: img.height }));
 
       const numImages = loadedImages.length;
       const cols = columns;
