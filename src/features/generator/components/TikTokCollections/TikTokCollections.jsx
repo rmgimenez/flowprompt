@@ -1,9 +1,9 @@
 import { useState, useEffect, useMemo, useCallback } from 'react';
 import { GlassCard } from '../../../../components/ui/GlassCard';
-import { Folders } from 'lucide-react';
+import { Folders, HelpCircle } from 'lucide-react';
 import styles from './TikTokCollections.module.css';
 import AIModal from '../Form/AIModal';
-import { TikTokGuide } from './components/indicators/TikTokGuide';
+import { TikTokGuideModal } from './components/indicators/TikTokGuide';
 import { useTikTokHistory } from './hooks/useTikTokHistory';
 import { TrendsRadar } from './components/indicators/TrendsRadar';
 import { HookOptimizer } from './components/indicators/HookOptimizer';
@@ -46,6 +46,7 @@ export const TikTokCollections = () => {
   const [isHistoryModalOpen, setIsHistoryModalOpen] = useState(false);
   const [currentAIPrompt, setCurrentAIPrompt] = useState('');
   const [isAnalyticsOpen, setIsAnalyticsOpen] = useState(false);
+  const [isGuideOpen, setIsGuideOpen] = useState(false);
   
   const { history, saveToHistory, updateAnalytics, clearHistory, deleteHistoryItem, loadFromHistory, getAnalyticsSummary } = useTikTokHistory();
 
@@ -173,6 +174,13 @@ export const TikTokCollections = () => {
           <h3 className={styles.sectionTitle}>
             <Folders size={18} className={styles.sectionTitleIcon} />
             Configuração da Coleção TikTok
+            <button
+              className={styles.helpBtn}
+              onClick={() => setIsGuideOpen(true)}
+              title="Guia Prático & Segredos de Alta Conversão"
+            >
+              <HelpCircle size={16} />
+            </button>
           </h3>
 
           <ThemeInput
@@ -234,8 +242,6 @@ export const TikTokCollections = () => {
           />
 
           <HookOptimizer theme={theme} />
-
-          <TikTokGuide />
         </GlassCard>
       </div>
 
@@ -298,6 +304,11 @@ export const TikTokCollections = () => {
         history={history}
         updateAnalytics={updateAnalytics}
         getAnalyticsSummary={getAnalyticsSummary}
+      />
+
+      <TikTokGuideModal
+        isOpen={isGuideOpen}
+        onClose={() => setIsGuideOpen(false)}
       />
     </div>
   );
