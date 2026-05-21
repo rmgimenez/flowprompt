@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { 
   Play, Image, Camera, Sparkles, Info, Wand2, 
   History, Star, LayoutGrid, Copy, RotateCcw, Check,
@@ -8,6 +9,7 @@ import { clsx } from 'clsx';
 import styles from './Sidebar.module.css';
 import { MODES } from '../../constants/modes';
 import { TEMPLATES } from '../../constants/templates';
+import { useGeneratorContext } from '../../../../contexts/useGeneratorContext';
 
 const MODE_CATEGORIES = [
   {
@@ -116,16 +118,15 @@ const ModeItem = ({ item, currentModeId, onModeChange, onClose, hasTemplates }) 
   );
 };
 
-const Sidebar = ({ 
-  currentModeId, 
-  onModeChange, 
-  history = [], 
-  favorites = [], 
-  onLoadItem, 
-  onToggleFavorite,
+const Sidebar = ({
   isOpen,
   onClose
 }) => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const currentModeId = location.pathname.replace('/', '') || 'tiktok-collections';
+  const { history = [], favorites = [], toggleFavorite, loadSavedItem } = useGeneratorContext();
+
   const [activeTab, setActiveTab] = useState('modes');
   const [collapsedCategories, setCollapsedCategories] = useState({ video: true, photo: true });
 
@@ -134,6 +135,15 @@ const Sidebar = ({
       ...prev,
       [categoryId]: !prev[categoryId]
     }));
+  };
+
+  const handleModeChange = (id) => {
+    navigate(`/${id}`);
+  };
+
+  const handleLoadSavedItem = (item) => {
+    loadSavedItem(item);
+    if (onClose) onClose();
   };
 
   return (
@@ -205,7 +215,7 @@ const Sidebar = ({
                         key={item.id}
                         item={item}
                         currentModeId={currentModeId}
-                        onModeChange={onModeChange}
+                        onModeChange={handleModeChange}
                         onClose={onClose}
                         hasTemplates={!!TEMPLATES[item.id]}
                       />
@@ -224,7 +234,7 @@ const Sidebar = ({
                   key={item.id}
                   className={clsx(styles.navLink, currentModeId === item.id && styles.active)}
                   onClick={() => {
-                    onModeChange(item.id);
+                    handleModeChange(item.id);
                     if (onClose) onClose();
                   }}
                 >
@@ -246,8 +256,8 @@ const Sidebar = ({
                 <SavedItem 
                   key={item.id} 
                   item={item} 
-                  onToggleFavorite={onToggleFavorite} 
-                  onLoadItem={onLoadItem} 
+                  onToggleFavorite={toggleFavorite} 
+                  onLoadItem={handleLoadSavedItem} 
                   onClose={onClose}
                 />
               ))
@@ -265,8 +275,8 @@ const Sidebar = ({
                 <SavedItem 
                   key={item.id} 
                   item={item} 
-                  onToggleFavorite={onToggleFavorite} 
-                  onLoadItem={onLoadItem} 
+                  onToggleFavorite={toggleFavorite} 
+                  onLoadItem={handleLoadSavedItem} 
                   onClose={onClose}
                 />
               ))

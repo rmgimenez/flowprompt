@@ -4,10 +4,9 @@ import { MOTIVATIONAL_SCENES, BOOK_QUOTES } from '../constants/templates';
 
 const HISTORY_LIMIT = 20;
 
-export const useGenerator = (initialMode = 'tiktok-collections') => {
-  const [currentModeId, setCurrentModeId] = useState(initialMode);
+export const useGenerator = (externalModeId = 'tiktok-collections') => {
   const [formValues, setFormValues] = useState({});
-  
+
   // Persistence States
   const [history, setHistory] = useState(() => {
     const saved = localStorage.getItem('flowprompt_history');
@@ -19,7 +18,7 @@ export const useGenerator = (initialMode = 'tiktok-collections') => {
     return saved ? JSON.parse(saved) : [];
   });
 
-  const currentMode = useMemo(() => MODES[currentModeId], [currentModeId]);
+  const currentMode = useMemo(() => MODES[externalModeId], [externalModeId]);
 
   // Sync with localStorage
   useEffect(() => {
@@ -32,8 +31,6 @@ export const useGenerator = (initialMode = 'tiktok-collections') => {
 
   // Reset form when mode changes (unless we are loading a saved item)
   useEffect(() => {
-    // We only want to auto-reset if the formValues is currently empty or contains keys not in the new mode
-    // To simplify, we'll keep the existing logic but allow loadSavedItem to override it
     if (Object.keys(formValues).length === 0) {
       const initialValues = {};
       if (currentMode.fields) {
@@ -46,7 +43,7 @@ export const useGenerator = (initialMode = 'tiktok-collections') => {
       }, 0);
       return () => clearTimeout(timer);
     }
-  }, [currentModeId, currentMode.fields, formValues]);
+  }, [externalModeId, currentMode.fields, formValues]);
 
   const updateField = (id, value) => {
     setFormValues(prev => ({
@@ -90,18 +87,17 @@ export const useGenerator = (initialMode = 'tiktok-collections') => {
     
     const newItem = {
       id: Date.now(),
-      modeId: currentModeId,
+      modeId: externalModeId,
       timestamp: new Date().toISOString(),
       values: { ...formValues },
       prompt: generatedPrompt
     };
 
     setHistory(prev => {
-      // Avoid duplicate consecutive entries
       if (prev.length > 0 && prev[0].prompt === newItem.prompt) return prev;
       return [newItem, ...prev].slice(0, HISTORY_LIMIT);
     });
-  }, [currentModeId, formValues, generatedPrompt]);
+  }, [externalModeId, formValues, generatedPrompt]);
 
   const toggleFavorite = (item) => {
     setFavorites(prev => {
@@ -111,11 +107,6 @@ export const useGenerator = (initialMode = 'tiktok-collections') => {
       }
       return [{ ...item, id: Date.now(), isFavorite: true }, ...prev];
     });
-  };
-
-  const loadSavedItem = (item) => {
-    setCurrentModeId(item.modeId);
-    setFormValues(item.values);
   };
 
   const randomize = () => {
@@ -147,7 +138,6 @@ export const useGenerator = (initialMode = 'tiktok-collections') => {
     
     let fieldsToApply = { ...preset.fields };
 
-    // Intercept motivational templates to dynamically randomize values
     if (preset.name === 'Motivacional (Apenas Imagem)') {
       const randomIndex = Math.floor(Math.random() * MOTIVATIONAL_SCENES.length);
       fieldsToApply = MOTIVATIONAL_SCENES[randomIndex];
@@ -177,18 +167,15 @@ export const useGenerator = (initialMode = 'tiktok-collections') => {
 
   return {
     currentMode,
-    currentModeId,
-    setCurrentModeId,
     formValues,
+    setFormValues,
     updateField,
     addSuggestion,
     generatedPrompt,
-    // New exports
     history,
     favorites,
     addToHistory,
     toggleFavorite,
-    loadSavedItem,
     randomize,
     clearFields,
     applyPreset
