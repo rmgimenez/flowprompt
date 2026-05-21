@@ -1,8 +1,10 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Sparkles, AlertCircle } from 'lucide-react';
+import { X, Sparkles, AlertCircle, WandSparkles } from 'lucide-react';
 import { fillFormWithAI } from '../../utils/aiFiller';
 import styles from './AIModal.module.css';
+
+const NO_IDEA_PROMPT = 'Crie algo criativo e aleatório para o TikTok, sem tema específico definido por mim. Use sua criatividade para sugerir algo único, original e com alto potencial viral. Escolha personagens, cenários, estilos visuais e narrativas que sejam surpreendentes e chamativos. Pode ser qualquer coisa: um dia a dia cômico de personagens inusitados, uma transformação visual impactante, um mini-documentário estilizado, ou uma trend fictícia. Me surpreenda!';
 
 const AIModal = ({ isOpen, onClose, fields, currentModeTitle, onSuccess }) => {
   const [promptText, setPromptText] = useState('');
@@ -23,6 +25,26 @@ const AIModal = ({ isOpen, onClose, fields, currentModeTitle, onSuccess }) => {
       onClose();
     } catch (err) {
       console.error('AI fill error:', err);
+      if (err.message === 'API_KEY_MISSING') {
+        setError('A chave da API do OpenRouter não foi configurada. Crie e preencha a variável VITE_OPENROUTER_API_KEY no arquivo .env.');
+      } else {
+        setError(err.message || 'Ocorreu um erro ao consultar a inteligência artificial.');
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleNoIdea = async () => {
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      const data = await fillFormWithAI(NO_IDEA_PROMPT, fields, currentModeTitle);
+      onSuccess(data, '');
+      onClose();
+    } catch (err) {
+      console.error('AI no-idea error:', err);
       if (err.message === 'API_KEY_MISSING') {
         setError('A chave da API do OpenRouter não foi configurada. Crie e preencha a variável VITE_OPENROUTER_API_KEY no arquivo .env.');
       } else {
@@ -88,6 +110,17 @@ const AIModal = ({ isOpen, onClose, fields, currentModeTitle, onSuccess }) => {
                   autoFocus
                 />
               </div>
+
+              {!promptText.trim() && !isLoading && !error && (
+                <button
+                  type="button"
+                  className={styles.noIdeaBtn}
+                  onClick={handleNoIdea}
+                >
+                  <WandSparkles size={16} />
+                  <span>Sem ideias? Gere algo aleatório com IA</span>
+                </button>
+              )}
 
               {error && (
                 <div className={styles.errorBox}>
