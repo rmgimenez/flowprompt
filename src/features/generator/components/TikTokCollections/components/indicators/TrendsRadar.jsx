@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Sparkles, TrendingUp, ChevronDown, ChevronRight } from 'lucide-react';
-import { TRENDING_THEMES } from './constants';
-import styles from './TikTokCollections.module.css';
+import { TRENDING_THEMES } from '../../constants/constants';
+import styles from '../../TikTokCollections.module.css';
 
 export const TrendsRadar = ({ onSelectTheme }) => {
   const [expandedCategories, setExpandedCategories] = useState([]);

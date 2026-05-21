@@ -1,6 +1,6 @@
-import { GlassCard } from '../../../../components/ui/GlassCard';
+import { GlassCard } from '../../../../../../components/ui/GlassCard';
 import { Sparkles } from 'lucide-react';
-import styles from './TikTokCollections.module.css';
+import styles from '../../TikTokCollections.module.css';
 
 export const TikTokGuide = () => {
   return (
@@ -15,7 +15,6 @@ export const TikTokGuide = () => {
         </p>
         
         <div className={styles.guideGrid}>
-          {/* Como Funciona */}
           <div className={styles.guideCard}>
             <h4 className={styles.guideCardTitle}>🚀 Fluxo de Trabalho em 3 Passos</h4>
             <ul className={styles.guideList}>
@@ -31,7 +30,6 @@ export const TikTokGuide = () => {
             </ul>
           </div>
 
-          {/* Dicas de Ouro */}
           <div className={styles.guideCard}>
             <h4 className={styles.guideCardTitle}>💡 Dicas de Ouro para Viralização</h4>
             <ul className={styles.guideList}>

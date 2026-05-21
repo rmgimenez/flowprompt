@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { Activity } from 'lucide-react';
-import { calculateViralScore } from './utils';
-import styles from './TikTokCollections.module.css';
+import { calculateViralScore } from '../../utils/utils';
+import styles from '../../TikTokCollections.module.css';
 
 export const ViralScore = ({ theme, quantity, selectedStyle, selectedVibe, selectedTarget, portugueseText, notes }) => {
   const config = useMemo(() => ({ theme, quantity, selectedStyle, selectedVibe, selectedTarget, portugueseText, notes }),

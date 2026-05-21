@@ -4,7 +4,7 @@ import {
   Share2, Bookmark, Trophy, ArrowUp, Star
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import styles from './TikTokCollections.module.css';
+import styles from '../../TikTokCollections.module.css';
 
 const ANALYTICS_FIELDS = [
   { id: 'views', label: 'Visualizações', icon: Eye, color: '#3b82f6' },

@@ -1,7 +1,7 @@
 import { useState, useMemo } from 'react';
 import { Sparkles, Copy, Check, RefreshCw } from 'lucide-react';
-import { generateHooks } from './utils';
-import styles from './TikTokCollections.module.css';
+import { generateHooks } from '../../utils/utils';
+import styles from '../../TikTokCollections.module.css';
 
 export const HookOptimizer = ({ theme }) => {
   const [refreshKey, setRefreshKey] = useState(0);

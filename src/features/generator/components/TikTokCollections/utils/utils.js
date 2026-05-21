@@ -4,16 +4,9 @@ import {
   STYLE_PRESETS,
   HOOK_TEMPLATES,
   VIRAL_SCORE_CONFIG
-} from './constants';
-
-// ---------------------------------------------------------------------------
-// 🧬 DNA VISUAL MAPS
-// Traduzem os IDs de preset em linguagem técnica que o Nano Banana 2 entende.
-// Formato: termos de fotografia/arte que se encaixam na seção [Estilo] da fórmula oficial.
-// ---------------------------------------------------------------------------
+} from '../constants/constants';
 
 const STYLE_DNA_MAP = {
-  // Fotografia & Realismo
   normal:        'clean high-fidelity digital photograph. Sharp focus, balanced natural light, neutral exposure, natural colors, 50mm standard camera lens, true-to-life details',
   realista:      'professional studio portrait photography screenshot. Shot on medium format Hasselblad camera, 85mm f/1.8 lens. Sharp focus on subject with natural highly-detailed skin pores and texture, soft studio rim lighting. Cinematic shallow depth of field, subtle film grain, Kodak Portra 400 color science',
   natgeo:        'National Geographic documentary photography screenshot. Telephoto 200mm lens, tack-sharp environmental realism. Authentic raw textures, dusty atmospheric daylight, high visual fidelity, captured in the wild',
@@ -22,8 +15,6 @@ const STYLE_DNA_MAP = {
   polaroid:      'vintage Polaroid instant photograph. Pronounced film grain, faded washed-out analog colors, warm light leaks, nostalgic overexposed look with soft focus, authentic paper print margins',
   gopro:         'GoPro Hero action camera POV screenshot. Extreme wide-angle 12mm fisheye lens perspective, dramatic motion blur, high-dynamic range, intense dynamic action angle with natural lens dirt',
   motivacional:  'cinematic moody desaturated landscape screenshot. Wide 35mm lens, massive dark negative space optimized for text overlays, atmospheric mist, dramatic volumetric rim lighting, deep shadows',
-
-  // Cinema (Diretores Famosos)
   wesanderson:   'Wes Anderson symmetrical movie screenshot. Perfectly centered composition, 40mm flat lens framing. Stylized dollhouse miniature aesthetic, high-fidelity physical props. Soft retro pastel color palette (mustard yellow, dusty rose, mint green), vintage warm theatrical lighting',
   tarantino:     'Quentin Tarantino 70s grindhouse movie screenshot. Shot on 35mm Fujifilm Eterna cinema film stock, rich high-contrast colors, warm split-toning. Intense dramatic character expression, dynamic dutch angle framing, gritty film texture',
   nolan:         'IMAX 65mm anamorphic film screenshot in Christopher Nolan style. Ultra-wide grand architectural scale, cold clinical desaturated color science, sterile tense atmosphere. Kodak Vision3 250D, deep natural shadows, sharp hard lighting',
@@ -36,15 +27,11 @@ const STYLE_DNA_MAP = {
   wachowski:     'Wachowski sisters cyberpunk action movie screenshot. Slick black leather, reflective dark vinyl, high-tech chrome gear. Signature matrix green tint grading, cascading glowing green digital code overlays, dynamic bullet-time slow-motion action pose',
   miller:        'George Miller Mad Max post-apocalyptic movie screenshot. Saturated orange sand dunes under a deep blue sky. Dusty customized scrap metal vehicles, chaotic high-speed motion blur, raw gritty post-apocalyptic punk aesthetic',
   kurosawa:      'Akira Kurosawa dynamic classic film screenshot. High-contrast black and white cinematography, rich film grain. Dramatic sweeping wind, heavy rain textures, epic samurai stance, deep emotional framing',
-
-  // Animação & 3D
   pixar:         'Pixar RenderMan 3D animation screenshot. Vibrant saturated color palette, smooth ray-traced subsurface scattering skin shaders. Global illumination, extremely detailed physical textures, charming stylized character design',
   claymation:    'stop-motion claymation film screenshot. Hand-crafted plasticine clay models, detailed physical fingerprints, clay textures. Soft studio miniature lighting, charming retro animation feel',
   papercut:      '3D papercut illustration screenshot. Multi-layered colored paper sheets, deep realistic drop shadows, origami art craft details. Clean minimalist physical layers, soft shadow transitions',
   lowpoly:       'low-poly 3D render screenshot. Flat-shaded geometric polygon meshes, retro game console aesthetic. Soft ambient occlusion, clean solid matte colors, cute angular shapes',
   minecraft:     'Minecraft-inspired voxel 3D blocky art screenshot. Sharp pixelated block textures, volumetric sunlight shafts. Charming cubic layout, retro high-fidelity block world',
-
-  // Arte & Pintura Clássica
   davinci:       'Leonardo da Vinci classical Renaissance painting. Sfumato atmospheric shading, soft smooth contour transitions. Deep earthy pigments, chalky raw sketch underdrawings, weathered aged canvas texture',
   picasso:       'Pablo Picasso cubism painting. Fragmented geometric shapes, multi-angled deconstructed perspective planes, bold abstract lines. Muted blue and earthy sienna color palette',
   monet:         'Claude Monet French impressionism oil painting. Loose rapid delicate brushstrokes, vibrant natural sunlight reflections, glowing pastel textures. Dappled light, visible canvas texture',
@@ -57,8 +44,6 @@ const STYLE_DNA_MAP = {
   rembrandt:     'Rembrandt baroque oil painting. Masterful high-contrast chiaroscuro, deep mysterious shadows. Warm golden candle glow key light, detailed organic skin textures, dark earthy pigments',
   matisse:       'Henri Matisse fauvist cut-out paper collage. Bold abstract minimalist organic shapes, highly vibrant flat pure colors (pure red, electric blue, bright yellow), naive layout',
   vangogh:       'Vincent van Gogh oil painting. Thick textured impasto brushstrokes applied with a palette knife, swirling turbulent sky patterns. Vibrant complementary colors, coarse canvas texture',
-
-  // Ilustração & Quadrinhos
   anime:         '90s sci-fi anime style screenshot. Cel animation style, hand-drawn look with distinct dark ink outlines, sharp shadows, and a slight film grain texture, vintage hand-painted background details',
   ghibli:        'Studio Ghibli aesthetic anime screenshot. Hand-painted watercolor background, lush green nature details, soft natural lighting. Dreamy nostalgic atmosphere, highly detailed classical animation',
   popart:        '1960s Roy Lichtenstein pop art comic book panel. Bold primary flat colors, heavy black outlines, retro half-tone dot patterns, dynamic action framing',
@@ -66,8 +51,6 @@ const STYLE_DNA_MAP = {
   watercolor:    'fine art watercolor illustration. Translucent colorful paint bleeding, organic wet paint splashes, detailed wet brush paper texture, elegant bleeding gradients',
   artnouveau:    'Alphonse Mucha Art Nouveau illustration. Flowing organic long hair, ornate golden borders, elaborate floral vine motifs, flat warm gilded color palette',
   surrealismo:   'Salvador Dali surrealist painting. Melting clocks, distorted impossible physical objects in a vast desert landscape. Strange dream logic, warm soft golden atmosphere',
-
-  // Efeitos & Retro-Future
   cyberpunk2077: 'Cyberpunk 2077 videogame screenshot. Rain-slicked wet asphalt streets reflecting pink and cyan neon light blooms. Chromatic aberration, high-tech holographic ads, gritty details',
   cyber_gothic:  'cyber-gothic dark aesthetic screenshot. Dark matte leather, polished futuristic chrome, glowing UV neon makeup and cybernetic implants. High-contrast strobe rave lighting',
   synthwave:     'synthwave retro-future vector screenshot. Glowing wireframe perspective grid, colossal glowing geometric retro sun, neon pink palm silhouettes. 80s outrun vaporous vectors',
@@ -81,37 +64,29 @@ const STYLE_DNA_MAP = {
 };
 
 const COLOR_DNA_MAP = {
-  // Padrões
   normal:            'natural lifelike color, balanced contrast and accurate exposure, true-to-life white balance',
-  // Tons Quentes
   quente:            'golden sunset warmth, rich orange and red tones, soft warm ambient glow, elevated color temperature 3800K',
   goldenhour:        'warm amber 3200K key light, orange-gold specular highlights, long horizontal shadows, sun-flare glow accents',
   sunset_silhouettes:'fiery orange and magenta sky, subject in solid black silhouette, high contrast backlighting',
-  // Tons Frios
   frio:              'cool blue-hour 6500K tones, deep teal shadow values, crisp silver highlights, underexposed moody twilight atmosphere',
   ocean_deep:        'abyssal deep navy blue, marine teal midtones, bioluminescent cyan accent highlights, dark aquatic depth',
   arctic_glacier:    'frosty ice-white, freezing pale blue, deep grey underexposed shadows, subtle crystalline teal accents',
-  // Neon & Futurismo
   cyberpunk:         'dominant neon magenta (#FF2D78) and electric cyan (#00F5FF), deeply underexposed dark shadows, wet reflective surface bloom',
   vaporwave:         'vibrant violet and hot pink pastels, hazy teal, dreamy retro sunset gradient, saturated diffuse glow',
   retro_arcade:      'pitch black background, glowing neon red and electric blue primary colors, radioactive yellow accent highlights',
   space_nebula:      'cosmic deep purple and pitch black, ultraviolet glow, deep magenta nebula dust, star field specks',
   toxic_waste:       'acid lime green, radioactive yellow, industrial pitch black, harsh charcoal grey',
   cyberpunk_glitch:  'saturated RGB split (red, green, blue) pixel artifacts, digital static noise, chromatic aberration color fringing',
-  // Orgânicos
   forest_moss:       'deep forest green, rich earthy brown, sage midtones, damp moss green, soft diffused woodland light',
   desert_sand:       'warm desert sand, terracotta, rich golden dust, dry high-contrast harsh shadows, arid atmospheric haze',
   earthy_terracotta: 'earthy clay, baked terracotta orange, olive green accents, warm copper metallic tones',
   mint_chocolate:    'cool mint green, deep rich chocolate brown, creamy white highlight accents',
-  // Vintage
   vintage_sepia:     'rich sepia tones, aged cream paper, dusty amber midtones, low saturation vintage brown, antique print feel',
   monocromático:     'high-contrast monochrome, deep rich blacks, bright pure whites, dramatic interplay of silver grain',
   steampunk_bronze:  'polished bronze metallic, heavy charcoal black, glowing amber-copper light accents',
-  // Suaves
   pastel:            'soft desaturated pastel palette (mint, blush pink, cream, lavender), clean airy +2 exposure, gentle luminous feel',
   cherry_blossom:    'soft sakura cherry blossom pink, crisp bright white, gentle rose petal accents, pale clear blue sky',
   candy_shop:        'cotton candy pink, sky blue, bubblegum brights, sugar yellow, high-key bright and cheerful',
-  // Temáticos
   royal_luxury:      'rich imperial purple, deep royal blue, glistening metallic gold details, opulent high-contrast',
   royal_velvet:      'deep royal burgundy, dark velvet navy blue, elegant silver metallic accents, rich jewel tones',
   military_camo:     'olive drab green, khaki sand, military flat black, matte earthy military brown, desaturated natural tones',
@@ -119,30 +94,25 @@ const COLOR_DNA_MAP = {
 };
 
 const VIBE_DNA_MAP = {
-  // Geral
   normal:          'balanced natural atmospheric lighting, clean grounded composition, authentic mood',
   minimalista:     'clean minimalist framing, strong negative space, clear simple focal point',
-  // Humor
   cômico:          'bright even high-key lighting, exaggerated expressions, vibrant saturation, playful dynamic framing',
   sarcástico:      'deadpan flat lighting, slightly overexposed ironic look, subtle absurdist environmental details',
   absurdo:         'surreal impossible environment, dreamlike irrational scale, flat Wes Anderson-like staging',
   revoltado:       'frustrated tight framing, harsh direct lighting, exaggerated subject expression, high saturation',
-  // Narrativa
   drama:           'deep shadow chiaroscuro, single motivated dramatic key light, tense atmospheric haze, tight claustrophobic framing',
   sombrio_misterio:'heavy atmospheric fog, underexposed mysterious shadows, cool desaturated blue-green palette, tension-building framing',
   terror:          'harsh underlighting from below, sickly desaturated palette, thick fog and deep shadow, extreme close-up claustrophobic framing',
   investigativo:   'stark documentary lighting, neutral realistic color, precise clean journalistic framing, no artistic embellishment',
   cinematic:       'Hollywood trailer style, wide establishing epic framing, dynamic camera angle, intense dramatic score mood, lens flare accents',
-  // Social
   fofoca:          'intimate over-the-shoulder angle, shallow depth of field blurred background, warm indoor social lighting',
   lifestyle:       'natural window light, authentic candid feel, warm color temperature, organic lifestyle documentary framing',
   tutorial:        'clean flat overhead or straight-on angle, bright even illumination, clear subject isolation',
   desafio:         'high-energy dynamic angle, bright vibrant lighting, sense of action and movement',
-  // Emocional
   épico:           'heroic extreme low-angle framing, vast dramatic sky composition, subject with powerful confident stance, epic atmospheric depth of field',
   inspirador:      'vast open hopeful landscape, subject silhouette against bright horizon, upward gaze posture, warm soft rim light',
   nostálgico:      'warm soft-focus haze, faded analog color grading, late afternoon golden tones, nostalgic childhood intimacy',
-  romântico:       'soft diffused warm light, shallow depth of field bokeh background, gentle intimate framing, golden pink tones',
+  romântico:       'soft diffused warm light, shallow depth of field bokeh background, gentle intimate framing, warm golden pink tones',
   futurista:       'stark cold futuristic lighting, metallic blue-grey tones, precise geometric framing, high-tech sterile atmosphere',
   estético:        'harmonious visually balanced composition, clean airy palette, tranquil soft natural light, minimal distraction',
   premium:         'luxury editorial lighting, sophisticated dark background, subject with confident elegant posture, premium product photography feel',
@@ -151,38 +121,13 @@ const VIBE_DNA_MAP = {
   festa:           'high-energy motion blur, vibrant saturated party lighting, dynamic celebratory framing, joyful chaotic energy',
 };
 
-// ---------------------------------------------------------------------------
-// 🔧 buildDNA — Constrói o bloco de DNA Visual a partir dos presets selecionados
-// ---------------------------------------------------------------------------
 const buildDNA = (styleId, colorId, vibeId) => {
   const styleDNA = STYLE_DNA_MAP[styleId] || STYLE_DNA_MAP['normal'];
   const colorDNA = COLOR_DNA_MAP[colorId] || COLOR_DNA_MAP['normal'];
   const vibeDNA  = VIBE_DNA_MAP[vibeId]   || VIBE_DNA_MAP['normal'];
-
   return { styleDNA, colorDNA, vibeDNA };
 };
 
-// ---------------------------------------------------------------------------
-// 🚀 generateTikTokPrompt — Versão 2.0 com Fórmula Oficial + DNA Visual
-// ---------------------------------------------------------------------------
-
-/**
- * Gera o Prompt Mestre para a coleção do TikTok com base nos parâmetros selecionados.
- * Usa a fórmula oficial do Nano Banana 2: [Assunto]+[Ação]+[Local/Contexto]+[Composição]+[Estilo]
- * Cada slide recebe o DNA Visual injetado diretamente no [Estilo] para consistência visual
- * sem dependência entre prompts (cada um é 100% autossuficiente).
- * 
- * @param {Object} params
- * @param {string} params.theme - Tema principal do post
- * @param {number} params.quantity - Quantidade de imagens
- * @param {string} params.selectedStyle - ID do estilo selecionado
- * @param {string} params.selectedVibe - ID da vibe selecionada
- * @param {string} params.selectedColors - ID da paleta de cores selecionada
- * @param {string} params.selectedTarget - ID do público-alvo selecionado
- * @param {string} params.notes - Observações adicionais
- * @param {boolean} params.portugueseText - Se deve forçar textos em português
- * @returns {string} Prompt Mestre formatado
- */
 export const generateTikTokPrompt = ({
   theme,
   quantity,
@@ -287,9 +232,6 @@ Para cada um dos ${quantity} slides, gere um prompt de imagem em **inglês** alt
 4. **Sem texto fora de blocos de código (CRÍTICO):** Para garantir que o usuário copie cada item facilmente com um clique, você **NÃO DEVE escrever texto livre fora dos blocos de código**. Absolutamente **TODOS** os itens (Título, Legenda e os Prompts de cada slide) **DEVEM vir encapsulados em seus respectivos blocos de código individuais (usando \`\`\`text para o Título e a Legenda, e \`\`\`prompt para os prompts de imagem)**. Não coloque saudações, introduções ou explicações fora dos blocos. Entregue diretamente os ${quantity + 2} blocos solicitados.${ptBrRules}`;
 };
 
-// ---------------------------------------------------------------------------
-// 🎣 generateHooks — Gera variações de gancho viral para o tema informado
-// ---------------------------------------------------------------------------
 export const generateHooks = (theme) => {
   if (!theme || !theme.trim()) return [];
   const trimmed = theme.trim();
@@ -310,15 +252,11 @@ export const generateHooks = (theme) => {
   }).filter(g => g.hooks.length > 0);
 };
 
-// ---------------------------------------------------------------------------
-// 📊 calculateViralScore — Calcula pontuação de potencial viral (0-100)
-// ---------------------------------------------------------------------------
 export const calculateViralScore = ({ theme, quantity, selectedStyle, selectedVibe, selectedTarget, portugueseText, notes }) => {
   const { weights, optimalQuantity, highRiskQuantity, synergyPairs } = VIRAL_SCORE_CONFIG;
   let score = 0;
   const breakdown = [];
 
-  // 1. Coerência Estilo + Vibe + Target (30pts)
   let coherenceScore;
   const matchedPairs = synergyPairs.filter(p =>
     p.style === selectedStyle && p.vibe === selectedVibe && p.target === selectedTarget
@@ -338,7 +276,6 @@ export const calculateViralScore = ({ theme, quantity, selectedStyle, selectedVi
 
   score += coherenceScore;
 
-  // 2. Quantidade ideal de slides (20pts)
   let qtyScore;
   if (quantity === optimalQuantity.ideal) {
     qtyScore = weights.quantityOptimization;
@@ -356,7 +293,6 @@ export const calculateViralScore = ({ theme, quantity, selectedStyle, selectedVi
 
   score += qtyScore;
 
-  // 3. Completude do Tema (25pts)
   let themeScore = 0;
   if (theme && theme.trim()) {
     themeScore += 10;
@@ -369,13 +305,11 @@ export const calculateViralScore = ({ theme, quantity, selectedStyle, selectedVi
 
   score += themeScore;
 
-  // 4. Alinhamento com Tendências (15pts)
   let trendScore = 7;
   breakdown.push({ factor: '📡 Alinhamento com tendências', score: trendScore, max: weights.trendAlignment, detail: 'Use o Trends Radar para temas em alta' });
 
   score += trendScore;
 
-  // 5. Texto em Português (10pts)
   let ptScore = portugueseText ? weights.portugueseToggle : 3;
   breakdown.push({ factor: '🇧🇷 Texto em português', score: ptScore, max: weights.portugueseToggle, detail: portugueseText ? 'PT-BR ativado — maior alcance nacional' : 'PT-BR desativado' });
 
